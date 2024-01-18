@@ -14,7 +14,7 @@ export function addCourse(courseName, courseSection,uid){
     );
 }
 
-// getCourses: This function retrieves all courses from the course collections
+// getCourses: This function retrieves all courses from the course collections for the user with specified uid
 export async function getCourses(uid){
     const courses = []
     const q = query(collection(db, COURSES_COLLECTION), where("uid", "==", uid))
@@ -26,6 +26,7 @@ export async function getCourses(uid){
     return courses;
 }
 
+// getCourses: This function the course with the specified doc id
 export async function getCourse(id){
     const unsub = onSnapshot(doc(db, COURSES_COLLECTION, id), (doc) => {
         return  doc.data();

@@ -14,13 +14,13 @@ function App() {
 
     const [courses, setCourses] = useState([]);
 
-    // Modal Code
+    // Code that toggles the Add Student Modal to appear depending on the value of modal
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
         setModal(!modal);
     }
 
-    // Once the component is rendered...fetch the courses for the auth user from database
+    // Once the component is rendered...fetch the courses for the user with the inputted uid from database
     useEffect(() => {
         getCourses("test2").then((courses) => setCourses(courses));
     }, [courses]);
@@ -28,7 +28,6 @@ function App() {
     return (
         <div className="grid grid-cols-4 h-screen">
             {/*Sidebar*/}
-
             <div className='flex flex-col border-gray-200 border-r-2 px-8 py-12 content-center gap-y-8'>
 
                 {/*Sidebar Menu -> Students Section */}
