@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "firebase": "^10.7.1",
     "react": "^18.2.0",
+    "react-data-table-component": "^7.6.2",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-scripts": "5.0.1",
