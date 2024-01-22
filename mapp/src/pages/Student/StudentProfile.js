@@ -39,7 +39,7 @@ function Student({student}) {
                             </button>
 
                             <button
-                                className='text-gray-400 font-light text-xs py-2 px-4 border-gray-300-50 border-2 rounded'> Remove
+                                className='hover:text-red-600 hover:border-red-600 text-gray-400 font-light text-xs py-2 px-4 border-gray-300-50 border-2 rounded'> Remove
                                 from class
                             </button>
                         </div>
