@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 // import { useHistory } from 'react-router-dom'; // Commented out for future routing
 import FormWrapper from "../../components/FormWrapper";
 import TextInput from "../../components/TextInput";
 import SecondaryButton from "../../components/SecondaryButton";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import your Firebase configuration
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth"; // Import your Firebase configuration
 
 function SignInForm() {
     const auth = getAuth();
@@ -51,7 +51,7 @@ function SignInForm() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <SecondaryButton text="Log In" type="submit" />
+                    <SecondaryButton text="Log In" type="submit"/>
                 </div>
             </FormWrapper>
         </form>

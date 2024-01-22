@@ -62,7 +62,7 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
 
             {/* Settings Section */}
             <div
-                 className='flex flex-row w-full justify-between text-gray-400 text-sm font-light -mb-4'>
+                className='flex flex-row w-full justify-between text-gray-400 text-sm font-light -mb-4'>
                 <div>SETTINGS</div>
             </div>
             <a className='flex flex-row gap-4 items-center'>

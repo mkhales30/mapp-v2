@@ -113,14 +113,16 @@ function App() {
         <>
             <div className="grid grid-cols-4 h-screen">
                 {/*Dashboard Sidebar*/}
-                <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
+                <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses}
+                            toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
 
                 {/*Main Content Area*/}
                 {!selectedStudent && !selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse}/>
                         <div className='px-12 py-4'>
-                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal} toggleAddSessionModal={toggleAddSessionModal}/>
+                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal}
+                                                 toggleAddSessionModal={toggleAddSessionModal}/>
                         </div>
                     </div>
                 }

@@ -11,9 +11,9 @@ function CourseBanner({course, breadCrumb, header, updateCourses}) {
             <div className='h-52'>
                 <img className='w-full h-full object-cover' src={course_background} alt=""/>
                 <div
-                    className={ !header ? 'block flex flex-col text-white -mt-16 pl-12' : 'hidden'}>
-                    <div className='text-sm uppercase'>{ course ? 'Section ' + course.courseSection : header} </div>
-                    <h1 className='text-3xl text-white '>{course ? course.courseName : '' } </h1>
+                    className={!header ? 'block flex flex-col text-white -mt-16 pl-12' : 'hidden'}>
+                    <div className='text-sm uppercase'>{course ? 'Section ' + course.courseSection : header} </div>
+                    <h1 className='text-3xl text-white '>{course ? course.courseName : ''} </h1>
                 </div>
 
                 <div

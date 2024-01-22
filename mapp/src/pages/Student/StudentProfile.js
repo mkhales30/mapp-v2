@@ -26,8 +26,8 @@ function Student({student}) {
 
                     <div className='mb-4 col-span-3'>
                         <div className='text-gray-400 font-light text-sm'>{student.email}</div>
-                        <div className='text-gray-400 font-light text-sm'> { student.lastAttended ? 'Last attended' : '' }
-                            <span className='font-light text-black underline'>{ student.lastAttended}</span></div>
+                        <div className='text-gray-400 font-light text-sm'> {student.lastAttended ? 'Last attended' : ''}
+                            <span className='font-light text-black underline'>{student.lastAttended}</span></div>
                     </div>
 
                     <div className='col-span-3'>

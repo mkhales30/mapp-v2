@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAuth, signOut } from 'firebase/auth';
+import {getAuth, signOut} from 'firebase/auth';
 
 const SignOutButton = () => {
     const auth = getAuth();

@@ -65,9 +65,9 @@ function SessionProfile(session) {
                 <div className='col-span-1 row-span-1 flex flex-col text-gray-900 bg-gray-200 px-4 py-4 rounded-3xl'>
                     <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faQrcode}/>
                     <div className='font-light'>Scan in Students</div>
-                        {scanResult ?
-                            <div> Success: <a className='text-green-500' href={scanResult}>{scanResult}</a></div> :
-                            <div id="reader" ></div>}
+                    {scanResult ?
+                        <div> Success: <a className='text-green-500' href={scanResult}>{scanResult}</a></div> :
+                        <div id="reader"></div>}
                 </div>
             </div>
             <div className='text-2xl font-medium mt-12'> Attendance Report</div>

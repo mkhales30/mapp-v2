@@ -23,7 +23,7 @@ export const AuthLayout = (props) => {
                     )}
                 </div>
 
-                <div className="mx-24">
+                <div className="mx-12">
                     {props.children}
                 </div>
 
