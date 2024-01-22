@@ -1,27 +1,32 @@
 import React, {useContext, useEffect, useState} from 'react';
 import DataTable from 'react-data-table-component';
-import {getStudents} from "./firebase/firestore";
-import {CourseContext} from "./CourseContext";
-import {CoursesContext} from "./CoursesContext";
+import {getStudents} from "../firebase/firestore";
+import {CourseContext} from "../contexts/CourseContext";
+import {CoursesContext} from "../contexts/CoursesContext";
 
 
-const StudentTable = (props) => {
+const StudentTable = ({data}) => {
 
 
     const columns = [
         {
-            name: 'Name',
-            selector: (row) => row.name,
+            name: 'First Name',
+            selector: (row) => row.firstName,
+            sortable: true,
+        },
+        {
+            name: 'Last Name',
+            selector: (row) => row.lastName,
             sortable: true,
         },
         {
             name: 'Enrollment Status',
-            selector: (row) => row.status,
+            selector: (row) => row.enrollmentStatus,
             sortable: true,
         },
         {
             name: 'Last Attended Session',
-            selector: (row) => row.lastAttendedSession,
+            selector: (row) => row.lastAttended,
             sortable: true,
         },
         {
@@ -35,9 +40,7 @@ const StudentTable = (props) => {
         <div className='container mt-5 border rounded-2xl border-gray-200'>
             <DataTable
                 columns={columns}
-                data={props.data}
-                selectableRows
-                fixedHeader
+                data={data}
                 pagination
             />
         </div>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
-import {addCourse} from "./firebase/firestore";
+import {addCourse} from "../firebase/firestore";
 
 function AddCourseModal(props) {
 
@@ -17,13 +17,14 @@ function AddCourseModal(props) {
         name = e.target.name;
         value = e.target.value;
         setCourseData({...courseData, [name]: value})
-
     }
+
     {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/}
     const handleAddCourse = async () => {
-        await addCourse(courseData.courseName, courseData.courseSection, courseData.uid)
-        props.toggleModal()
-    }
+        await addCourse(courseData.courseName, courseData.courseSection, courseData.uid);
+        props.updateCourses(); // Update courses in the parent component
+        props.toggleModal();
+    };
 
     return (
                     <div

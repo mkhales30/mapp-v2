@@ -3,6 +3,7 @@ import {addDoc, collection, getDocs,query, where, onSnapshot, orderBy, doc} from
 
 const COURSES_COLLECTION = 'courses'
 const STUDENTS_COLLECTION = 'Students'
+const SESSIONS_COLLECTION = 'Sessions'
 const USERS_COLLECTION = 'users'
 
 
@@ -16,31 +17,56 @@ export function addCourse(courseName, courseSection,uid){
 
 // getCourses: This function retrieves all courses from the course collections for the user with specified uid
 export async function getCourses(uid){
-    console.log("getting courses")
-    const courses = []
-    const q = query(collection(db, COURSES_COLLECTION), where("uid", "==", uid))
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            courses.push({...doc.data(), id : doc.id})
+    return new Promise((resolve, reject) => {
+        const courses = [];
+        const q = query(collection(db, COURSES_COLLECTION), where("uid", "==", uid));
+
+        onSnapshot(q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                courses.push({...doc.data(), id: doc.id});
+            });
+            resolve(courses);
+        }, (error) => {
+            reject(error);
         });
     });
-    return courses;
 }
 
-// export async function getStudents(courseId){
-//     const querySnapshot = await getDocs(collection(db, COURSES_COLLECTION, courseId, STUDENTS_COLLECTION));
-//     querySnapshot.forEach((doc) => {
-//         // doc.data() is never undefined for query doc snapshots
-//         console.log(doc.id, " => ", doc.data());
-//     });
-// }
 
-// getCourses: This function the course with the specified doc id
-export async function getCourse(id){
-    const unsub = onSnapshot(doc(db, COURSES_COLLECTION, id), (doc) => {
-        return  doc.data();
-    });
+export async function getStudents(courseId) {
+    try {
+        const students = [];
+        const studentsRef = collection(db, COURSES_COLLECTION, courseId, STUDENTS_COLLECTION);
+        const q = query(studentsRef);
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            students.push({...doc.data(), id: doc.id});
+        });
+
+        return students;
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        throw error;
+    }
 }
 
+export async function getSessions(courseId) {
+    try {
+        const sessions = [];
+        const sessionsRef = collection(db, COURSES_COLLECTION, courseId, SESSIONS_COLLECTION);
+        const q = query(sessionsRef);
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            sessions.push({...doc.data(), id: doc.id});
+        });
+
+        return sessions;
+    } catch (error) {
+        console.error("Error fetching sessions:", error);
+        throw error;
+    }
+}
 
 
