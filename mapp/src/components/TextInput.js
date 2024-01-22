@@ -1,14 +1,14 @@
 import React from 'react';
 
-const TextInput = (props) => {
+const TextInput = ({type,onChange,label,value}) => {
     return (
         <div className='flex flex-col gap-1'>
-            <label className='font-light text-gray-600 text-sm'>{props.label}</label>
+            <label className='font-light text-gray-600 text-sm'>{label}</label>
             <input
-                type={props.type}
+                type={type}
                 className='border-gray-200 border rounded w-full p-2 focus:outline-0'
-                value={props.value} // Use the 'value' prop to set the input value
-                onChange={props.onChange} // Use the 'onChange' prop to handle input changes
+                value={value} // Use the 'value' prop to set the input value
+                onChange={onChange} // Use the 'onChange' prop to handle input changes
             />
         </div>
     );

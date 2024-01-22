@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addSession} from "../firebase/firestore";
 
-function AddSessionModal(props) {
+function AddSessionModal({updateSessions,toggleModal, course}) {
 
     // Add session Form Handler
     const [sessionData, setSessionData] = useState({
@@ -18,9 +18,9 @@ function AddSessionModal(props) {
     }
 
     const handleAddSession = async () => {
-        await addSession(props.course.id, sessionData);
-        props.updateSessions(); // Update sessions in the parent component
-        props.toggleModal();
+        await addSession(course.id, sessionData);
+        updateSessions(); // Update sessions in the parent component
+        toggleModal();
     };
 
     return (
@@ -28,7 +28,7 @@ function AddSessionModal(props) {
             className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
             <p className="text-2xl text-center">New Session</p>
             <button>
-                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={props.toggleModal}
+                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}
                                  icon={faX}/>
             </button>
             <form className="flex flex-col gap-2 ">

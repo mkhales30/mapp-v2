@@ -7,7 +7,7 @@ import SignUpForm from "./pages/Sign Up/SignUpForm";
 import ProtectedRoute from "./ProtectedRoute";
 import {About} from "./pages/About/About";
 
-function AppRoutes(props) {
+function AppRoutes({}) {
     return (
         <Router>
             <Routes>

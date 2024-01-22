@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 
 
-export const Stepper = (props) => {
+export const Stepper = ({steps, currentStep}) => {
     const [newStep, setNewStep] = useState([]);
     const stepRef = useRef();
 
@@ -54,7 +54,7 @@ export const Stepper = (props) => {
 
     useEffect(() => {
         // create object
-        const stepsState = props.steps.map((step, index) =>
+        const stepsState = steps.map((step, index) =>
             Object.assign(
                 {},
                 {
@@ -66,9 +66,9 @@ export const Stepper = (props) => {
             )
         );
         stepRef.current = stepsState;
-        const current = updateStep(props.currentStep - 1, stepRef.current);
+        const current = updateStep(currentStep - 1, stepRef.current);
         setNewStep(current);
-    }, [props.steps, props.currentStep]);
+    }, [steps, currentStep]);
 
     const displaySteps = newStep.map((step, index) => {
         return (

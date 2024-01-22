@@ -4,7 +4,7 @@ import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addCourse} from "../firebase/firestore";
 import {auth} from "../firebase/firebase";
 
-function AddCourseModal(props) {
+function AddCourseModal({updateCourses, toggleModal}) {
 
     // Add Course Form Handler
     const [courseData, setCourseData] = useState({
@@ -24,8 +24,8 @@ function AddCourseModal(props) {
     }
     const handleAddCourse = async () => {
         await addCourse(courseData.courseName, courseData.courseSection, courseData.uid);
-        props.updateCourses(); // Update courses in the parent component
-        props.toggleModal();
+        updateCourses(); // Update courses in the parent component
+        toggleModal();
     };
 
     return (
@@ -33,7 +33,7 @@ function AddCourseModal(props) {
             className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
             <p className="text-2xl text-center">New Course</p>
             <button>
-                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={props.toggleModal}
+                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}
                                  icon={faX}/>
             </button>
             <form className="flex flex-col gap-2 ">
