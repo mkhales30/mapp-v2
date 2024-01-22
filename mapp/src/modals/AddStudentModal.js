@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addStudent} from "../firebase/firestore";
 
-function AddStudentModal(props) {
+function AddStudentModal({course, toggleModal,updateStudents}) {
 
     // Add student Form Handler
     const [studentData, setStudentData] = useState({
@@ -24,9 +24,9 @@ function AddStudentModal(props) {
     {/*handleAddStudent -> this function fires once the add student button is pressed, it then adds to the database*/
     }
     const handleAddStudent = async () => {
-        await addStudent(props.course.id, studentData);
-        props.updateStudents(); // Update students in the parent component
-        props.toggleModal();
+        await addStudent(course.id, studentData);
+        updateStudents(); // Update students in the parent component
+        toggleModal();
     };
 
     return (
@@ -34,7 +34,7 @@ function AddStudentModal(props) {
             className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
             <p className="text-2xl text-center">New Student</p>
             <button>
-                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={props.toggleModal}
+                <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}
                                  icon={faX}/>
             </button>
             <form className="flex flex-col gap-2 ">
