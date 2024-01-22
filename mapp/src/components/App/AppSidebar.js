@@ -29,11 +29,10 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                 courses.map((course, index) => {
                     return (
                         <button
-                            className = {selectedCourse === course.courseName ? 'text-green-500' : 'text-gray-600'}
                             onClick={() => updateCourse(course)} key={index}
-                                className='flex flex-row gap-4 items-center'>
+                                className=' flex flex-row gap-4 items-center text-gray-600'>
                             <FontAwesomeIcon className='h-4 w-4' icon={faBookBookmark}/>
-                            <div className='flex flex-col font-light hover:text-green-600 items-start'>
+                            <div className= {selectedCourse === course.courseName ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}>
                                 <div className='uppercase text-xs'>{'Section ' + course.courseSection}</div>
                                 <div>{course.courseName}</div>
                             </div>

@@ -1,6 +1,8 @@
 import React, {useContext, useState} from "react";
 import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/react";
 import {ActiveTabContext} from "../../contexts/ActiveTabContext";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 
 export function CourseNavigationBar({data, toggleAddStudentModal,toggleAddSessionModal}) {
@@ -9,7 +11,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal,toggleAddSessio
 
     return (
         <Tabs value={activeTab}>
-            <div className='flex flex-row gap-2'>
+            <div className='flex flex-row gap-8'>
                 <div className='grow'>
                     <TabsHeader className='flex gap-8 font-light text-gray-500 border-b rounded-none w-full'>
                         {data.map(({label, value}) => (
@@ -26,14 +28,19 @@ export function CourseNavigationBar({data, toggleAddStudentModal,toggleAddSessio
 
                 <div className='flex flex-row'>
                     <button
-                        className={activeTab === 'Students' ? 'block bg-stone-800 text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
-                        onClick={toggleAddStudentModal}> New Student
+                        className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 t  text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                                     onClick={toggleAddStudentModal}>
+                        <div> New Student</div>
+                        <FontAwesomeIcon icon={faPlus}/>
                     </button>
+
                     <button
-                        className={activeTab === 'Sessions' ? 'block bg-stone-800 text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                        className={activeTab === 'Sessions' ? 'flex flex-row gap-2  block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddSessionModal}>
-                        New Session
+                        <div> New Session</div>
+                        <FontAwesomeIcon icon={faPlus}/>
                     </button>
+
                 </div>
             </div>
 
