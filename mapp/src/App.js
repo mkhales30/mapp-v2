@@ -34,6 +34,13 @@ function App() {
         console.log("Selected Session", selectedSession)
         setSelectedSession(selectedSession);
     }
+    const updateSelectedCourse = (clickedCourse) => {
+        setSelectedCourse(clickedCourse);
+        setSelectedStudent(null);
+        setSelectedSession(null);
+        fetchStudents(clickedCourse.id)
+        fetchSessions(clickedCourse.id);
+    }
 
     const toggleAddCourseModal = () => {
         setAddCourseModal(!addCourseModal);
@@ -45,14 +52,6 @@ function App() {
 
     const toggleAddSessionModal = () => {
         setAddSessionModal(!addSessionModal);
-    }
-
-    const updateCourse = (clickedCourse) => {
-        setSelectedCourse(clickedCourse);
-        setSelectedStudent(null);
-        setSelectedSession(null);
-        fetchStudents(clickedCourse.id)
-        fetchSessions(clickedCourse.id);
     }
 
     // This is the function that fetches the courses
@@ -114,7 +113,7 @@ function App() {
             <div className="grid grid-cols-4 h-screen">
                 {/*Dashboard Sidebar*/}
                 <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses}
-                            toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
+                            toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
 
                 {/*Main Content Area*/}
                 {!selectedStudent && !selectedSession &&
@@ -169,7 +168,7 @@ function App() {
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse} breadCrumb="Student"
                                       header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
-                                      updateCourses={updateCourse}/>
+                                      updateCourses={updateSelectedCourse}/>
                         <StudentProfile student={selectedStudent}/>
                     </div>
 
@@ -179,7 +178,7 @@ function App() {
                 {selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse} breadCrumb="Sessions" header={selectedSession.date}
-                                      updateCourse={updateCourse}/>
+                                      updateCourse={updateSelectedCourse}/>
                         <SessionProfile session={selectedSession}/>
                     </div>
                 }
