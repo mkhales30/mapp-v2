@@ -1,4 +1,4 @@
-export const Final = () => {
+function Final(){
     return (
         <div className="container md:mt-10">
             <div className="flex flex-col items-center">
@@ -36,6 +36,7 @@ export const Final = () => {
     );
 }
 
+export default Final;
 
       
   

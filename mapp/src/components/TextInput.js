@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextInput = ({type,onChange,label,value}) => {
+function TextInput({type,onChange,label,value}){
     return (
         <div className='flex flex-col gap-1'>
             <label className='font-light text-gray-600 text-sm'>{label}</label>

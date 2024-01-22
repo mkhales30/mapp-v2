@@ -1,7 +1,7 @@
 import React from 'react';
 import {getAuth, signOut} from 'firebase/auth';
 
-const SignOutButton = () => {
+function SignOutButton({}){
     const auth = getAuth();
 
     const handleSignOut = () => {

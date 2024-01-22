@@ -3,10 +3,10 @@ import React, {useState} from 'react';
 import {useMultistepForm} from '../../hooks/useMultiForm';
 import emailForm from './multistepForms/EmailForm';
 import passForm from './multistepForms/PassForm';
-import {Final} from './multistepForms/Final';
+import Final from './multistepForms/Final';
 import {createUserWithEmailAndPassword, getAuth, sendEmailVerification} from "firebase/auth";
 import SecondaryButton from "../../components/SecondaryButton";
-import {Stepper} from "./Stepper";
+import Stepper from "./Stepper";
 import {addDoc, collection, getFirestore} from "firebase/firestore";
 
 function SignUpForm() {

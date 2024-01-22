@@ -1,6 +1,7 @@
 import React from 'react'
+import AddStudentModal from "../../modals/AddStudentModal";
 
-export const About = () => {
+function About({}){
     return (
         <div className="p-6 border rounded-lg">
             <div className="text-2xl font-bold mb-4">About MAPP</div>
@@ -86,4 +87,6 @@ export const About = () => {
             </div>
         </div>
     );
-};
+}
+
+export default About;

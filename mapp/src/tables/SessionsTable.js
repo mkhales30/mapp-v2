@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import {customStyles, sessionsColumns} from "./customStyles";
 
 
-const StudentTable = ({data, updateSelectedSession}) => {
+function SessionsTable ({data, updateSelectedSession}){
 
 
     const handleRowClick = (row) => {
@@ -23,4 +23,4 @@ const StudentTable = ({data, updateSelectedSession}) => {
     );
 };
 
-export default StudentTable;
+export default SessionsTable;

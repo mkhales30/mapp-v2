@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Html5QrcodeScanner} from "html5-qrcode";
 import {faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
 
-function SessionProfile(session) {
+function SessionProfile({session}) {
 
     const [scanResult, setScanResult] = useState(null);
     const [manualSerialNumber, setManualSerialNumber] = useState('');

@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import {customStyles} from "./customStyles";
 
 
-const StudentsTable = ({data, updateSelectedStudent}) => {
+function StudentsTable ({data, updateSelectedStudent}) {
 
     const columns = [
         {

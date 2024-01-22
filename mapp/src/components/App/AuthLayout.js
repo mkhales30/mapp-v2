@@ -2,7 +2,7 @@ import Background from '../../assets/sign_in_background.jpg'
 import "../../styles/index.css"
 import {Link} from "react-router-dom";
 
-export const AuthLayout = ({page,children}) => {
+function AuthLayout({page,children}) {
     return (
         <div className='grid grid-cols-3 max-w-screen-2xl h-screen'>
 
@@ -36,3 +36,5 @@ export const AuthLayout = ({page,children}) => {
         </div>
     );
 }
+
+export default AuthLayout;
