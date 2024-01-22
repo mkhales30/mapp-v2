@@ -1,10 +1,10 @@
 import {db} from "./firebase"
 import {addDoc, collection, getDocs, onSnapshot, query, where} from "firebase/firestore"
 
-const COURSES_COLLECTION = 'courses'
+const COURSES_COLLECTION = 'Courses'
 const STUDENTS_COLLECTION = 'Students'
 const SESSIONS_COLLECTION = 'Sessions'
-const USERS_COLLECTION = 'users'
+const USERS_COLLECTION = 'Users'
 
 
 // addCourse: This function adds a course to the courses collection
