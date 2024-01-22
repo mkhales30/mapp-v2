@@ -121,7 +121,7 @@ function App() {
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse}/>
                         <div className='px-12 py-4'>
-                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal}
+                            <CourseNavigationBar selectedCourse={selectedCourse} data={tabs} toggleAddStudentModal={toggleAddStudentModal}
                                                  toggleAddSessionModal={toggleAddSessionModal}/>
                         </div>
                     </div>

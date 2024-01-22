@@ -35,7 +35,8 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                  className='flex flex-row w-full justify-between text-gray-400 text-sm font-light'>
                 <div className='uppercase'>MY COURSES</div>
                 {/*Add Course Button*/}
-                <button className='hover:text-green-500' onClick={toggleModal}>
+                <button className='hover:text-green-500 flex flex-row gap-2 text-gray-400 opacity-50 items-center' onClick={toggleModal}>
+                    <div className={'font-light text-sm uppercase'}>Add course</div>
                     <FontAwesomeIcon icon={faPlus}/>
                 </button>
             </div>
