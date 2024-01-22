@@ -49,7 +49,7 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                             className=' flex flex-row gap-4 items-center text-gray-600'>
                             <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark}/>
                             <div
-                                className={selectedCourse === course.courseName ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}>
+                                className={selectedCourse.id === course.id ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}>
                                 <div className='uppercase text-xs'>{'Section ' + course.courseSection}</div>
                                 <div>{course.courseName}</div>
                             </div>
