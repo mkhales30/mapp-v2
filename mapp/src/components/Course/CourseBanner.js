@@ -1,5 +1,5 @@
 import React from 'react';
-import course_background from "../assets/course_background.jpg";
+import course_background from "../../assets/course_background.jpg";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 

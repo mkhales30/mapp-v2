@@ -1,5 +1,5 @@
 import React from "react";
-import FormWrapper from "../components/FormWrapper";
+import FormWrapper from "../../../components/FormWrapper";
 
 function passForm({ password, updateFields, isRecaptchaVerified, handleRecaptchaVerify }) {
   return (

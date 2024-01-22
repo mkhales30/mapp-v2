@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 // import { useHistory } from 'react-router-dom'; // Commented out for future routing
-import FormWrapper from "./components/FormWrapper";
-import TextInput from "./components/TextInput";
-import SecondaryButton from "./components/SecondaryButton";
+import FormWrapper from "../../components/FormWrapper";
+import TextInput from "../../components/TextInput";
+import SecondaryButton from "../../components/SecondaryButton";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Import your Firebase configuration
 
 function SignInForm() {
@@ -12,9 +12,12 @@ function SignInForm() {
     // const history = useHistory(); // Commented out for future routing
 
     const handleSignIn = async (e) => {
+
+
         e.preventDefault();
 
         try {
+            console.log("Attempting to sign in with email:", email);
             await signInWithEmailAndPassword(auth, email, password);
 
             // Uncomment the following lines for routing
@@ -22,7 +25,7 @@ function SignInForm() {
 
             const timestamp = new Date().toLocaleString();
             alert(`User has been logged in at ${timestamp}.`);
-            window.location.href = '/dashboard';
+            window.location.href = '/app';
         } catch (error) {
             console.error('Sign-in error:', error.message);
             alert(`Sign-in error: ${error.message}`);

@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/react";
-import {ActiveTabContext} from "../contexts/ActiveTabContext";
+import {ActiveTabContext} from "../../contexts/ActiveTabContext";
 
 
 export function CourseNavigationBar({data, toggleAddStudentModal}) {

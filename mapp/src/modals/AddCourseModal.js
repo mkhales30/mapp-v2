@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addCourse} from "../firebase/firestore";
+import {auth} from "../firebase/firebase";
 
 function AddCourseModal(props) {
 
@@ -9,7 +10,7 @@ function AddCourseModal(props) {
     const [courseData, setCourseData] = useState({
         courseName: '',
         courseSection: '',
-        uid: 'test2'
+        uid: auth.currentUser.uid
     })
 
     let name, value;

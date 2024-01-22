@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
+import {auth} from './firebase/firebase'
 import {db, getCourses, getSessions, getStudents} from "./firebase/firestore"
 import AddCourseModal from "./modals/AddCourseModal";
-import CourseBanner from "./components/CourseBanner";
-import DashboardSidebar from "./components/DashboardSidebar";
+import CourseBanner from "./components/Course/CourseBanner";
+import AppSidebar from "./components/App/AppSidebar";
 import StudentsTable from "./tables/StudentsTable";
-import CourseNavigationBar from "./components/CourseNavigationBar";
+import CourseNavigationBar from "./components/Course/CourseNavigationBar";
 import SessionsTable from "./tables/SessionsTable";
 import StudentProfile from "./pages/Student/StudentProfile";
 import SessionProfile from "./pages/Session/SessionProfile";
@@ -51,7 +52,7 @@ function App() {
     // This is the function that fetches the courses
     const fetchCourses = async () => {
         try {
-            const response = await getCourses("test2");
+            const response = await getCourses(auth.currentUser.uid);
             setCourses(response);
             if (selectedCourse === null) {
                 setSelectedCourse(response.at(0))
@@ -106,7 +107,7 @@ function App() {
         <>
             <div className="grid grid-cols-4 h-screen">
                 {/*Dashboard Sidebar*/}
-                <DashboardSidebar courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
+                <AppSidebar courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
 
                 {/*Main Content Area*/}
                 {!selectedStudent && !selectedSession &&

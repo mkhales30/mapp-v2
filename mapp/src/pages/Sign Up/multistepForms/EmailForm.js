@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FormWrapper from "../components/FormWrapper";
+import FormWrapper from "../../../components/FormWrapper";
 
 function EmailForm({ email, firstName, lastName, updateFields }) {
   return (

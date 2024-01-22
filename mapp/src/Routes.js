@@ -1,24 +1,24 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {SignInLayout} from './SignInLayout';
-import SignInForm from './SignInForm';
+import {AuthLayout} from './components/App/AuthLayout';
+import SignInForm from './pages/Sign In/SignInForm';
 import App from './App';
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "./pages/Sign Up/SignUpForm";
 
 function AppRoutes(props) {
     return (
         <Router>
             <Routes>
                 <Route path='/' element={
-                    <SignInLayout page='signIn'>
+                    <AuthLayout page='signIn'>
                         <SignInForm />
-                    </SignInLayout>
+                    </AuthLayout>
                 } />
 
                 <Route exact path='/signup' element={
-                    <SignInLayout page='signUp'>
+                    <AuthLayout page='signUp'>
                         <SignUpForm/>
-                    </SignInLayout>
+                    </AuthLayout>
                 }/>
 
                 {/* Add more routes as needed */}

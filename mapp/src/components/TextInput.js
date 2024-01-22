@@ -7,6 +7,8 @@ const TextInput = (props) => {
             <input
                 type={props.type}
                 className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                value={props.value} // Use the 'value' prop to set the input value
+                onChange={props.onChange} // Use the 'onChange' prop to handle input changes
             />
         </div>
     );
