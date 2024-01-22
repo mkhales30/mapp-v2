@@ -5,9 +5,6 @@ import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} fr
 import SignOutButton from "./SignOutButton";
 
 function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
-
-    console.log(auth.currentUser);
-
     return (
 
         <div

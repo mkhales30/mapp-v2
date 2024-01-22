@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 function CourseBanner({course, breadCrumb, header, updateCourses}) {
-    console.log(course)
     return (
         <div className='flex flex-col w-full'>
             <div className='h-52'>
