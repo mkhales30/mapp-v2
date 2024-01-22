@@ -117,7 +117,7 @@ function App() {
                         </div>
                     </div>
                 }
-                
+
                 {/*Add Course Modal*/}
                 {addCourseModal &&
                     <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
