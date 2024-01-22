@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import {createContext} from 'react';
 
-export const CourseContext = createContext({courseName: '', courseSection :'', id : ''});
+export const CourseContext = createContext({courseName: '', courseSection: '', id: ''});
 

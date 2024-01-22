@@ -1,5 +1,5 @@
 import {db} from "./firebase"
-import {addDoc, collection, getDocs,query, where, onSnapshot, orderBy, doc} from "firebase/firestore"
+import {addDoc, collection, getDocs, onSnapshot, query, where} from "firebase/firestore"
 
 const COURSES_COLLECTION = 'courses'
 const STUDENTS_COLLECTION = 'Students'
@@ -8,15 +8,30 @@ const USERS_COLLECTION = 'users'
 
 
 // addCourse: This function adds a course to the courses collection
-export function addCourse(courseName, courseSection,uid){
+export function addCourse(courseName, courseSection, uid) {
     addDoc(
         collection(db, COURSES_COLLECTION),
-        {courseName : courseName, courseSection, uid}
+        {courseName: courseName, courseSection, uid}
     );
 }
 
+// Function to add a student to a given course
+export async function addStudent(courseId, studentData) {
+    try {
+        // Specify the path to the students subcollection of the course
+        const studentsRef = collection(db, COURSES_COLLECTION, courseId, STUDENTS_COLLECTION);
+
+        // Add the student document to the subcollection
+        const docRef = await addDoc(studentsRef, studentData);
+
+    } catch (error) {
+        console.error("Error adding student:", error);
+        throw error;
+    }
+}
+
 // getCourses: This function retrieves all courses from the course collections for the user with specified uid
-export async function getCourses(uid){
+export async function getCourses(uid) {
     return new Promise((resolve, reject) => {
         const courses = [];
         const q = query(collection(db, COURSES_COLLECTION), where("uid", "==", uid));

@@ -1,13 +1,8 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookBookmark, faGear, faPlus, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 
 function DashboardSidebar({courses, toggleModal, updateCourse}) {
-
-    useEffect(() => {
-        console.log('Courses in DashboardSidebar:', courses);
-    }, [courses]);
-
 
     return (
         <div className='flex flex-col border-gray-200 border-r-2 px-8 py-12 content-center gap-y-8'>

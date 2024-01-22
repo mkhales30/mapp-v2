@@ -1,12 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React from 'react';
 import DataTable from 'react-data-table-component';
-import {getStudents} from "../firebase/firestore";
-import {CourseContext} from "../contexts/CourseContext";
-import {CoursesContext} from "../contexts/CoursesContext";
+import {customStyles} from "./customStyles";
 
 
-const StudentTable = ({data}) => {
-
+const StudentsTable = ({data, updateSelectedStudent}) => {
 
     const columns = [
         {
@@ -36,15 +33,21 @@ const StudentTable = ({data}) => {
         },
     ];
 
+    const handleRowClick = (row) => {
+        updateSelectedStudent(row)
+    };
+
     return (
-        <div className='container mt-5 border rounded-2xl border-gray-200'>
+        <div className='container mt-5 border rounded border-gray-200'>
             <DataTable
                 columns={columns}
                 data={data}
+                onRowClicked={handleRowClick}
                 pagination
+                customStyles={customStyles}
             />
         </div>
     );
 };
 
-export default StudentTable;
+export default StudentsTable;

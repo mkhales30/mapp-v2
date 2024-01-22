@@ -1,41 +1,49 @@
-import React, {useEffect, useState, useContext, useMemo} from "react";
+import React, {useEffect, useState} from "react";
 import {db, getCourses, getSessions, getStudents} from "./firebase/firestore"
 import AddCourseModal from "./modals/AddCourseModal";
-import CourseBanner from "./CourseBanner";
-import DashboardSidebar from "./DashboardSidebar";
-import StudentTable from "./tables/StudentTable";
-import CourseNavigationBar from "./CourseNavigationBar";
+import CourseBanner from "./components/CourseBanner";
+import DashboardSidebar from "./components/DashboardSidebar";
+import StudentsTable from "./tables/StudentsTable";
+import CourseNavigationBar from "./components/CourseNavigationBar";
 import SessionsTable from "./tables/SessionsTable";
-
+import StudentProfile from "./pages/Student/StudentProfile";
+import SessionProfile from "./pages/Session/SessionProfile";
+import AddStudentModal from "./modals/AddStudentModal";
 
 function App() {
 
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [students, setStudents] = useState([]);
+    const [selectedStudent, setSelectedStudent] = useState(null);
     const [sessions, setSessions] = useState([]);
-    const [modal, setModal] = useState(false);
+    const [selectedSession, setSelectedSession] = useState(null);
+    const [addCourseModal, setAddCourseModal] = useState(false);
+    const [addStudentModal, setAddStudentModal] = useState(false);
 
-    const tabs = [
-        {
-            label: "Students",
-            value: "Students",
-            table:  <StudentTable data={students}/>,
-        },
-        {
-            label: "Sessions",
-            value: "Sessions",
-            table: <SessionsTable data={sessions}/>,
-        },
-    ];
-
-
-    console.log(students)
-    const toggleModal = () => {
-        setModal(!modal);
+    const updateSelectedStudent = (selectedStudent) => {
+        console.log("Selected Student", selectedStudent)
+        setSelectedStudent(selectedStudent);
     }
+
+    const updateSelectedSession = (selectedSession) => {
+        console.log("Selected Session", selectedSession)
+        setSelectedSession(selectedSession);
+    }
+
+    const toggleAddCourseModal = () => {
+        setAddCourseModal(!addCourseModal);
+    }
+
+    const toggleAddStudentModal = () => {
+        console.log("add student modal should appear")
+        setAddStudentModal(!addStudentModal);
+    }
+
     const updateCourse = (clickedCourse) => {
         setSelectedCourse(clickedCourse);
+        setSelectedStudent(null);
+        setSelectedSession(null);
         fetchStudents(clickedCourse.id)
         fetchSessions(clickedCourse.id);
     }
@@ -45,7 +53,7 @@ function App() {
         try {
             const response = await getCourses("test2");
             setCourses(response);
-            if(selectedCourse === null){
+            if (selectedCourse === null) {
                 setSelectedCourse(response.at(0))
                 fetchStudents(response.at(0).id)
                 fetchSessions(response.at(0).id)
@@ -80,38 +88,81 @@ function App() {
         fetchCourses()
     }, []);
 
-
-
-
+    const tabs = [
+        {
+            label: "Students",
+            value: "Students",
+            table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
+        },
+        {
+            label: "Sessions",
+            value: "Sessions",
+            table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
+        },
+    ];
 
 
     return (
         <>
-                <div className="grid grid-cols-4 h-screen">
-                    <DashboardSidebar courses={courses} toggleModal={toggleModal} updateCourse={updateCourse}/>
+            <div className="grid grid-cols-4 h-screen">
+                <DashboardSidebar courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
 
-                    {/*Main Content Area*/}
+                {/*Main Content Area*/}
+                {!selectedStudent && !selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse}/>
                         <div className='px-12 py-4'>
-                            <CourseNavigationBar data={tabs} />
+                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal}/>
                         </div>
                     </div>
+                }
 
-                    {/*Add Course Modal*/}
-                    {modal &&
-                        <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
-                            <div
-                                className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
-                            <div className="absolute grid h-screen w-screen place-items-center">
-                                <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleModal}/>
-                            </div>
+
+                {/*Add Course Modal*/}
+                {addCourseModal &&
+                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
+                        <div
+                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
+                        <div className="absolute grid h-screen w-screen place-items-center">
+                            <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
                         </div>
-                    }
+                    </div>
+                }
 
+                {/*Add Student Modal*/}
+                {addStudentModal &&
+                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
+                        <div
+                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
+                        <div className="absolute grid h-screen w-screen place-items-center">
+                            <AddStudentModal course={selectedCourse}
+                                             updateStudents={() => fetchStudents(selectedCourse.id)}
+                                             toggleModal={toggleAddStudentModal}/>
+                        </div>
+                    </div>
+                }
 
+                {/*Student Profile*/}
+                {selectedStudent &&
+                    <div className='col-span-3'>
+                        <CourseBanner course={selectedCourse} breadCrumb="Student"
+                                      header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
+                                      updateCourse={updateCourse}/>
+                        <StudentProfile student={selectedStudent}/>
+                    </div>
 
-                </div>
+                }
+
+                {/*Session Profile*/}
+                {selectedSession &&
+                    <div className='col-span-3'>
+                        <CourseBanner course={selectedCourse} breadCrumb="Sessions" header={selectedSession.date}
+                                      updateCourse={updateCourse}/>
+                        <SessionProfile session={selectedSession}/>
+                    </div>
+                }
+
+            </div>
         </>
     )
 }

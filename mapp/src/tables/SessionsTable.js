@@ -1,37 +1,23 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React from 'react';
 import DataTable from 'react-data-table-component';
-import {getStudents} from "../firebase/firestore";
-import {CourseContext} from "../contexts/CourseContext";
-import {CoursesContext} from "../contexts/CoursesContext";
+import {customStyles, sessionsColumns} from "./customStyles";
 
 
-const StudentTable = ({data}) => {
+const StudentTable = ({data, updateSelectedSession}) => {
 
 
-    const columns = [
-        {
-            name: 'Date',
-            selector: (row) => row.date,
-            sortable: true,
-        },
-        {
-            name: 'Attendance',
-            selector: (row) => row.attendance,
-            sortable: false,
-        },
-        {
-            name: 'Notes',
-            selector: (row) => row.notes,
-            sortable: false,
-        },
-    ];
+    const handleRowClick = (row) => {
+        updateSelectedSession(row)
+    };
 
     return (
-        <div className='container mt-5 border rounded-2xl border-gray-200'>
+        <div className='container mt-5 border rounded border-gray-200'>
             <DataTable
-                columns={columns}
+                columns={sessionsColumns}
                 data={data}
                 pagination
+                customStyles={customStyles}
+                onRowClicked={handleRowClick}
             />
         </div>
     );
