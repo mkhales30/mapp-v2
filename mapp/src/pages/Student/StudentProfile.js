@@ -2,9 +2,6 @@ import React from 'react';
 import QRCode from './QRCode';
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
-// import StudentsTable from '../../components/StudentsTable';
-
 function Student({student}) {
     const studentUID = "fhbsdhbf332r2";
     const data = [

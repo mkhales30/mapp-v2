@@ -54,7 +54,7 @@ function App() {
         setAddSessionModal(!addSessionModal);
     }
 
-    // This is the function that fetches the courses
+    // This function fetches the courses from firestore
     const fetchCourses = async () => {
         try {
             const response = await getCourses(auth.currentUser.uid);
@@ -69,6 +69,7 @@ function App() {
         }
     };
 
+    // This function fetches the students of a specific course from firestore
     const fetchStudents = async (courseID) => {
         try {
             const response = await getStudents(courseID);
@@ -78,7 +79,7 @@ function App() {
         }
     };
 
-    // Function to fetch sessions for a selected course
+    // This function fetches the sessions of a specific course from firestore
     const fetchSessions = async (courseId) => {
         try {
             const sessionData = await getSessions(courseId);
@@ -88,11 +89,13 @@ function App() {
         }
     };
 
-    // Once the component is rendered this function will call the fetchCourses
+    // Once this component is rendered this function will fire and call the fetchCourses method
     useEffect(() => {
         let data = [];
         fetchCourses()
     }, []);
+
+    // These are the tabs of the navigation bar, and the tables these tabs show
 
     const tabs = [
         {
@@ -111,6 +114,7 @@ function App() {
     return (
         <>
             <div className="grid grid-cols-4 h-screen">
+                
                 {/*Dashboard Sidebar*/}
                 <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses}
                             toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
