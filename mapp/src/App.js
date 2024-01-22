@@ -13,35 +13,46 @@ import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 
 function App() {
-    console.log(auth.currentUser.uid)
-
+    
+    // Students, Sessions and Courses collection will be stored in their respective variable
     const [courses, setCourses] = useState([]);
-    const [selectedCourse, setSelectedCourse] = useState(null);
     const [students, setStudents] = useState([]);
-    const [selectedStudent, setSelectedStudent] = useState(null);
     const [sessions, setSessions] = useState([]);
+    
+    // These variables will hold the active course, student, or session if there is one
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [selectedStudent, setSelectedStudent] = useState(null);
     const [selectedSession, setSelectedSession] = useState(null);
+
+    // These variables are used to hide and show the various modals of the App
     const [addCourseModal, setAddCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
 
+    // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
         console.log("Selected Student", selectedStudent)
         setSelectedStudent(selectedStudent);
     }
-
+    
+    // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
     const updateSelectedSession = (selectedSession) => {
         console.log("Selected Session", selectedSession)
         setSelectedSession(selectedSession);
     }
-    const updateSelectedCourse = (clickedCourse) => {
-        setSelectedCourse(clickedCourse);
+
+    // If a course is selected, this function will update the active course
+    const updateSelectedCourse = (selectedCourse) => {
+        setSelectedCourse(selectedCourse);
+        // We reset the active student and active session so the Session Profile and Student profile won't show
         setSelectedStudent(null);
         setSelectedSession(null);
-        fetchStudents(clickedCourse.id)
-        fetchSessions(clickedCourse.id);
+        // Get the students and sessions for the selected course
+        fetchStudents(selectedCourse.id)
+        fetchSessions(selectedCourse.id);
     }
 
+    // These toggle modal functions will set the modal to open when their respective open buttons are clicked
     const toggleAddCourseModal = () => {
         setAddCourseModal(!addCourseModal);
     }
@@ -54,7 +65,7 @@ function App() {
         setAddSessionModal(!addSessionModal);
     }
 
-    // This function fetches the courses from firestore
+    // This function fetches the courses of the current logged-in user from firestore
     const fetchCourses = async () => {
         try {
             const response = await getCourses(auth.currentUser.uid);
@@ -119,7 +130,7 @@ function App() {
                 <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses}
                             toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
 
-                {/*Main Content Area*/}
+                {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
                 {!selectedStudent && !selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse}/>
@@ -130,7 +141,7 @@ function App() {
                     </div>
                 }
 
-                {/*Add Course Modal*/}
+                {/*Add Course Modal -> opens when the add course button is clicked*/}
                 {addCourseModal &&
                     <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
                         <div
@@ -141,7 +152,7 @@ function App() {
                     </div>
                 }
 
-                {/*Add Student Modal*/}
+                {/*Add Student Modal -> opens when the add student button is clicked */}
                 {addStudentModal &&
                     <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
                         <div
@@ -154,7 +165,7 @@ function App() {
                     </div>
                 }
 
-                {/*Add Session Modal*/}
+                {/*Add Session Modal -> opens when the add session button is clicked */}
                 {addSessionModal &&
                     <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
                         <div
@@ -167,7 +178,7 @@ function App() {
                     </div>
                 }
 
-                {/*Student Profile*/}
+                {/*Student Profile -> opens when there is a selectedStudent */}
                 {selectedStudent &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse} breadCrumb="Student"
@@ -178,7 +189,7 @@ function App() {
 
                 }
 
-                {/*Session Profile*/}
+                {/*Session Profile -> opens when there is a selectedSession*/}
                 {selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse} breadCrumb="Sessions" header={selectedSession.date}
