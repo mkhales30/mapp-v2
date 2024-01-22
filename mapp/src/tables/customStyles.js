@@ -14,7 +14,7 @@ export const customStyles = {
 export const sessionsColumns = [
     {
         name: 'Date',
-        selector: (row) => row.date,
+        selector: (row) => row.sessionName,
         sortable: true,
     },
     {

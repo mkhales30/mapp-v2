@@ -30,6 +30,24 @@ export async function addStudent(courseId, studentData) {
     }
 }
 
+
+// Function to add a session to a given course
+export async function addSession(courseId, sessionData) {
+    try {
+        // Specify the path to the sessions subcollection of the course
+        const sessionsRef = collection(db, COURSES_COLLECTION, courseId, SESSIONS_COLLECTION);
+
+        // Add the session document to the subcollection
+        const docRef = await addDoc(sessionsRef, sessionData);
+
+        // You can return the document reference or ID if needed
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding session:", error);
+        throw error;
+    }
+}
+
 // getCourses: This function retrieves all courses from the course collections for the user with specified uid
 export async function getCourses(uid) {
     return new Promise((resolve, reject) => {

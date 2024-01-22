@@ -3,10 +3,9 @@ import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/rea
 import {ActiveTabContext} from "../../contexts/ActiveTabContext";
 
 
-export function CourseNavigationBar({data, toggleAddStudentModal}) {
+export function CourseNavigationBar({data, toggleAddStudentModal,toggleAddSessionModal}) {
     const [activeTab, setActiveTab] = useState("Students");
     const activeTabContext = useContext(ActiveTabContext)
-    console.log(activeTabContext)
 
     return (
         <Tabs value={activeTab}>
@@ -32,7 +31,8 @@ export function CourseNavigationBar({data, toggleAddStudentModal}) {
                     </button>
                     <button
                         className={activeTab === 'Sessions' ? 'block bg-stone-800 text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
-                    > New Session
+                        onClick={toggleAddSessionModal}>
+                        New Session
                     </button>
                 </div>
             </div>

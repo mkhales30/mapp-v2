@@ -25,7 +25,7 @@ function SignInForm() {
 
             const timestamp = new Date().toLocaleString();
             alert(`User has been logged in at ${timestamp}.`);
-            window.location.href = '/app';
+            window.location.href = '/';
         } catch (error) {
             console.error('Sign-in error:', error.message);
             alert(`Sign-in error: ${error.message}`);

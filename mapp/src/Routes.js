@@ -4,12 +4,13 @@ import {AuthLayout} from './components/App/AuthLayout';
 import SignInForm from './pages/Sign In/SignInForm';
 import App from './App';
 import SignUpForm from "./pages/Sign Up/SignUpForm";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes(props) {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={
+                <Route path='*' element={
                     <AuthLayout page='signIn'>
                         <SignInForm />
                     </AuthLayout>
@@ -20,9 +21,11 @@ function AppRoutes(props) {
                         <SignUpForm/>
                     </AuthLayout>
                 }/>
+                <Route
+                    path="/"
+                    element={<ProtectedRoute element={App} />}
+                />
 
-                {/* Add more routes as needed */}
-                <Route path="*" element={<App />} /> {/* Fallback route */}
             </Routes>
         </Router>
     );

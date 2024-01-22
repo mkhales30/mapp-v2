@@ -10,8 +10,10 @@ import SessionsTable from "./tables/SessionsTable";
 import StudentProfile from "./pages/Student/StudentProfile";
 import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
+import AddSessionModal from "./modals/AddSessionModal";
 
 function App() {
+    console.log(auth.currentUser.uid)
 
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
@@ -21,6 +23,7 @@ function App() {
     const [selectedSession, setSelectedSession] = useState(null);
     const [addCourseModal, setAddCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
+    const [addSessionModal, setAddSessionModal] = useState(false);
 
     const updateSelectedStudent = (selectedStudent) => {
         console.log("Selected Student", selectedStudent)
@@ -37,8 +40,11 @@ function App() {
     }
 
     const toggleAddStudentModal = () => {
-        console.log("add student modal should appear")
         setAddStudentModal(!addStudentModal);
+    }
+
+    const toggleAddSessionModal = () => {
+        setAddSessionModal(!addSessionModal);
     }
 
     const updateCourse = (clickedCourse) => {
@@ -107,14 +113,14 @@ function App() {
         <>
             <div className="grid grid-cols-4 h-screen">
                 {/*Dashboard Sidebar*/}
-                <AppSidebar courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
+                <AppSidebar selectedCourse={selectedCourse ? selectedCourse.courseName : ''} courses={courses} toggleModal={toggleAddCourseModal} updateCourse={updateCourse}/>
 
                 {/*Main Content Area*/}
                 {!selectedStudent && !selectedSession &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse}/>
                         <div className='px-12 py-4'>
-                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal}/>
+                            <CourseNavigationBar data={tabs} toggleAddStudentModal={toggleAddStudentModal} toggleAddSessionModal={toggleAddSessionModal}/>
                         </div>
                     </div>
                 }
@@ -143,12 +149,25 @@ function App() {
                     </div>
                 }
 
+                {/*Add Session Modal*/}
+                {addSessionModal &&
+                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
+                        <div
+                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
+                        <div className="absolute grid h-screen w-screen place-items-center">
+                            <AddSessionModal course={selectedCourse}
+                                             updateSessions={() => fetchSessions(selectedCourse.id)}
+                                             toggleModal={toggleAddSessionModal}/>
+                        </div>
+                    </div>
+                }
+
                 {/*Student Profile*/}
                 {selectedStudent &&
                     <div className='col-span-3'>
                         <CourseBanner course={selectedCourse} breadCrumb="Student"
                                       header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
-                                      updateCourse={updateCourse}/>
+                                      updateCourses={updateCourse}/>
                         <StudentProfile student={selectedStudent}/>
                     </div>
 
