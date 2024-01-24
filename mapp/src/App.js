@@ -108,83 +108,75 @@ function App() {
 
     // These are the tabs of the navigation bar, and the tables these tabs show
 
-    const tabs = [
-        {
-            label: "Students",
-            value: "Students",
-            table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
-        },
-        {
-            label: "Sessions",
-            value: "Sessions",
-            table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
-        },
-    ];
+    const tabs = [{
+        label: "Students",
+        value: "Students",
+        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
+    }, {
+        label: "Sessions",
+        value: "Sessions",
+        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
+    },];
 
 
-    return (
-        <>
-            <div className="grid grid-cols-4 h-screen">
+    return (<>
+        <div className="grid grid-cols-4 h-screen">
 
-                {/*Dashboard Sidebar*/}
-                <AppSidebar selectedCourse={selectedCourse ? selectedCourse : ''} courses={courses}
-                            toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
+            {/*Dashboard Sidebar*/}
+            <AppSidebar selectedCourse={selectedCourse ? selectedCourse : ''} courses={courses}
+                        toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
 
-                {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
-                {!selectedStudent && !selectedSession &&
-                    <div className='col-span-3'>
-                        <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
-                        <div className='px-12 py-4'>
-                            <CourseNavigationBar selectedCourse={selectedCourse} data={tabs}
-                                                 toggleAddStudentModal={toggleAddStudentModal}
-                                                 toggleAddSessionModal={toggleAddSessionModal}/>
-                        </div>
+            {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
+            {!selectedStudent && !selectedSession &&
+                <div className='col-span-3'>
+                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
+                    <div className='px-12 py-4'>
+                        <CourseNavigationBar selectedCourse={selectedCourse}
+                                             data={tabs}
+                                             toggleAddStudentModal={toggleAddStudentModal}
+                                             toggleAddSessionModal={toggleAddSessionModal}/>
                     </div>
-                }
+                </div>}
 
-                {/*Add Course Modal -> opens when the add course button is clicked*/}
-                {addCourseModal &&
-                    <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
-                }
+            {/*Add Course Modal -> opens when the add course button is clicked*/}
+            {addCourseModal &&
+                <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
+            }
 
-                {/*Add Student Modal -> opens when the add student button is clicked */}
-                {addStudentModal &&
-                    <AddStudentModal
-                        course={selectedCourse}
-                        updateStudents={() => fetchStudents(selectedCourse.id)}
-                        toggleModal={toggleAddStudentModal}/>
-                }
+            {/*Add Student Modal -> opens when the add student button is clicked */}
+            {addStudentModal &&
+                <AddStudentModal course={selectedCourse}
+                                 updateStudents={() => fetchStudents(selectedCourse.id)}
+                                 toggleModal={toggleAddStudentModal}/>
+            }
 
-                {/*Add Session Modal -> opens when the add session button is clicked */}
-                {addSessionModal &&
+            {/*Add Session Modal -> opens when the add session button is clicked */}
+            {addSessionModal &&
+                <AddSessionModal course={selectedCourse}
+                                 updateSessions={() => fetchSessions(selectedCourse.id)}
+                                 toggleModal={toggleAddSessionModal}/>
+            }
 
-                            <AddSessionModal course={selectedCourse}
-                                             updateSessions={() => fetchSessions(selectedCourse.id)}
-                                             toggleModal={toggleAddSessionModal}/>
-                }
+            {/*Student Profile -> opens when there is a selectedStudent */}
+            {selectedStudent && <div className='col-span-3'>
+                <CourseBanner course={selectedCourse}
+                              breadCrumb="Student"
+                              header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
+                              updateCourses={updateSelectedCourse}/>
+                <StudentProfile student={selectedStudent}/>
+            </div>}
 
-                {/*Student Profile -> opens when there is a selectedStudent */}
-                {selectedStudent &&
-                    <div className='col-span-3'>
-                        <CourseBanner course={selectedCourse} breadCrumb="Student"
-                                      header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
-                                      updateCourses={updateSelectedCourse}/>
-                        <StudentProfile student={selectedStudent}/>
-                    </div>
-                }
+            {/*Session Profile -> opens when there is a selectedSession*/}
+            {selectedSession && <div className='col-span-3'>
+                <CourseBanner course={selectedCourse}
+                              breadCrumb="Sessions"
+                              header={selectedSession.date}
+                              updateCourses={updateSelectedCourse}/>
+                <SessionProfile session={selectedSession}/>
+            </div>}
 
-                {/*Session Profile -> opens when there is a selectedSession*/}
-                {selectedSession &&
-                    <div className='col-span-3'>
-                        <CourseBanner course={selectedCourse} breadCrumb="Sessions" header={selectedSession.date}
-                                      updateCourses={updateSelectedCourse}/>
-                        <SessionProfile session={selectedSession}/>
-                    </div>
-                }
-
-            </div>
-        </>
-    )
+        </div>
+    </>)
 }
 
 export default App;
