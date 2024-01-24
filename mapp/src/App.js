@@ -13,12 +13,12 @@ import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 
 function App() {
-    
+
     // Students, Sessions and Courses collection will be stored in their respective variable
     const [courses, setCourses] = useState([]);
     const [students, setStudents] = useState([]);
     const [sessions, setSessions] = useState([]);
-    
+
     // These variables will hold the active course, student, or session if there is one
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedStudent, setSelectedStudent] = useState(null);
@@ -34,7 +34,7 @@ function App() {
         console.log("Selected Student", selectedStudent)
         setSelectedStudent(selectedStudent);
     }
-    
+
     // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
     const updateSelectedSession = (selectedSession) => {
         console.log("Selected Session", selectedSession)
@@ -125,7 +125,7 @@ function App() {
     return (
         <>
             <div className="grid grid-cols-4 h-screen">
-                
+
                 {/*Dashboard Sidebar*/}
                 <AppSidebar selectedCourse={selectedCourse ? selectedCourse : ''} courses={courses}
                             toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
@@ -135,7 +135,8 @@ function App() {
                     <div className='col-span-3'>
                         <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
                         <div className='px-12 py-4'>
-                            <CourseNavigationBar selectedCourse={selectedCourse} data={tabs} toggleAddStudentModal={toggleAddStudentModal}
+                            <CourseNavigationBar selectedCourse={selectedCourse} data={tabs}
+                                                 toggleAddStudentModal={toggleAddStudentModal}
                                                  toggleAddSessionModal={toggleAddSessionModal}/>
                         </div>
                     </div>
@@ -143,39 +144,23 @@ function App() {
 
                 {/*Add Course Modal -> opens when the add course button is clicked*/}
                 {addCourseModal &&
-                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
-                        <div
-                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
-                        <div className="absolute grid h-screen w-screen place-items-center">
-                            <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
-                        </div>
-                    </div>
+                    <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
                 }
 
                 {/*Add Student Modal -> opens when the add student button is clicked */}
                 {addStudentModal &&
-                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
-                        <div
-                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
-                        <div className="absolute grid h-screen w-screen place-items-center">
-                            <AddStudentModal course={selectedCourse}
-                                             updateStudents={() => fetchStudents(selectedCourse.id)}
-                                             toggleModal={toggleAddStudentModal}/>
-                        </div>
-                    </div>
+                    <AddStudentModal
+                        course={selectedCourse}
+                        updateStudents={() => fetchStudents(selectedCourse.id)}
+                        toggleModal={toggleAddStudentModal}/>
                 }
 
                 {/*Add Session Modal -> opens when the add session button is clicked */}
                 {addSessionModal &&
-                    <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
-                        <div
-                            className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
-                        <div className="absolute grid h-screen w-screen place-items-center">
+
                             <AddSessionModal course={selectedCourse}
                                              updateSessions={() => fetchSessions(selectedCourse.id)}
                                              toggleModal={toggleAddSessionModal}/>
-                        </div>
-                    </div>
                 }
 
                 {/*Student Profile -> opens when there is a selectedStudent */}
@@ -186,7 +171,6 @@ function App() {
                                       updateCourses={updateSelectedCourse}/>
                         <StudentProfile student={selectedStudent}/>
                     </div>
-
                 }
 
                 {/*Session Profile -> opens when there is a selectedSession*/}
