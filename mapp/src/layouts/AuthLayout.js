@@ -1,5 +1,5 @@
 import Background from '../assets/sign_in_background.jpg'
-import "../../styles/index.css"
+import "../styles/index.css"
 import { Link } from "react-router-dom";
 
 function AuthLayout({ page, children }) {
