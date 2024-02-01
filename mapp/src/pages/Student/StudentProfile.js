@@ -3,18 +3,18 @@ import QRCode from './QRCode';
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 function Student({student}) {
-    const studentUID = "fhbsdhbf332r2";
-    const data = [
-        {
-            id: 1,
-            date: '11-25-2023',
-            status: 'present',
-            in: '3:00pm',
-            note: 'completed quiz during class',
+    const studentUID = student.studentId;
+    // const data = [
+    //     {
+    //         id: 1,
+    //         date: '11-25-2023',
+    //         status: 'present',
+    //         in: '3:00pm',
+    //         note: 'completed quiz during class',
 
-        }
+    //     }
 
-    ]
+    // ]
 
     return (
         <div>

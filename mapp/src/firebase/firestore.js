@@ -18,11 +18,22 @@ export function addCourse(courseName, courseSection, uid) {
 // Function to add a student to a given course
 export async function addStudent(courseId, studentData) {
     try {
+        // Generate a 10-digit student ID
+        const studentId = Math.floor(Math.random() * 9000000000 + 1000000000);
+
+        // Add studentId to the student data
+        studentData = {
+            ...studentData,
+            studentId,
+        };
         // Specify the path to the students subcollection of the course
         const studentsRef = collection(db, COURSES_COLLECTION, courseId, STUDENTS_COLLECTION);
 
         // Add the student document to the subcollection
         const docRef = await addDoc(studentsRef, studentData);
+
+        return docRef.id;
+
 
     } catch (error) {
         console.error("Error adding student:", error);
