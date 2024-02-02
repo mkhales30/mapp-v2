@@ -67,11 +67,11 @@ function About({}){
             <div className="mb-4">
                 <strong className="font-bold">APP CONTRIBUTORS:</strong> The initial app contributors are listed as
                 follows:
-                <p>Dakota Smith</p>
-                <p>Duaa Fatima Khawaja</p>
-                <p>Edwin Bonilla</p>
                 <p>Holly Boaz</p>
-                <p>Robert Hood</p>
+                <p>Khales Rahman</p>
+                <p>Duaa Fatima Khawaja</p>
+                <p>ReAnn Hollins</p>
+                <p>Ti Nguyen</p>
 
                 {/* This is a blank line */}
                 <div>{'\u00a0'}</div>
