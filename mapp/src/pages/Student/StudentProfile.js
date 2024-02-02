@@ -2,15 +2,17 @@ import React from 'react';
 import QRCode from './QRCode';
 import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import StudentsAttendanceTable from '../../tables/StudentsAttendanceTable';
+
 function Student({student}) {
     const studentUID = "fhbsdhbf332r2";
     const data = [
         {
             id: 1,
-            date: '11-25-2023',
-            status: 'present',
+            date: 'Monday, Aug 15 2023',
+            status: 'Present',
             in: '3:00pm',
-            note: 'completed quiz during class',
+            note: '10 minutes late',
 
         }
 
@@ -64,9 +66,7 @@ function Student({student}) {
                 </div>
 
                 <div className='text-2xl font-medium mt-12'> Attendance Report</div>
-                {/*<StudentsTable data={data}>*/}
-
-                {/*</StudentsTable>*/}
+                <StudentsAttendanceTable data={data}/>
                 <QRCode studentUID={studentUID}/>
             </div>
         </div>

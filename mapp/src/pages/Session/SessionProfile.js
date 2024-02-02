@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Html5QrcodeScanner} from "html5-qrcode";
 import {faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
+import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable';
 
 function SessionProfile({session}) {
 
@@ -32,15 +33,17 @@ function SessionProfile({session}) {
             id: 1,
             lastName: 'Khawaja',
             firstName: 'Duaa',
-            status: 'Present',
-            in: '3:00pm'
+            status: 'Absent',
+            in: '3:00pm',
+            note: 'Left early for event'
         },
         {
             id: 2,
             lastName: 'Moore',
             firstName: 'Amber',
             status: 'Present',
-            in: '3:01pm'
+            in: '3:01pm',
+            note: 'Arrived late'
         }
 
     ]
@@ -71,6 +74,7 @@ function SessionProfile({session}) {
                 </div>
             </div>
             <div className='text-2xl font-medium mt-12'> Attendance Report</div>
+            <SessionsAttendanceTable data={data}/>
         </div>
     );
 }
