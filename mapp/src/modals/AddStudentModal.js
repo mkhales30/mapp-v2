@@ -3,30 +3,31 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addStudent} from "../firebase/firestore";
 
-function AddStudentModal({course, toggleModal, updateStudents}) {
-
-    // Add student Form Handler
+function AddStudentModal({ course, toggleModal, updateStudents }) {
     const [studentData, setStudentData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        enrollmentStatus: 'Enrolled',
-        attendanceGrade: '100'
-    })
-
-    let name, value;
+      firstName: '',
+      lastName: '',
+      email: '',
+      enrollmentStatus: 'Enrolled',
+      attendanceGrade: '100',
+    });
+  
     const updateStudentData = (e) => {
-        name = e.target.name;
-        value = e.target.value;
-        setStudentData({...studentData, [name]: value})
-    }
-
-    {/*handleAddStudent -> this function fires once the add student button is pressed, it then adds to the database*/
-    }
-    const handleAddStudent = async () => {
-        await addStudent(course.id, studentData);
-        updateStudents(); // Update students in the parent component
-        toggleModal();
+      setStudentData({ ...studentData, [e.target.name]: e.target.value });
+    };
+  
+    const handleAddStudent = async (e) => {
+      e.preventDefault(); // Prevent form submission
+  
+      // Check for empty fields
+      if (!studentData.firstName || !studentData.lastName || !studentData.email) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+  
+      await addStudent(course.id, studentData);
+      updateStudents();
+      toggleModal();
     };
 
     return (
@@ -75,11 +76,13 @@ function AddStudentModal({course, toggleModal, updateStudents}) {
                         </div>
 
                     </form>
-                    <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg'
-                            type="submit"
-                            onClick={handleAddStudent}>
-                        Create Student
-                    </button>
+                    <form className="flex flex-col gap-2" onSubmit={handleAddStudent}> {/* Add onSubmit handler */}
+                    {/* Input fields */}
+
+      <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg' type="submit">
+        Create Student
+      </button>
+    </form>
                 </div>
             </div>
         </div>
