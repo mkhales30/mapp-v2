@@ -12,8 +12,8 @@ function AppRoutes({}) {
         <Router>
             <Routes>
                 <Route path='*' element={
-                    <AuthLayout page='signIn'>
-                        <SignInForm/>
+                    <AuthLayout page='about'>
+                        <About/>
                     </AuthLayout>
                 }/>
 
@@ -23,9 +23,9 @@ function AppRoutes({}) {
                     </AuthLayout>
                 }/>
 
-                <Route exact path='/about' element={
-                    <AuthLayout page='about'>
-                        <About/>
+                <Route exact path='/signin' element={
+                    <AuthLayout page='signIn'>
+                        <SignInForm/>
                     </AuthLayout>
                 }/>
                 <Route
