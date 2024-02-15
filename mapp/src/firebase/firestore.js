@@ -6,6 +6,8 @@ import {
   onSnapshot,
   query,
   where,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 // Constants for collection names
@@ -79,26 +81,24 @@ export async function getCourses(uid) {
 // Function to get students for a course
 export async function getStudents(courseId) {
   try {
-    const students = [];
-    const studentsRef = collection(
-      db,
-      COLLECTIONS.COURSES,
-      courseId,
-      COLLECTIONS.STUDENTS
-    );
-    const q = query(studentsRef);
+      // Assuming your getStudents logic already fetches documents
+      const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
+      const q = query(studentsRef);
+      const querySnapshot = await getDocs(q);
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      students.push({ ...doc.data(), id: doc.id });
-    });
+      const students = querySnapshot.docs.map(doc => ({ 
+          ...doc.data(), 
+          id: doc.id, 
+          courseId: courseId // Augment directly here!
+      }));
 
-    return students;
+      return students;
   } catch (error) {
-    console.error("Error fetching students:", error);
-    throw error;
+      console.error('Error fetching students:', error);
+      throw error; // Re-throw to allow app to handle if needed
   }
 }
+
 
 // Function to get sessions for a course
 export async function getSessions(courseId) {
@@ -121,5 +121,17 @@ export async function getSessions(courseId) {
   } catch (error) {
     console.error("Error fetching sessions:", error);
     throw error;
+  }
+}
+
+export async function deleteStudent(courseId, studentId) {
+  try {
+    // Construct the path to the specific student document
+    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId); 
+
+    await deleteDoc(studentRef);
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    throw error; 
   }
 }
