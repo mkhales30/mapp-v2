@@ -7,7 +7,9 @@ function AddSessionModal({updateSessions, toggleModal, course}) {
 
     // Add session Form Handler
     const [sessionData, setSessionData] = useState({
-        sessionName: '',
+        sessionName: new Date(Date.now()).toDateString(),
+        sessionStart: null,
+        gracePeriod : null,
     })
 
     let name, value;
@@ -40,11 +42,37 @@ function AddSessionModal({updateSessions, toggleModal, course}) {
                             <label className='font-light text-gray-600 text-sm'>Session Name</label>
                             <input
                                 name="sessionName"
+                                placeholder={new Date(Date.now()).toDateString()}
                                 type="text"
                                 className='border-gray-200 border rounded w-full p-2 focus:outline-0'
                                 value={sessionData.sessionName}
                                 onChange={updateSessionData}
                             />
+                        </div>
+
+                        <div className='flex flex-col gap-1'>
+                            <label className='font-light text-gray-600 text-sm'>Session Start <span className='text-gray-600 font-extralight text-xs italic'>(Optional)</span></label>
+                            <input
+                                name="sessionStart"
+                                type="datetime-local"
+                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                value={sessionData.sessionStart}
+                                onChange={updateSessionData}
+                            />
+                        </div>
+
+                        <div className='flex flex-col gap-1'>
+                            <label className='font-light text-gray-600 text-sm'>Grace Period End <span className='text-gray-600 font-extralight text-xs italic'>(Optional)</span></label>
+
+                            <div className='flex gap-2 items-center'>
+                                <input
+                                    name="gracePeriod"
+                                    type="datetime-local"
+                                    className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                    value={sessionData.gracePeriod}
+                                    onChange={updateSessionData}
+                                />
+                            </div>
                         </div>
 
                     </form>

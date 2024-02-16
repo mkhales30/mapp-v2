@@ -19,8 +19,12 @@ const COLLECTIONS = {
 }
 
 // Function to add a course
-export function addCourse(courseData) {
-    addDoc(collection(db, COLLECTIONS.COURSES), courseData)
+export function addCourse(courseName, courseSection, uid) {
+    addDoc(collection(db, COLLECTIONS.COURSES), {
+        courseName,
+        courseSection,
+        uid,
+    })
 }
 
 export function editCourse(courseName, courseSection, id) {
