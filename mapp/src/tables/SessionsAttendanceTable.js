@@ -10,32 +10,32 @@ function StatusCell({ value, onChange }) {
     }, [value]);
 
     const handleChange = () => {
-        const newStatus = status === 'present' ? 'absent' : status === 'absent' ? 'late in' : 
-        status === 'late in' ? 'early out' :'present';
+        const newStatus = status === 'Present' ? 'Absent' : status === 'Absent' ? 'Late in' :
+        status === 'Late in' ? 'Early out' :'Present';
         setStatus(newStatus);
         onChange(newStatus);
     };
 
     const getStatusColor = () => {
         switch (status) {
-            case 'present':
+            case 'Present':
                 return { bgColor: 'bg-green-200', textColor: 'text-green-900' };
-            case 'absent':
+            case 'Absent':
                 return { bgColor: 'bg-red-200', textColor: 'text-red-900' };
-            case 'late in':
+            case 'Late in':
                 return { bgColor: 'bg-yellow-200', textColor: 'text-yellow-900' };
-            case 'early out':
+            case 'Early out':
                 return { bgColor: 'bg-yellow-200', textColor: 'text-yellow-900' };
             default:
-                return { bgColor: 'bg-grey-200', textColor: 'text-grey-900' };
+                return { bgColor: 'bg-gray-200', textColor: 'text-gray-900' };
         }
     };
 
     const { bgColor, textColor } = getStatusColor();
 
     return (
-        <div className={`rounded-md p-1 cursor-pointer ${bgColor} ${textColor}`} onClick={handleChange}>
-            {status.toUpperCase()}
+        <div className={`rounded-md p-1 cursor-pointer px-2 ${bgColor} ${textColor}`} onClick={handleChange}>
+            {status}
         </div>
     );
 }
