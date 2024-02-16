@@ -12,7 +12,7 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
         banner =
             <div>
                 {/*Breadcrumb*/}
-                <div className="text-white -mt-2  flex flex-row gap-2 items-center font-extralight">
+                <div className="text-white -mt-2  flex flex-row gap-2 items-center text-sm font-extralight">
                     <div className="hover:cursor-pointer hover:underline"
                          onClick={() => updateCourses(course)}>{course ? course.courseName : ''}
                     </div>
