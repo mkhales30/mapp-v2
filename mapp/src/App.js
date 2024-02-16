@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {auth} from './firebase/firebase'
-import {db, getCourses, getSessions, getStudents} from "./firebase/firestore"
+import {getCourses, getSessions, getStudents} from "./firebase/firestore"
 import AddCourseModal from "./modals/AddCourseModal";
 import CourseBanner from "./components/Course/CourseBanner";
 import AppSidebar from "./components/App/AppSidebar";
@@ -11,6 +11,7 @@ import StudentProfile from "./pages/Student/StudentProfile";
 import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
+import EditCourseModal from './modals/EditCourseModal'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
     const [addCourseModal, setAddCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
+    const [editCourseModal, setEditCourseModal] = useState(false);
 
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
@@ -63,6 +65,10 @@ function App() {
 
     const toggleAddSessionModal = () => {
         setAddSessionModal(!addSessionModal);
+    }
+
+    const toggleEditCourseModal = () => {
+        setEditCourseModal(!editCourseModal);
     }
 
     // This function fetches the courses of the current logged-in user from firestore
@@ -129,7 +135,8 @@ function App() {
             {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
             {!selectedStudent && !selectedSession &&
                 <div className='col-span-3'>
-                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
+                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}
+                                    toggleEditCourseModal={toggleEditCourseModal}/>
                     <div className='px-12 py-4'>
                         <CourseNavigationBar selectedCourse={selectedCourse}
                                              data={tabs}
@@ -141,6 +148,12 @@ function App() {
             {/*Add Course Modal -> opens when the add course button is clicked*/}
             {addCourseModal &&
                 <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
+            }
+
+            {/*Edit Course Modal -> opens when the edit session button is clicked */}
+            {editCourseModal &&
+                <EditCourseModal updateCourses={fetchCourses} toggleModal={toggleEditCourseModal}
+                                currentCourse={selectedCourse}/>
             }
 
             {/*Add Student Modal -> opens when the add student button is clicked */}
