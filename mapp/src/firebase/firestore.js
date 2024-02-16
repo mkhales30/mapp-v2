@@ -135,3 +135,15 @@ export async function deleteStudent(courseId, studentId) {
     throw error; 
   }
 }
+
+export async function deleteCourse(courseId) {
+  try {  
+      const courseRef = doc(db, COLLECTIONS.COURSES, courseId); 
+      await deleteDoc(courseRef);
+
+      // Additional logic may be needed for nested student/session cleanup ...
+  } catch (error) {
+      console.error("Error deleting course:", error);
+      throw error;  
+  }
+}
