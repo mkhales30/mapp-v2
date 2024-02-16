@@ -188,7 +188,9 @@ function App() {
                               sessionPage={true}
                               updateCourses={updateSelectedCourse}
                               header={selectedSession.sessionName}/>
-                <SessionProfile session={selectedSession}/>
+                <SessionProfile
+                    course={selectedCourse}
+                    session={selectedSession}/>
             </div>}
 
         </div>

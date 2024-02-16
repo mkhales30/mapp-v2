@@ -10,6 +10,8 @@ function AddCourseModal({updateCourses, toggleModal}) {
     const [courseData, setCourseData] = useState({
         courseName: '',
         courseSection: '',
+        courseStart: null,
+        gracePeriod : null,
         uid: auth.currentUser.uid
     })
 
@@ -23,7 +25,7 @@ function AddCourseModal({updateCourses, toggleModal}) {
     {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/
     }
     const handleAddCourse = async () => {
-        await addCourse(courseData.courseName, courseData.courseSection, courseData.uid);
+        await addCourse(courseData);
         updateCourses(); // Update courses in the parent component
         toggleModal();
     };
@@ -60,6 +62,32 @@ function AddCourseModal({updateCourses, toggleModal}) {
                                 value={courseData.courseSection}
                                 onChange={updateCourseData}
                             />
+                        </div>
+
+                        <div className='flex flex-col gap-1'>
+                            <label className='font-light text-gray-600 text-sm'>Start Time <span className='text-gray-600 font-extralight text-xs italic'>(Optional)</span></label>
+                            <input
+                                name="courseStart"
+                                type="time"
+                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                value={courseData.courseStart}
+                                onChange={updateCourseData}
+                            />
+                        </div>
+
+                        <div className='flex flex-col gap-1'>
+                            <label className='font-light text-gray-600 text-sm'>Grace Period <span className='text-gray-600 font-extralight text-xs italic'>(Optional)</span></label>
+
+                            <div className='flex gap-2 items-center'>
+                                <input
+                                    name="gracePeriod"
+                                    type="number"
+                                    className='border-gray-200 border rounded p-2 focus:outline-0'
+                                    value={courseData.gracePeriod}
+                                    onChange={updateCourseData}
+                                />
+                                <span className='font-light text-sm'>Minutes</span>
+                            </div>
                         </div>
 
                     </form>
