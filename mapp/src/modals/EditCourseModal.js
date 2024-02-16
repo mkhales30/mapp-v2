@@ -64,7 +64,7 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
                     <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg'
                             type="submit"
                             onClick={handleEditCourse}>
-                        Create Course
+                        Update Course
                     </button>
                 </div>
             </div>
