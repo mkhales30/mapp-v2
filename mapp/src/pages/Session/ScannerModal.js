@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faQrcode, faX} from '@fortawesome/free-solid-svg-icons'
 import {Html5QrcodeScanner} from 'html5-qrcode'
+import '../../styles/scanner.css'
 
 function ScannerModal({toggleModal}) {
     const [scanResult, setScanResult] = useState(null)
@@ -11,7 +12,7 @@ function ScannerModal({toggleModal}) {
             qrbox: {
                 width: 290,
                 height: 200,
-            }, fps: 5
+            }, fps: 10
         })
 
         scanner.render(success, error)
@@ -31,18 +32,15 @@ function ScannerModal({toggleModal}) {
             <div className="absolute grid h-screen w-screen place-items-center">
                 <div
                     className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
-                    <p className="text-2xl text-center">Scanning Students</p>
+                    <p className="text-2xl text-center">Scanning Students...</p>
                     <button>
                         <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}
                                          icon={faX}/>
                     </button>
-                    <div className="col-span-1 row-span-1 flex flex-col text-gray-900 border px-4 py-4">
                         {scanResult ?
-                            <div> Success: <a className="text-green-500" href={scanResult}>{scanResult}</a> has been Scanned in</div> :
-                            <div id="reader"></div>
+                            <div><span className="text-green-500">{scanResult}</span> has been scanned.</div> :
+                            <div id="reader" className='p-4'></div>
                         }
-                    </div>
-
                 </div>
 
             </div>
