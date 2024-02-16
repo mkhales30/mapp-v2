@@ -50,7 +50,7 @@ function SessionProfile({session, course}) {
             id: 1,
             lastName: 'Khawaja',
             firstName: 'Duaa',
-            status: 'Absent',
+            status: 'Not Scanned',
             in: '3:00pm',
             note: 'Left early for event'
         },
@@ -58,10 +58,18 @@ function SessionProfile({session, course}) {
             id: 2,
             lastName: 'Moore',
             firstName: 'Amber',
-            status: 'Present',
+            status: 'Not Scanned',
             in: '3:01pm',
             note: 'Arrived late'
-        }
+        },
+        {
+            id: 3,
+            lastName: 'Rahman',
+            firstName: 'Khales',
+            status: 'Not Scanned',
+            in: '2:59pm',
+            note: ''
+        },
 
     ]
 
@@ -82,4 +90,4 @@ function SessionProfile({session, course}) {
     )
 }
 
-export default SessionProfile
+export default SessionProfile;
