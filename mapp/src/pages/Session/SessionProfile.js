@@ -17,25 +17,29 @@ function SessionProfile({session, course}) {
         noticeMessage =
             <div className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
                 <FontAwesomeIcon icon={faCircleExclamation}/>
-
+                {/*Start time in future*/}
                 {Date.now() < new Date(session.sessionStart) &&
-                    <p className="text-sm"> This class is scheduled to start at <span className="font-bold">{new Date(session.sessionStart).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })} on {new Date(session.sessionStart).toDateString()} </span>
+                    <p className="text-sm">
+                        This class is scheduled to start at <span className="font-bold">
+                            {new Date(session.sessionStart).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} on {new Date(session.sessionStart).toDateString()}
+                        </span>
                     </p>
                 }
-
-                {session.gracePeriod && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
-                    <p className="text-sm">{'Class has started, Not scanned students will be marked as absent at ' + new Date(session.gracePeriod).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })}</p>
+                {/*Within grace period*/}
+                {session.gracePeriod != null && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
+                    <p className="text-sm">
+                        Class has started, Not scanned students will be marked as absent at <span className="font-bold">{new Date(session.gracePeriod).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                    </p>
+                }
+                {/*After grace period*/}
+                {session.gracePeriod !== null && Date.now() > new Date(session.gracePeriod) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
+                }
+                {/*Start time in past (and no grace period)*/}
+                { session.gracePeriod == null && Date.now() > new Date(session.sessionStart) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
                 }
 
-                {session.gracePeriod && Date.now() > new Date(session.gracePeriod) &&
-                    <p className="text-sm">{'Class has ended, please see the attendance report below'}</p>
-                }
             </div>
     } else {
         noticeMessage =
@@ -90,4 +94,4 @@ function SessionProfile({session, course}) {
     )
 }
 
-export default SessionProfile;
+export default SessionProfile

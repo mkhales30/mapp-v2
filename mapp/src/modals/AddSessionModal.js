@@ -7,7 +7,7 @@ function AddSessionModal({updateSessions, toggleModal, course}) {
 
     // Add session Form Handler
     const [sessionData, setSessionData] = useState({
-        sessionName: new Date(Date.now()).toDateString(),
+        sessionName: '',
         sessionStart: null,
         gracePeriod : null,
     })
