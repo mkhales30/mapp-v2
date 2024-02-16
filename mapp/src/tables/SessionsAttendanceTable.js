@@ -10,8 +10,12 @@ function StatusCell({ value, onChange }) {
     }, [value]);
 
     const handleChange = () => {
-        const newStatus = status === 'Present' ? 'Absent' : status === 'Absent' ? 'Late in' :
-        status === 'Late in' ? 'Early out' :'Present';
+        const newStatus =
+            status === 'Present' ? 'Absent' :
+            status === 'Absent' ? 'Late in' :
+            status === 'Late in' ? 'Early out' :
+            status === 'Early out' ? 'Excused' :
+            'Present';
         setStatus(newStatus);
         onChange(newStatus);
     };
@@ -23,9 +27,10 @@ function StatusCell({ value, onChange }) {
             case 'Absent':
                 return { bgColor: 'bg-red-200', textColor: 'text-red-900' };
             case 'Late in':
-                return { bgColor: 'bg-yellow-200', textColor: 'text-yellow-900' };
             case 'Early out':
                 return { bgColor: 'bg-yellow-200', textColor: 'text-yellow-900' };
+            case 'Excused':
+                return { bgColor: 'bg-blue-200', textColor: 'text-blue-900' };
             default:
                 return { bgColor: 'bg-gray-200', textColor: 'text-gray-900' };
         }
