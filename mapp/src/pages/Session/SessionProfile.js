@@ -28,7 +28,7 @@ function SessionProfile({session, course}) {
                 {/*Within grace period*/}
                 {session.gracePeriod != null && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
                     <p className="text-sm">
-                        Class has started, Not scanned students will be marked as absent at <span className="font-bold">{new Date(session.gracePeriod).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+                        Class has started, Not scanned students will be marked as absent at <span className="font-bold">{new Date(session.gracePeriod).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})} on {new Date(session.sessionStart).toDateString()} </span>
                     </p>
                 }
                 {/*After grace period*/}
