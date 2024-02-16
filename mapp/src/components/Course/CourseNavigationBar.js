@@ -31,15 +31,15 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                         disabled={!selectedCourse}
                         className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 t  text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddStudentModal}>
-                        <div> New Student</div>
+                        <div className='text-xs'> New Student</div>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
 
                     <button
                         disabled={!selectedCourse}
-                        className={activeTab === 'Sessions' ? 'flex flex-row gap-2  block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                        className={activeTab === 'Sessions' ? 'flex flex-row gap-2 items-center block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddSessionModal}>
-                        <div> New Session</div>
+                        <div className='text-xs'> New Session</div>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
 

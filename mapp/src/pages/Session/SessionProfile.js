@@ -1,33 +1,13 @@
 import React, {useEffect, useState} from 'react'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {Html5QrcodeScanner} from 'html5-qrcode'
-import {faQrcode} from '@fortawesome/free-solid-svg-icons'
 import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable'
-import SecondaryButton from '../../components/SecondaryButton'
+import ScannerModal from './ScannerModal'
 
 function SessionProfile({session}) {
+    const [scannerModal, setScannerModal] = useState(false);
 
-    const [scanResult, setScanResult] = useState(null)
-    const [manualSerialNumber, setManualSerialNumber] = useState('')
-
-    useEffect(() => {
-        // const scanner = new Html5QrcodeScanner('reader', {
-        //     qrbox: {
-        //         width: 200,
-        //         height: 200,
-        //     }, fps: 5
-        // })
-
-        // scanner.render(success, error)
-
-        function success(result) {
-            setScanResult(result)
-        }
-
-        function error(err) {
-            console.warn(err)
-        }
-    }, [])
+    const toggleScannerModal = () => {
+        setScannerModal(!scannerModal);
+    }
 
     const data = [
         {
@@ -51,20 +31,14 @@ function SessionProfile({session}) {
 
     return (
         <div className="mx-12 py-4">
-            {/*<div className="grid grid-cols-2 gap-2">*/}
-            {/*    <div className="col-span-1 row-span-1 flex flex-col text-gray-900 bg-gray-200 px-4 py-4 rounded-3xl">*/}
-            {/*        <FontAwesomeIcon className="h-6 w-6 pb-6" icon={faQrcode}/>*/}
-            {/*        <div className="font-light">Scan in Students</div>*/}
-            {/*        {scanResult ?*/}
-            {/*            <div> Success: <a className="text-green-500" href={scanResult}>{scanResult}</a></div> :*/}
-            {/*            <div id="reader"></div>}*/}
-            {/*    </div>*/}
-            {/*</div>*/}
             <div className="flex justify-between">
                 <div className="text-2xl font-medium"> Attendance Report</div>
-                <button className='bg-black text-sm text-white rounded py-2 px-4'>Start Scanning</button>
+                <button className='bg-black text-xs text-white rounded py-2 px-4'  onClick={toggleScannerModal} >Start Scanning</button>
             </div>
             <SessionsAttendanceTable data={data}/>
+            {scannerModal &&
+                <ScannerModal toggleModal={toggleScannerModal}/>
+            }
         </div>
     )
 }
