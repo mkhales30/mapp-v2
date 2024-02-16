@@ -26,14 +26,14 @@ function SessionProfile({session, course}) {
                     </p>
                 }
 
-                {Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
+                {session.gracePeriod && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
                     <p className="text-sm">{'Class has started, Not scanned students will be marked as absent at ' + new Date(session.gracePeriod).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit'
                     })}</p>
                 }
 
-                {Date.now() > new Date(session.gracePeriod) &&
+                {session.gracePeriod && Date.now() > new Date(session.gracePeriod) &&
                     <p className="text-sm">{'Class has ended, please see the attendance report below'}</p>
                 }
             </div>
