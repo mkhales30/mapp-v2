@@ -135,8 +135,10 @@ function App() {
             {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
             {!selectedStudent && !selectedSession &&
                 <div className='col-span-3'>
-                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}
-                                    toggleEditCourseModal={toggleEditCourseModal}/>
+                    <CourseBanner course={selectedCourse}
+                                  updateCourses={updateSelectedCourse}
+                                  header={selectedCourse && selectedCourse.courseName}
+                                  toggleEditCourseModal={toggleEditCourseModal}/>
                     <div className='px-12 py-4'>
                         <CourseNavigationBar selectedCourse={selectedCourse}
                                              data={tabs}
@@ -172,7 +174,7 @@ function App() {
 
             {/*Student Profile -> opens when there is a selectedStudent */}
             {selectedStudent && <div className='col-span-3'>
-                <CourseBanner course={selectedCourse}
+                <CourseBanner
                               breadCrumb="Student"
                               header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
                               updateCourses={updateSelectedCourse}/>
@@ -183,8 +185,9 @@ function App() {
             {selectedSession && <div className='col-span-3'>
                 <CourseBanner course={selectedCourse}
                               breadCrumb="Sessions"
-                              header={selectedSession.date}
-                              updateCourses={updateSelectedCourse}/>
+                              sessionPage={true}
+                              updateCourses={updateSelectedCourse}
+                              header={selectedSession.sessionName}/>
                 <SessionProfile session={selectedSession}/>
             </div>}
 
