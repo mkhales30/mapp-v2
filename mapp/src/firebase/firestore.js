@@ -6,6 +6,8 @@ import {
   onSnapshot,
   query,
   where,
+  doc,
+  updateDoc
 } from "firebase/firestore";
 
 // Constants for collection names
@@ -120,6 +122,26 @@ export async function getSessions(courseId) {
     return sessions;
   } catch (error) {
     console.error("Error fetching sessions:", error);
+    throw error;
+  }
+}
+
+// Function to update a student's data
+export async function updateStudent(courseId, studentId, newData) {
+  try {
+    const studentRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.STUDENTS,
+      studentId
+    );
+
+    await updateDoc(studentRef, newData);
+
+    console.log("Student data updated successfully!");
+  } catch (error) {
+    console.error("Error updating student data:", error);
     throw error;
   }
 }
