@@ -2,9 +2,11 @@ import { db } from "./firebase";
 import {
   addDoc,
   collection,
+  doc,
   getDocs,
   onSnapshot,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -120,6 +122,26 @@ export async function getSessions(courseId) {
     return sessions;
   } catch (error) {
     console.error("Error fetching sessions:", error);
+    throw error;
+  }
+}
+
+// Function to update a session's data
+export async function updateSession(courseId, sessionId, newData) {
+  try {
+    const sessionRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.SESSIONS,
+      sessionId
+    );
+
+    await updateDoc(sessionRef, newData);
+
+    console.log("Session information updated successfully!");
+  } catch (error) {
+    console.error("Error updating session information:", error);
     throw error;
   }
 }
