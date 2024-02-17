@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faQrcode, faX} from '@fortawesome/free-solid-svg-icons'
+import {faX} from '@fortawesome/free-solid-svg-icons'
+import {recordAttendance} from '../../firebase/firestore'
 import {Html5QrcodeScanner} from 'html5-qrcode'
 import '../../styles/scanner.css'
 
-function ScannerModal({toggleModal}) {
+function QRScannerModal({toggleModal, courseId, sessionId}) {
     const [scanResult, setScanResult] = useState(null)
 
     useEffect(() => {
@@ -12,19 +13,18 @@ function ScannerModal({toggleModal}) {
             qrbox: {
                 width: 290,
                 height: 200,
-            }, fps: 10
+            }, fps: 0.5
         })
 
-        scanner.render(success, error)
+        scanner.render(success)
 
-        function success(result) {
-            setScanResult(result)
-        }
-
-        function error(err) {
-            console.warn(err)
+        function success(studentID) {
+            recordAttendance(courseId, studentID, sessionId)
+            setScanResult(studentID)
         }
     }, [])
+
+
     return (
         <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
             <div
@@ -48,4 +48,4 @@ function ScannerModal({toggleModal}) {
     )
 }
 
-export default ScannerModal
+export default QRScannerModal

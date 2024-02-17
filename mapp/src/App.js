@@ -77,9 +77,10 @@ function App() {
             const response = await getCourses(auth.currentUser.uid);
             setCourses(response);
             if (selectedCourse === null) {
-                setSelectedCourse(response.at(0))
-                fetchStudents(response.at(0).id)
-                fetchSessions(response.at(0).id)
+                const firstCourse = response.at(0)
+                setSelectedCourse(firstCourse)
+                fetchStudents(firstCourse.id)
+                fetchSessions(firstCourse.id)
             }
         } catch (error) {
             console.error('Error fetching courses:', error);
