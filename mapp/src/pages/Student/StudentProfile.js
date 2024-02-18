@@ -22,7 +22,6 @@ function Student({ student,courseId }) {
       navigate('/');
     } catch (error) {
       console.error("Error deleting student:", error);
-      // Display helpful error messages in a popup or notification component
     }
   };
     

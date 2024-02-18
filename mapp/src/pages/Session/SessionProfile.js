@@ -3,11 +3,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Html5QrcodeScanner} from "html5-qrcode";
 import {faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
 import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable';
+import { useNavigate } from 'react-router-dom';
+import { deleteSession } from '../../firebase/firestore';
 
 function SessionProfile({session}) {
 
     const [scanResult, setScanResult] = useState(null);
     const [manualSerialNumber, setManualSerialNumber] = useState('');
+    const sessionId = session.id;
+    const courseId = session.courseId;
+    console.log(sessionId);
+    console.log(courseId);
 
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {
@@ -48,6 +54,14 @@ function SessionProfile({session}) {
 
     ]
 
+    const handleDeleteSession = async () => {
+        try {
+            await deleteSession(courseId, sessionId);
+        } catch (error) {
+            console.error('Error deleting session:', error); 
+        }
+    };
+
     return (
         <div className='mx-12 py-4'>
             <div className='grid grid-cols-2 gap-2'>
@@ -65,6 +79,7 @@ function SessionProfile({session}) {
                     </div>
                 </div>
 
+                
                 <div className='col-span-1 row-span-1 flex flex-col text-gray-900 bg-gray-200 px-4 py-4 rounded-3xl'>
                     <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faQrcode}/>
                     <div className='font-light'>Scan in Students</div>
@@ -72,6 +87,11 @@ function SessionProfile({session}) {
                         <div> Success: <a className='text-green-500' href={scanResult}>{scanResult}</a></div> :
                         <div id="reader"></div>}
                 </div>
+                <div className="delete-session-area"> 
+    <button onClick={handleDeleteSession} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
+        Delete Session
+    </button>
+</div>
             </div>
             <div className='text-2xl font-medium mt-12'> Attendance Report</div>
             <SessionsAttendanceTable data={data}/>

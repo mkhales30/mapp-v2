@@ -81,7 +81,6 @@ export async function getCourses(uid) {
 // Function to get students for a course
 export async function getStudents(courseId) {
   try {
-      // Assuming your getStudents logic already fetches documents
       const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
       const q = query(studentsRef);
       const querySnapshot = await getDocs(q);
@@ -89,7 +88,7 @@ export async function getStudents(courseId) {
       const students = querySnapshot.docs.map(doc => ({ 
           ...doc.data(), 
           id: doc.id, 
-          courseId: courseId // Augment directly here!
+          courseId: courseId 
       }));
 
       return students;
@@ -114,7 +113,7 @@ export async function getSessions(courseId) {
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      sessions.push({ ...doc.data(), id: doc.id });
+      sessions.push({ ...doc.data(), id: doc.id, courseId: courseId }); // Include courseId 
     });
 
     return sessions;
@@ -141,9 +140,19 @@ export async function deleteCourse(courseId) {
       const courseRef = doc(db, COLLECTIONS.COURSES, courseId); 
       await deleteDoc(courseRef);
 
-      // Additional logic may be needed for nested student/session cleanup ...
   } catch (error) {
       console.error("Error deleting course:", error);
       throw error;  
+  }
+}
+
+// Function to delete a session 
+export async function deleteSession(courseId, sessionId) {
+  try {
+    const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
+    await deleteDoc(sessionRef);
+  } catch (error) {
+    console.error("Error deleting session:", error);
+    throw error;
   }
 }
