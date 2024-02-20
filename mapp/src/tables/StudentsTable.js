@@ -118,7 +118,7 @@ function StudentsTable({ data, updateSelectedStudent }) {
         {
             name: 'Actions',
             cell: (row) => (
-                <button onClick={() => handleEditClick(row)} style={{color: 'blue'}}>Edit</button>
+                <button onClick={() => handleEditClick(row)} className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded">Edit</button>
             ),
             ignoreRowClick: true,
             allowOverflow: true,
