@@ -12,6 +12,8 @@ import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 
+
+
 function App() {
 
     // Students, Sessions and Courses collection will be stored in their respective variable
@@ -117,6 +119,7 @@ function App() {
         value: "Sessions",
         table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
     },];
+
 
 
     return (<>

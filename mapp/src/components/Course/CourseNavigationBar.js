@@ -3,6 +3,7 @@ import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/rea
 import {ActiveTabContext} from "../../contexts/ActiveTabContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import handleExportAllData from "../../../src/tables/StudentsTable";
 
 
 export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessionModal,selectedCourse}) {
@@ -41,6 +42,17 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                         onClick={toggleAddSessionModal}>
                         <div> New Session</div>
                         <FontAwesomeIcon icon={faPlus}/>
+                    </button>
+
+
+                     {/* Add the Export Data button */}
+                     <button
+                        disabled={!selectedCourse}
+                        className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'
+                        onClick={() => handleExportAllData()} 
+                       >
+                        <div>Export Data</div>
+                        
                     </button>
 
                 </div>
