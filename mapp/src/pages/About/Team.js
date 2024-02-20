@@ -18,7 +18,7 @@ const TeamMember = ({ imgSrc, name }) => (
       borderColor: '#E5F4F2', 
       boxShadow: '25px 20px 38px 0px #3366FF0D' 
   }}>
-    <img src={imgSrc} alt={name} className="w-14 h-14 rounded-full mb-2" />
+    <img src={imgSrc} alt={name} className="w-20 h-20 rounded-full mb-2" />
     <p className="text-gray-600">{name}</p>
   </div>
 );
