@@ -2,7 +2,7 @@ import React from 'react';
 import hollyImg from '../../assets/holly.jpeg';
 import khalesImg from '../../assets/khales.png';
 import duaaImg from '../../assets/duaa.png';
-import reannImg from '../../assets/avatar.png';
+import reannImg from '../../assets/reann.png';
 import tiImg from '../../assets/avatar.png';
 
 const teamMembers = [
