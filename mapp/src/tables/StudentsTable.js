@@ -52,14 +52,10 @@ function StudentsTable ({data, updateSelectedStudent}) {
 
     return (
         <div className='container mt-5 border rounded border-gray-200'>
+
             <div className="mb-3">
                 
-                <button 
-                 onClick={() => handleExportAllData()} 
-                className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
-                    <div>Export All Data</div>
-                   
-                </button>
+                
             </div>
 
         
@@ -70,6 +66,14 @@ function StudentsTable ({data, updateSelectedStudent}) {
                 pagination
                 customStyles={customStyles}
             />
+
+
+                        <button 
+                 onClick={() => handleExportAllData()} 
+                className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
+                    <div>Export All Data</div>
+                   
+                </button>
         </div>
     );
 };

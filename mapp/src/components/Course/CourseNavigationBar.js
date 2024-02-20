@@ -45,7 +45,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                     </button>
 
 
-                     {/* Add the Export Data button */}
+                     {/* Add the Export Data button 
                      <button
                         disabled={!selectedCourse}
                         className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'
@@ -54,6 +54,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                         <div>Export Data</div>
                         
                     </button>
+                    */}
 
                 </div>
             </div>
