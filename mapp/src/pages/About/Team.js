@@ -25,7 +25,7 @@ const TeamMember = ({ imgSrc, name }) => (
 
 const Team = () => (
   <div>
-    <div className="text-2xl font-bold mb-6">Meet our team</div>
+    <div className="text-2xl font-bold mb-6 mt-14">Meet our team</div>
     <p>Get to know the faces behind the scenes and learn about the values that drive us.</p>
     <div className="items-center grid md:grid-cols-3 gap-8 mt-6">
       {teamMembers.map((member, index) => (

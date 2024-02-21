@@ -14,7 +14,7 @@ function About({}){
             <Features />
 
             <div className="mb-6">
-                <div className="text-2xl font-bold mb-6">Why MAPP?</div>
+                <div className="text-2xl font-bold mb-6 mt-14">Why MAPP?</div>
                 <p>Student attendance data can often be misleading due to students leaving early or being disengaged, 
                     combined with challenges in accessing and managing this data across multiple classes. These issues hinder 
                     educational institutions, especially when attendance influences decisions like scholarship awards. Mapp 
@@ -23,7 +23,7 @@ function About({}){
             </div>
 
             <div className="mb-6">
-                <div className="text-2xl font-bold mb-6">How is MAPP Different?</div>
+                <div className="text-2xl font-bold mb-6 mt-14">How is MAPP Different?</div>
                 <p>The MAPP (Mentally and Physically Present) app revolutionizes classroom attendance by enabling mentors and 
                     instructors to track both the physical and cognitive engagement of students. Beyond mere attendance, it facilitates 
                     detailed note-taking on individual and collective student dynamics for enhanced course management. A standout feature 
@@ -36,7 +36,7 @@ function About({}){
             </div>
 
             <div className="mb-6">
-                <div className="text-2xl font-bold mb-6">The Future of MAPP</div>
+                <div className="text-2xl font-bold mb-6 mt-14">The Future of MAPP</div>
                 <p>The MAPP app enhances classroom management by enabling accurate tracking of student attendance and engagement, offering 
                     features for note-taking on student performance, and generating unique QR codes for secure attendance verification. This 
                     innovative, student-developed tool not only minimizes fraudulent attendance but also stands to gain national recognition, 
@@ -47,7 +47,7 @@ function About({}){
  
             <Team />
 
-            <div className="mb-6">
+            <div className="mb-6 mt-14">
                 
                 {/* This is a blank line */}
                 <div>{'\u00a0'}</div>
