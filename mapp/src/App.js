@@ -86,7 +86,7 @@ function App() {
     const fetchStudents = async (courseID) => {
         try {
             const response = await getStudents(courseID);
-            setStudents(response);
+            setStudents(response.map(student => ({...student}))); // No longer necessary!!
         } catch (error) {
             console.error('Error fetching students:', error);
         }
@@ -166,7 +166,7 @@ function App() {
                               breadCrumb="Student"
                               header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
                               updateCourses={updateSelectedCourse}/>
-                <StudentProfile student={selectedStudent}/>
+                <StudentProfile student={selectedStudent} courseId={selectedCourse.id}/>
             </div>}
 
             {/*Session Profile -> opens when there is a selectedSession*/}

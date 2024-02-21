@@ -40,7 +40,7 @@ Ensure you have [Git](https://git-scm.com/downloads), [Node.JS](https://nodejs.o
 1. Open the command palette in VS Code by pressing `Ctrl + Shift + P`.
 2. Enter `gitcl` in the command prompt and select the `Git Clone` command then the `Clone from GitHub` and press `Enter`.
 3. If you're asked to sign into GitHub, complete the sign-in process.
-4. Enter (hollykaboaz/mapp-v2) in the **Repository URL** field.
+4. Enter `hollykaboaz/mapp-v2` in the **Repository URL** field.
 6. Select the directory where you want to clone the project.
 
 

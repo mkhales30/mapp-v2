@@ -9,7 +9,7 @@ const ProtectedRoute = ({element: Component, ...rest}) => {
         return <div>Loading...</div>; // Or a loading spinner
     }
 
-    return currentUser ? <Component {...rest} /> : <Navigate to="/signin" replace/>;
+    return currentUser ? <Component {...rest} /> : <Navigate to="/about" replace/>;
 };
 
 export default ProtectedRoute;

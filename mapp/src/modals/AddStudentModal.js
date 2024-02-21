@@ -3,30 +3,44 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {addStudent} from "../firebase/firestore";
 
-function AddStudentModal({course, toggleModal, updateStudents}) {
-
-    // Add student Form Handler
+function AddStudentModal({ course, toggleModal, updateStudents }) {
     const [studentData, setStudentData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        enrollmentStatus: 'Enrolled',
-        attendanceGrade: '100'
-    })
-
-    let name, value;
+      firstName: '',
+      lastName: '',
+      email: '',
+      isEmailValid: false, // Track Email Validity
+      enrollmentStatus: 'Enrolled',
+      attendanceGrade: '100',
+    });
+  
     const updateStudentData = (e) => {
-        name = e.target.name;
-        value = e.target.value;
-        setStudentData({...studentData, [name]: value})
-    }
+        const { name, value } = e.target;  
+        const isEmailField = name === 'email';  
+      
+        setStudentData((prevState) => ({
+          ...prevState,
+          [name]: value, 
+          isEmailValid: isEmailField ? isValidEmail(value) : prevState.isEmailValid // Validate upon 'email' field changes
+        }));
+      };
 
-    {/*handleAddStudent -> this function fires once the add student button is pressed, it then adds to the database*/
-    }
-    const handleAddStudent = async () => {
-        await addStudent(course.id, studentData);
-        updateStudents(); // Update students in the parent component
-        toggleModal();
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+  
+    const handleAddStudent = async (e) => {
+      e.preventDefault(); // Prevent form submission
+  
+      // Check for empty fields
+      if (!studentData.firstName || !studentData.lastName || !studentData.email || !studentData.isEmailValid) { 
+        alert('Please fill all required fields with valid input.');
+        return;
+      }
+  
+      await addStudent(course.id, studentData);
+      updateStudents();
+      toggleModal();
     };
 
     return (
@@ -64,22 +78,27 @@ function AddStudentModal({course, toggleModal, updateStudents}) {
                         </div>
 
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Email</label>
+                        <label className='font-light text-gray-600 text-sm'>Email</label>
                             <input
                                 name="email"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${!studentData.isEmailValid ? 'border-red-500' : ''}`} // Add Error Styling
                                 value={studentData.email}
                                 onChange={updateStudentData}
                             />
+                                {!studentData.isEmailValid && (
+                                <p className="text-xs text-red-500">Please enter a valid email address.</p>
+                            )} 
                         </div>
 
                     </form>
-                    <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg'
-                            type="submit"
-                            onClick={handleAddStudent}>
-                        Create Student
-                    </button>
+                    <form className="flex flex-col gap-2" onSubmit={handleAddStudent}> {/* Add onSubmit handler */}
+                    {/* Input fields */}
+
+      <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg' type="submit">
+        Create Student
+      </button>
+    </form>
                 </div>
             </div>
         </div>
