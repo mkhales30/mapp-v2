@@ -46,7 +46,7 @@ function AuthLayout({ page, children }) {
             >
                 {/* Title */}
                 <div className="text-white px-20 py-5">
-                    <h1 className="text-5xl font-bold mb-4">M.A.P.P</h1>
+                    <h1 className="text-6xl font-bold mb-4">M.A.P.P</h1>
                     <p className="text-lg font-normal mb-8">
                         Mentally and physically present
                     </p>
