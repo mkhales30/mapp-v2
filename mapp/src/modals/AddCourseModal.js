@@ -13,6 +13,7 @@ function AddCourseModal({updateCourses, toggleModal}) {
         uid: auth.currentUser.uid
     })
 
+
     let name, value;
     const updateCourseData = (e) => {
         name = e.target.name;
@@ -23,7 +24,7 @@ function AddCourseModal({updateCourses, toggleModal}) {
     {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/
     }
     const handleAddCourse = async () => {
-        await addCourse(courseData);
+        await addCourse(courseData.courseName , courseData.courseSection, courseData.uid);
         updateCourses(); // Update courses in the parent component
         toggleModal();
     };
