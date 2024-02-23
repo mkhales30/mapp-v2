@@ -1,19 +1,9 @@
 import {db} from './firebase'
 import {
-    addDoc,
-    collection,
-    getDocs,
-    onSnapshot,
-    query,
-    where,
-    doc,
-    deleteDoc,
-    updateDoc
-}
-from
-"firebase/firestore";
+    addDoc, collection, getDocs, onSnapshot, query, where, doc, deleteDoc, updateDoc
+} from "firebase/firestore";
 
-// Constants for collection names
+/* COLLECTIONS: An object that holds the names of the collections in the Firestore database */
 const COLLECTIONS = {
     COURSES: 'Courses',
     STUDENTS: 'Students',
@@ -35,9 +25,7 @@ const COLLECTIONS = {
  */
 export function addCourse(courseName, courseSection, uid) {
     addDoc(collection(db, COLLECTIONS.COURSES), {
-        courseName,
-        courseSection,
-        uid,
+        courseName, courseSection, uid,
     })
 }
 
@@ -49,8 +37,7 @@ export function addCourse(courseName, courseSection, uid) {
 export function editCourse(courseName, courseSection, id) {
     const courseRef = doc(db, COLLECTIONS.COURSES, id);
     updateDoc(courseRef, {
-        courseName,
-        courseSection,
+        courseName, courseSection,
     })
 }
 
@@ -61,12 +48,7 @@ export function editCourse(courseName, courseSection, id) {
  */
 export async function addStudent(courseId, studentData) {
     try {
-        const studentsRef = collection(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.STUDENTS
-        )
+        const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS)
         const docRef = await addDoc(studentsRef, studentData)
         return docRef.id
     } catch (error) {
@@ -82,12 +64,7 @@ export async function addStudent(courseId, studentData) {
  */
 export async function addSession(courseId, sessionData) {
     try {
-        const sessionsRef = collection(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.SESSIONS
-        )
+        const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
         const docRef = await addDoc(sessionsRef, sessionData)
         return docRef.id
     } catch (error) {
@@ -126,9 +103,7 @@ export async function getStudents(courseId) {
         const querySnapshot = await getDocs(q);
 
         const students = querySnapshot.docs.map(doc => ({
-            ...doc.data(),
-            id: doc.id,
-            courseId: courseId
+            ...doc.data(), id: doc.id, courseId: courseId
         }));
 
         return students;
@@ -146,12 +121,7 @@ export async function getStudents(courseId) {
 export async function getSessions(courseId) {
     try {
         const sessions = []
-        const sessionsRef = collection(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.SESSIONS
-        )
+        const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
         const q = query(sessionsRef)
 
         const querySnapshot = await getDocs(q);
@@ -217,20 +187,14 @@ export async function deleteSession(courseId, sessionId) {
     * @param newData - The new data for the session
  */
 export async function updateSession(courseId, sessionId, newData) {
-  try {
-    const sessionRef = doc(
-      db,
-      COLLECTIONS.COURSES,
-      courseId,
-      COLLECTIONS.SESSIONS,
-      sessionId
-    );
+    try {
+        const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
 
-    await updateDoc(sessionRef, newData);
+        await updateDoc(sessionRef, newData);
 
-    console.log("Session information updated successfully!");
-  } catch (error) {
-    console.error("Error updating session information:", error);
-    throw error;
-  }
+        console.log("Session information updated successfully!");
+    } catch (error) {
+        console.error("Error updating session information:", error);
+        throw error;
+    }
 }
