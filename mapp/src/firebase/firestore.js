@@ -21,7 +21,18 @@ const COLLECTIONS = {
     USERS: 'Users',
 }
 
-// Function to add a course
+/*
+    The following functions are used to interact with the Firestore database.
+    They are used to add, edit, and delete courses, students, and sessions.
+    They also get courses, students, and sessions from the database.
+*/
+
+
+/* addCourse: Adds a course to the database
+    * @param courseName -  The name of the course
+    * @param courseSection - The section of the course
+    * @param uid -  The user id of the user who created the course
+ */
 export function addCourse(courseName, courseSection, uid) {
     addDoc(collection(db, COLLECTIONS.COURSES), {
         courseName,
@@ -30,6 +41,11 @@ export function addCourse(courseName, courseSection, uid) {
     })
 }
 
+/* addStudent: Adds a student to a course
+    * @param courseId -  The id of the course
+    * @param studentData - The data of the student
+    * @returns - The id of the student
+ */
 export function editCourse(courseName, courseSection, id) {
     const courseRef = doc(db, COLLECTIONS.COURSES, id);
     updateDoc(courseRef, {
@@ -38,7 +54,11 @@ export function editCourse(courseName, courseSection, id) {
     })
 }
 
-// Function to add a student to a course
+/* addStudent: Adds a student to a course
+    * @param courseId -  The id of the course
+    * @param studentData - The data of the student
+    * @returns - The id of the student
+ */
 export async function addStudent(courseId, studentData) {
     try {
         const studentsRef = collection(
@@ -55,7 +75,11 @@ export async function addStudent(courseId, studentData) {
     }
 }
 
-// Function to add a session to a course
+/* addSession: Adds a session to a course
+    * @param courseId -  The id of the course
+    * @param sessionData - The data of the session
+    * @returns - The id of the session
+ */
 export async function addSession(courseId, sessionData) {
     try {
         const sessionsRef = collection(
@@ -72,7 +96,10 @@ export async function addSession(courseId, sessionData) {
     }
 }
 
-// Function to get courses for a user
+/* getCourses: Gets all courses for a user
+    * @param uid -  The user id of the logged-in user
+    * @returns - An array of courses
+ */
 export async function getCourses(uid) {
     return new Promise((resolve, reject) => {
         const courses = []
@@ -89,7 +116,9 @@ export async function getCourses(uid) {
     })
 }
 
-// Function to get students for a course
+/* getStudents: Gets all students for a course
+    * @param courseId -  The id of the course
+ */
 export async function getStudents(courseId) {
     try {
         const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
@@ -110,7 +139,10 @@ export async function getStudents(courseId) {
 }
 
 
-// Function to get sessions for a course
+/* getSessions: Gets all sessions for a course
+    * @param courseId -  The id of the course
+    * @returns - An array of sessions
+ */
 export async function getSessions(courseId) {
     try {
         const sessions = []
@@ -134,6 +166,11 @@ export async function getSessions(courseId) {
     }
 }
 
+/* deleteStudent: Deletes a student from a course
+    * @param courseId -  The id of the course
+    * @param studentId - The id of the student
+
+ */
 export async function deleteStudent(courseId, studentId) {
     try {
         // Construct the path to the specific student document
@@ -146,6 +183,9 @@ export async function deleteStudent(courseId, studentId) {
     }
 }
 
+/* deleteCourse: Deletes a course
+    * @param courseId -  The id of the course
+ */
 export async function deleteCourse(courseId) {
     try {
         const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
@@ -157,7 +197,10 @@ export async function deleteCourse(courseId) {
     }
 }
 
-// Function to delete a session 
+/* deleteSession: Deletes a session from a course
+    * @param courseId -  The id of the course
+    * @param sessionId - The id of the session
+ */
 export async function deleteSession(courseId, sessionId) {
     try {
         const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
@@ -168,7 +211,11 @@ export async function deleteSession(courseId, sessionId) {
     }
 }
 
-// Function to update a session's data
+/* updateSession: Updates a session in a course
+    * @param courseId -  The id of the course
+    * @param sessionId - The id of the session
+    * @param newData - The new data for the session
+ */
 export async function updateSession(courseId, sessionId, newData) {
   try {
     const sessionRef = doc(
