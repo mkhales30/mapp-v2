@@ -3,7 +3,6 @@ import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable'
 import ScannerModal from './ScannerModal'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
-import {deleteSession} from '../../firebase/firestore';
 
 
 function SessionProfile({session, course}) {
@@ -14,8 +13,6 @@ function SessionProfile({session, course}) {
     }
     const sessionId = session.id;
     const courseId = session.courseId;
-    console.log(sessionId);
-    console.log(courseId);
 
     let noticeMessage
 
@@ -92,14 +89,6 @@ function SessionProfile({session, course}) {
 
     ]
 
-    const handleDeleteSession = async () => {
-        try {
-            await deleteSession(courseId, sessionId);
-        } catch (error) {
-            console.error('Error deleting session:', error);
-        }
-    };
-
     return (
         <div className="mx-12 py-4">
             {noticeMessage}
@@ -108,12 +97,6 @@ function SessionProfile({session, course}) {
                 <button className="bg-black text-sm text-white rounded py-2 px-4" onClick={toggleScannerModal}>Start
                     Scanning
                 </button>
-                <div className="delete-session-area">
-                    <button onClick={handleDeleteSession}
-                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
-                        Delete Session
-                    </button>
-                </div>
             </div>
             <SessionsAttendanceTable data={data}/>
             {scannerModal &&

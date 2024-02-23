@@ -36,8 +36,6 @@ function StudentsTable ({data, updateSelectedStudent}) {
 
   // Function to export all data to Excel
   const handleExportAllData = () => {
-    
-    console.log("hello");
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');

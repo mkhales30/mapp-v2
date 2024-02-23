@@ -3,10 +3,10 @@ import course_background from "../../assets/course_background.jpg";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {faPenToSquare, faTrashCan} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {deleteCourse} from "../../firebase/firestore";
+import {deleteCourse, deleteSession} from "../../firebase/firestore";
 
 
-function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal, header, sessionPage,}) {
+function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal, header, sessionPage, session}) {
     const handleDeleteCourse = async () => {
         try {
             if (course) {
@@ -28,6 +28,15 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
         }
     };
 
+    const handleDeleteSession = async () => {
+        try {
+            await deleteSession(course.id, session.id);
+        } catch (error) {
+            console.error('Error deleting session:', error);
+        }
+    };
+
+
     // Banner is a variable that will hold the JSX for the banner
     let banner;
 
@@ -35,6 +44,18 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
     if (sessionPage) {
         banner = (
             <div>
+                <div className="absolute flex flex-row gap-2 items-center top-4 right-4">
+                    {/*Delete Course Button*/}
+                    <button
+                        onClick={handleDeleteSession} // We'll create this function next
+                        className=" font-extralight bg-red-500/30 rounded p-2 text-xs hover:bg-red-500/50"
+                    >
+                        <div className="flex gap-2 items-center">
+                            <FontAwesomeIcon icon={faTrashCan}/>
+                            Delete Session
+                        </div>
+                    </button>
+                </div>
                 {/*Breadcrumb -> [Course name > Sessions > Session Name]  */}
                 <div className="text-white -mt-2  flex flex-row gap-2 items-center text-sm font-extralight">
                     {/*The course name in the banner will link back to the course profile*/}

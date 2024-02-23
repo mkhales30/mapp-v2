@@ -187,6 +187,7 @@ function App() {
             {/*Session Profile -> opens when there is a selectedSession*/}
             {selectedSession && <div className='col-span-3'>
                 <CourseBanner course={selectedCourse}
+                              session={selectedSession}
                               breadCrumb="Sessions"
                               sessionPage={true}
                               updateCourses={updateSelectedCourse}

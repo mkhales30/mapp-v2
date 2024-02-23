@@ -8,13 +8,11 @@ import { useNavigate } from 'react-router-dom';
 function Student({ student,courseId }) {
   // Access student document ID directly
   const studentDocumentId = student.id;
-  console.log(courseId);
   const navigate = useNavigate();
 
 
   //handleDeleteStudent -> this function fires once the remove from class button is pressed, it then deletes the student from the database
   const handleClickRemove = async () => {
-    console.log("Remove Pressed")
     try {
       // Access courseId 
       await deleteStudent(courseId, student.id); 
@@ -81,8 +79,6 @@ function Student({ student,courseId }) {
         </div>
 
         <div className='text-2xl font-medium mt-12'>Attendance Report</div>
-        {/* <StudentsTable data={data}> */}
-        {/* </StudentsTable> */}
         <QRCode studentDocumentId={studentDocumentId} student={student} />
       </div>
     </div>
