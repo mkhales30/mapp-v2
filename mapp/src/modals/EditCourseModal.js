@@ -21,9 +21,14 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
 
     {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/}
     const handleEditCourse = async () => {
-        await editCourse(courseData.courseName, courseData.courseSection, courseData.courseID);
-        updateCourses(); // Update courses in the parent component
-        toggleModal();
+        const hasEmptyRequiredFields = courseData.courseName === '' || courseData.courseSection === '';
+        if(hasEmptyRequiredFields) {
+            alert("Please fill out the required fields");
+        }else{
+            await editCourse(courseData.courseName, courseData.courseSection, courseData.courseID);
+            updateCourses(); // Update courses in the parent component
+            toggleModal();
+        }
     };
 
     return (
