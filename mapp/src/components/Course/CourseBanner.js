@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {deleteCourse, deleteSession} from "../../firebase/firestore";
 
 
-function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal, header, sessionPage, session}) {
+function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal, header, sessionPage, session, updateSelectedCourse}) {
     const handleDeleteCourse = async () => {
         try {
             if (course) {
@@ -32,6 +32,8 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
         try {
             await deleteSession(course.id, session.id);
             alert('Session Deleted');
+            // Updating the selected course will navigate back to the course profile page
+            updateSelectedCourse(course);
         } catch (error) {
             console.error('Error deleting session:', error);
         }

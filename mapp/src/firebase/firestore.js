@@ -173,7 +173,6 @@ export async function deleteCourse(courseId) {
  */
 export async function deleteSession(courseId, sessionId) {
     try {
-        console.log(courseId)
         const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
         await deleteDoc(sessionRef);
     } catch (error) {

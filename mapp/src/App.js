@@ -191,6 +191,7 @@ function App() {
                               breadCrumb="Sessions"
                               sessionPage={true}
                               updateCourses={updateSelectedCourse}
+                              updateSelectedCourse={updateSelectedCourse}
                               header={selectedSession.sessionName}/>
                 <SessionProfile
                     course={selectedCourse}
