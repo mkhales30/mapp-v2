@@ -5,14 +5,16 @@ import {editCourse} from '../firebase/firestore'
 
 function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
 
-    // Add Course Form Handler
+    // courseData -> holds the data of the course
     const [courseData, setCourseData] = useState({
         courseName: '',
         courseSection: '',
         courseID: currentCourse.id,
     })
 
+    // name and value -> holds the name and value of the updated input field
     let name, value;
+
     const updateCourseData = (e) => {
         name = e.target.name;
         value = e.target.value;

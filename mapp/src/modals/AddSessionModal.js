@@ -5,24 +5,30 @@ import {addSession} from "../firebase/firestore";
 
 function AddSessionModal({updateSessions, toggleModal, course}) {
 
-    // Add session Form Handler
+    // Data to be added to the session
     const [sessionData, setSessionData] = useState({
         sessionName: '',
         sessionStart: null,
         gracePeriod : null,
     })
-
+    // name and value -> holds the name and value of the updated input field
     let name, value;
+    // updateSessionData -> updates the session data to be added
     const updateSessionData = (e) => {
         name = e.target.name;
         value = e.target.value;
         setSessionData({...sessionData, [name]: value})
     }
-
+    // handleAddSession -> this function fires once the add session button is pressed, it then adds to the database
     const handleAddSession = async () => {
-        await addSession(course.id, sessionData);
-        updateSessions(); // Update sessions in the parent component
-        toggleModal();
+        const emptyRequiredFields = sessionData.sessionName === '';
+        if (emptyRequiredFields) {
+            alert("Please fill out the required fields");;
+        }else{
+            await addSession(course.id, sessionData);
+            updateSessions(); // Update sessions in the parent component
+            toggleModal();
+        }
     };
 
     return (
@@ -42,7 +48,7 @@ function AddSessionModal({updateSessions, toggleModal, course}) {
                             <label className='font-light text-gray-600 text-sm'>Session Name</label>
                             <input
                                 name="sessionName"
-                                placeholder={new Date(Date.now()).toDateString()}
+                                placeholder={"(i.e, " + new Date(Date.now()).toDateString() + ')'}
                                 type="text"
                                 className='border-gray-200 border rounded w-full p-2 focus:outline-0'
                                 value={sessionData.sessionName}
