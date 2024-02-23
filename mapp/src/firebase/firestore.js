@@ -166,5 +166,24 @@ export async function deleteSession(courseId, sessionId) {
         console.error("Error deleting session:", error);
         throw error;
     }
+}
 
+// Function to update a session's data
+export async function updateSession(courseId, sessionId, newData) {
+  try {
+    const sessionRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.SESSIONS,
+      sessionId
+    );
+
+    await updateDoc(sessionRef, newData);
+
+    console.log("Session information updated successfully!");
+  } catch (error) {
+    console.error("Error updating session information:", error);
+    throw error;
+  }
 }
