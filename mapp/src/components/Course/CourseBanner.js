@@ -31,6 +31,7 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
     const handleDeleteSession = async () => {
         try {
             await deleteSession(course.id, session.id);
+            alert('Session Deleted');
         } catch (error) {
             console.error('Error deleting session:', error);
         }
