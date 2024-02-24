@@ -1,5 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
+import selectedCourseReducer from './slices/selectedCourseSlice'
 
 export default configureStore({
-    reducer: {},
+    reducer: {
+        selectedCourse: selectedCourseReducer,
+    },
 })
