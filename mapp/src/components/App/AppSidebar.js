@@ -3,8 +3,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {auth} from '../../firebase/firebase'
 import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
+import {useDispatch, useSelector} from "react-redux";
+import {setSelectedCourse} from "../../store/slices/selectedCourseSlice";
 
-function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
+function AppSidebar({courses, toggleModal, updateCourse}) {
+    const selectedCourse = useSelector((state) => state.selectedCourse.value)
+    const dispatch = useDispatch()
     return (
 
         <div
@@ -42,7 +46,7 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                 courses.map((course, index) => {
                     return (
                         <button
-                            onClick={() => updateCourse(course)} key={index}
+                            onClick={() => dispatch(setSelectedCourse(course))} key={index}
                             className=' flex flex-row gap-4 items-center text-gray-600'>
                             <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark}/>
                             <div

@@ -131,7 +131,7 @@ function App() {
         <div className="grid grid-cols-4 h-screen">
 
             {/*Dashboard Sidebar*/}
-            <AppSidebar selectedCourse={selectedCourse ? selectedCourse : ''} courses={courses}
+            <AppSidebar  courses={courses}
                         toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
 
             {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
