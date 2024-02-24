@@ -7,8 +7,22 @@ import handleExportAllData from "../../../src/tables/StudentsTable";
 import { deleteCourse } from "../../firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import StudentsTable from "../../../src/tables/StudentsTable";
+import SessionsTable from "../../tables/SessionsTable";
 
-export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessionModal,selectedCourse}) {
+export function CourseNavigationBar({toggleAddStudentModal, toggleAddSessionModal,selectedCourse}) {
+    // These are the tabs of the navigation bar, and the tables these tabs show
+
+    const tabs = [{
+        label: "Students",
+        value: "Students",
+        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
+    }, {
+        label: "Sessions",
+        value: "Sessions",
+        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
+    },];
+
     const [activeTab, setActiveTab] = useState("Students");
     const activeTabContext = useContext(ActiveTabContext)
 
@@ -91,7 +105,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
             </div>
 
             <TabsBody>
-                {data.map(({value, table}) => (
+                {tabs.map(({value, table}) => (
                     <TabPanel
                         className='p-0'
                         key={value} value={value}>

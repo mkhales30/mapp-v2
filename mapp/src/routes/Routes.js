@@ -6,6 +6,9 @@ import App from '../App';
 import SignUpForm from "../pages/Sign Up/SignUpForm";
 import ProtectedRoute from "./ProtectedRoute";
 import About from "../pages/About/About";
+import SessionProfile from "../pages/Session/SessionProfile";
+import AppLayout from "../layouts/AppLayout";
+import CourseProfile from "../pages/Course/CourseProfile";
 
 function AppRoutes({}) {
     return (
@@ -28,6 +31,13 @@ function AppRoutes({}) {
                         <SignInForm/>
                     </AuthLayout>
                 }/>
+                <Route
+                    path="/course/:id"
+                    element={
+                    <ProtectedRoute element={CourseProfile}
+                    />}
+                />
+
                 <Route
                     path="/"
                     element={<ProtectedRoute element={App}/>}

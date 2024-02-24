@@ -5,6 +5,7 @@ import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} fr
 import SignOutButton from "./SignOutButton";
 import {useDispatch, useSelector} from "react-redux";
 import {setSelectedCourse} from "../../store/slices/selectedCourseSlice";
+import {Link} from "react-router-dom";
 
 function AppSidebar({courses, toggleModal, updateCourse}) {
     const selectedCourse = useSelector((state) => state.selectedCourse.value)
@@ -45,16 +46,16 @@ function AppSidebar({courses, toggleModal, updateCourse}) {
             {courses.length > 0 ? (
                 courses.map((course, index) => {
                     return (
-                        <button
+                        <Link
                             onClick={() => dispatch(setSelectedCourse(course))} key={index}
-                            className=' flex flex-row gap-4 items-center text-gray-600'>
+                            className=' flex flex-row gap-4 items-center text-gray-600' to={`/course/${course.id}`}>
                             <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark}/>
                             <div
                                 className={selectedCourse.id === course.id ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}>
                                 <div className='uppercase text-xs'>{'Section ' + course.courseSection}</div>
                                 <div>{course.courseName}</div>
                             </div>
-                        </button>
+                        </Link>
                     )
                 })
             ) : (

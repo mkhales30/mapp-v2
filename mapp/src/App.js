@@ -126,7 +126,7 @@ function App() {
             {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
             {!selectedStudent && !selectedSession &&
                 <div className='col-span-3'>
-                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
+                    <CourseBanner/>
                     <div className='px-12 py-4'>
                         <CourseNavigationBar selectedCourse={selectedCourse}
                                              toggleAddStudentModal={toggleAddStudentModal}
