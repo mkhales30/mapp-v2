@@ -2,10 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/index.css';
 import Routes from "./routes/Routes";
+import {Provider} from 'react-redux'
+import store from './store/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Routes/>
+    <Provider store={store}>
+        <Routes/>
+    </Provider>
 );
 
 // // If you want to start measuring performance in your app, pass a function
