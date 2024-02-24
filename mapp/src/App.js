@@ -113,17 +113,6 @@ function App() {
         fetchCourses()
     }, []);
 
-    // These are the tabs of the navigation bar, and the tables these tabs show
-
-    const tabs = [{
-        label: "Students",
-        value: "Students",
-        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
-    }, {
-        label: "Sessions",
-        value: "Sessions",
-        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
-    },];
 
 
 
@@ -140,7 +129,6 @@ function App() {
                     <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
                     <div className='px-12 py-4'>
                         <CourseNavigationBar selectedCourse={selectedCourse}
-                                             data={tabs}
                                              toggleAddStudentModal={toggleAddStudentModal}
                                              toggleAddSessionModal={toggleAddSessionModal}/>
                     </div>
