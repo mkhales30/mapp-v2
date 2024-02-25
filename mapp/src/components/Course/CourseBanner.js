@@ -2,7 +2,7 @@ import React from 'react';
 import course_background from "../../assets/course_background.jpg";
 import {faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {setSelectedCourse} from "../../store/slices/selectedCourseSlice";
+import {updateSelectedCourse} from "../../store/slices/selectedCourseSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 
@@ -32,7 +32,7 @@ function CourseBanner({breadCrumb, header}) {
                     breadCrumb && (
                         <div className='text-white -mt-16 pl-12 flex flex-row gap-2 items-center'>
                             <div className='hover:cursor-pointer hover:underline'
-                                 onClick={() => dispatch(setSelectedCourse(course))}>
+                                 onClick={() => dispatch(updateSelectedCourse(course))}>
                                 {course?.courseName}
                             </div>
                             <FontAwesomeIcon className='w-2' icon={faChevronRight}/>

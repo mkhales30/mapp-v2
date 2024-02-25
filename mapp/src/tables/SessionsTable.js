@@ -1,6 +1,7 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import {customStyles, sessionsColumns} from "./customStyles";
+import {sessionsTableColumns} from "./tableColumns";
 
 
 function SessionsTable ({data, updateSelectedSession}){
@@ -13,7 +14,7 @@ function SessionsTable ({data, updateSelectedSession}){
     return (
         <div className='container mt-5 border rounded border-gray-200'>
             <DataTable
-                columns={sessionsColumns}
+                columns={sessionsTableColumns}
                 data={data}
                 pagination
                 customStyles={customStyles}

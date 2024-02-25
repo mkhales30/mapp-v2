@@ -104,7 +104,6 @@ export async function getStudents(courseId) {
             id: doc.id,
             courseId: courseId
         }));
-
         return students;
     } catch (error) {
         console.error('Error fetching students:', error);

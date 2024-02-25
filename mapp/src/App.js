@@ -12,7 +12,7 @@ import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectedCourse} from "./store/slices/selectedCourseSlice";
+import {updateSelectedCourse} from "./store/slices/selectedCourseSlice";
 
 
 
@@ -27,7 +27,7 @@ function App() {
     const [sessions, setSessions] = useState([]);
 
     // These variables will hold the active course, student, or session if there is one
-    // const [selectedCourse, setSelectedCourse] = useState(null);
+    // const [selectedCourse, updateSelectedCourse] = useState(null);
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [selectedSession, setSelectedSession] = useState(null);
 
@@ -50,7 +50,7 @@ function App() {
 
     // If a course is selected, this function will update the active course
     const updateSelectedCourse = (selectedCourse) => {
-        dispatch(setSelectedCourse(selectedCourse))
+        dispatch(updateSelectedCourse(selectedCourse))
         // We reset the active student and active session so the Session Profile and Student profile won't show
         setSelectedStudent(null);
         setSelectedSession(null);
@@ -78,7 +78,7 @@ function App() {
             const response = await getCourses(auth.currentUser.uid);
             setCourses(response);
             if (selectedCourse === null) {
-                dispatch(setSelectedCourse(response.at(0)))
+                dispatch(updateSelectedCourse(response.at(0)))
                 fetchStudents(response.at(0).id)
                 fetchSessions(response.at(0).id)
             }

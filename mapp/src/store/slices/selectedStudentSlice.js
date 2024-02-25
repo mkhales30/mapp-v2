@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const selectedCourseSlice = createSlice({
-    name: 'selectedCourse',
+export const selectedStudentSlice = createSlice({
+    name: 'selectedStudent',
     initialState: {
         value: null,
     },
     reducers: {
-        updateSelectedCourse: (state, action) => {
+        updateSelectedStudent: (state, action) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
@@ -18,6 +18,6 @@ export const selectedCourseSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateSelectedCourse } = selectedCourseSlice.actions
+export const { updateSelectedStudent } = selectedStudentSlice.actions
 
-export default selectedCourseSlice.reducer
+export default selectedStudentSlice.reducer

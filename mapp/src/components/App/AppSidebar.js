@@ -1,13 +1,12 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {auth} from '../../firebase/firebase'
 import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectedCourse} from "../../store/slices/selectedCourseSlice";
+import {updateSelectedCourse} from "../../store/slices/selectedCourseSlice";
 import {Link} from "react-router-dom";
 
-function AppSidebar({courses, toggleModal, updateCourse}) {
+function AppSidebar({courses, toggleModal}) {
     const selectedCourse = useSelector((state) => state.selectedCourse.value)
     const dispatch = useDispatch()
     return (
@@ -47,7 +46,7 @@ function AppSidebar({courses, toggleModal, updateCourse}) {
                 courses.map((course, index) => {
                     return (
                         <Link
-                            onClick={() => dispatch(setSelectedCourse(course))} key={index}
+                            onClick={() => dispatch(updateSelectedCourse(course))} key={index}
                             className=' flex flex-row gap-4 items-center text-gray-600' to={`/course/${course.id}`}>
                             <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark}/>
                             <div

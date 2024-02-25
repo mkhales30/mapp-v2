@@ -9,22 +9,3 @@ export const customStyles = {
         },
     },
 };
-
-
-export const sessionsColumns = [
-    {
-        name: 'Date',
-        selector: (row) => row.sessionName,
-        sortable: true,
-    },
-    {
-        name: 'Attendance',
-        selector: (row) => row.attendance,
-        sortable: false,
-    },
-    {
-        name: 'Notes',
-        selector: (row) => row.notes,
-        sortable: false,
-    },
-];

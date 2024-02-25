@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import AppSidebar from "../components/App/AppSidebar";
 import {getCourses} from "../firebase/firestore";
 import {auth} from "../firebase/firebase";
-import {setSelectedCourse} from "../store/slices/selectedCourseSlice";
+import {updateSelectedCourse} from "../store/slices/selectedCourseSlice";
 import {useDispatch, useSelector} from "react-redux";
 import AddCourseModal from "../modals/AddCourseModal";
 
@@ -25,15 +25,16 @@ function AppLayout(props) {
             const response = await getCourses(auth.currentUser.uid);
             setCourses(response);
             if (selectedCourse === null) {
-                dispatch(setSelectedCourse(response.at(0)))
+                dispatch(updateSelectedCourse(response[0]))
             }
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
     };
 
-    const updateSelectedCourse = (selectedCourse) => {
-        dispatch(setSelectedCourse(selectedCourse))
+
+    const updateCourse = (selectedCourse) => {
+        dispatch(updateSelectedCourse(selectedCourse))
     }
 
     // Once this component is rendered this function will fire and call the fetchCourses method
@@ -46,7 +47,7 @@ function AppLayout(props) {
             <div className="grid grid-cols-4 h-screen">
                 <AppSidebar courses={courses}
                             toggleModal={toggleAddCourseModal}
-                            updateCourse={updateSelectedCourse}
+                            updateCourse={updateCourse}
                 />
 
                 <div className='col-span-3'>
