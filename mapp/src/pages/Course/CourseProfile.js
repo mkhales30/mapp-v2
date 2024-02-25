@@ -15,7 +15,6 @@ function CourseProfile() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [course, setCourse] = useState(null);
-    const [sessions, setSessions] = useState([]);
 
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
@@ -28,26 +27,6 @@ function CourseProfile() {
         setAddSessionModal(!addSessionModal);
     }
 
-    // These are the tabs of the navigation bar, and the tables these tabs show
-    const tabs = [{
-        label: "Students",
-        value: "Students",
-        table: <StudentsTable/>,
-    }, {
-        label: "Sessions",
-        value: "Sessions",
-        table: <SessionsTable data={sessions}/>,
-    },];
-
-    // This function fetches the sessions of a specific course from firestore
-    const fetchSessions = async (courseId) => {
-        try {
-            const sessionData = await getSessions(courseId);
-            setSessions(sessionData);
-        } catch (error) {
-            console.error('Error fetching sessions:', error);
-        }
-    };
 
     useEffect(() => {
             const fetchCourse = async () => {
@@ -71,8 +50,6 @@ function CourseProfile() {
                     <div>
                         <CourseBanner course={course}/>
                         <CourseNavigationBar
-                            tabs={tabs}
-                            selectedCourse={course}
                             toggleAddStudentModal={toggleAddStudentModal}
                             toggleAddSessionModal={toggleAddSessionModal}
                         />
@@ -89,8 +66,7 @@ function CourseProfile() {
 
             {/*Add Session Modal -> opens when the add session button is clicked */}
             {addSessionModal &&
-                <AddSessionModal course={course}
-                                 updateSessions={() => fetchSessions(course.id)}
+                <AddSessionModal
                                  toggleModal={toggleAddSessionModal}
                 />
             }

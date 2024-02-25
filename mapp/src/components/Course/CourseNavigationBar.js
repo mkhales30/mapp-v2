@@ -9,8 +9,23 @@ import {useNavigate} from "react-router-dom";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import StudentsTable from "../../../src/tables/StudentsTable";
 import SessionsTable from "../../tables/SessionsTable";
+import {useSelector} from "react-redux";
 
-export function CourseNavigationBar({toggleAddStudentModal, toggleAddSessionModal, selectedCourse, tabs}) {
+export function CourseNavigationBar({toggleAddStudentModal, toggleAddSessionModal}) {
+    // Get the selected course from the redux store
+    const selectedCourse = useSelector(state => state.selectedCourse.value);
+
+    // These are the tabs of the navigation bar, and the tables these tabs show
+    const tabs = [{
+        label: "Students",
+        value: "Students",
+        table: <StudentsTable/>,
+    }, {
+        label: "Sessions",
+        value: "Sessions",
+        table: <SessionsTable/>,
+    },];
+
 
     const [activeTab, setActiveTab] = useState("Students");
     const activeTabContext = useContext(ActiveTabContext)

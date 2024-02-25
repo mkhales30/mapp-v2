@@ -48,6 +48,7 @@ export async function addStudent(courseId, studentData) {
 // Function to add a session to a course
 export async function addSession(courseId, sessionData) {
     try {
+        console.log("Adding session:", courseId);
         const sessionsRef = collection(
             db,
             COLLECTIONS.COURSES,
@@ -115,6 +116,7 @@ export async function getStudents(courseId) {
 // Function to get sessions for a course
 export async function getSessions(courseId) {
     try {
+        console.log("Fetching sessions for course:", courseId);
         const sessions = [];
         const sessionsRef = collection(
             db,

@@ -1,25 +1,35 @@
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
-import {addSession} from "../firebase/firestore";
+import {addSession, getSessions} from "../firebase/firestore";
+import {useDispatch, useSelector} from "react-redux";
+import {updateSessions} from "../store/slices/sessionsSlice";
 
-function AddSessionModal({updateSessions, toggleModal, course}) {
+function AddSessionModal({toggleModal}) {
+    // This will be used to dispatch actions to the redux store
+    const dispatch = useDispatch();
 
-    // Add session Form Handler
+    //Get the selected course from the redux store
+    const course = useSelector(state => state.selectedCourse.value);
+
+    // Add session Form Data
     const [sessionData, setSessionData] = useState({
         sessionName: '',
     })
 
+    // Tracks the name and value of the modified input fields
     let name, value;
+    // Updates the form data when the input fields are modified
     const updateSessionData = (e) => {
         name = e.target.name;
         value = e.target.value;
         setSessionData({...sessionData, [name]: value})
     }
-
+    // Function to add a session to a course and update the redux store
     const handleAddSession = async () => {
         await addSession(course.id, sessionData);
-        updateSessions(); // Update sessions in the parent component
+        const sessions = await getSessions(course.id);
+        dispatch(updateSessions(sessions));
         toggleModal();
     };
 
