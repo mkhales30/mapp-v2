@@ -85,30 +85,6 @@ function Student() {
                                         </button>
                                     </div>
                                 </div>
-
-                                <div className='bg-green-200 rounded-2xl col-span-3'>
-                                    <div className='p-4'>
-                                        <div className='text-5xl text-green-950'>
-                                            {student.attendanceGrade ? student.attendanceGrade : '100'}%
-                                        </div>
-                                        <div>Attendance</div>
-                                    </div>
-                                    <div className='w-full bg-green-950 text-white rounded-b-2xl px-4 py-2'>
-                                        View All
-                                    </div>
-                                </div>
-
-                                <div className='bg-red-200 rounded-2xl col-span-3'>
-                                    <div className='p-4'>
-                                        <div className='text-5xl text-red-950'>
-                                            {student.absences ? student.absences : 0}
-                                        </div>
-                                        <div>Absences</div>
-                                    </div>
-                                    <div className='w-full bg-red-950 text-white rounded-b-2xl px-4 py-2'>
-                                        View All
-                                    </div>
-                                </div>
                             </div>
 
                             <div className='text-2xl font-medium mt-12'>Attendance Report</div>
