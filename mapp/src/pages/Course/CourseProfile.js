@@ -11,9 +11,11 @@ import StudentsTable from "../../tables/StudentsTable";
 import SessionsTable from "../../tables/SessionsTable";
 
 function CourseProfile() {
+    // This will be used to check if the course is loading
     const [isLoading, setIsLoading] = useState(true);
-
+    // Get the id passed as a parameter in the URL
     let {id} = useParams();
+    // Intialize the course state
     const [course, setCourse] = useState(null);
 
     // These variables are used to hide and show the various modals of the App

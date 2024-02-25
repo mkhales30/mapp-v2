@@ -13,14 +13,16 @@ function AddCourseModal({updateCourses, toggleModal}) {
         uid: auth.currentUser.uid
     })
 
+    // Track the name and value of the form inputs that are being updated
     let name, value;
+    // update the form data as the user types
     const updateCourseData = (e) => {
         name = e.target.name;
         value = e.target.value;
         setCourseData({...courseData, [name]: value})
     }
 
-    {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/
+    {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds the course  to the database*/
     }
     const handleAddCourse = async () => {
         await addCourse(courseData.courseName, courseData.courseSection, courseData.uid);

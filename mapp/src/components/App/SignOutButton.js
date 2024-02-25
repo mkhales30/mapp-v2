@@ -1,9 +1,11 @@
 import React from 'react';
 import {getAuth, signOut} from 'firebase/auth';
 
-function SignOutButton({}){
+function SignOutButton({}) {
+    // Get the auth object from the firebase app which stores the user's authentication state
     const auth = getAuth();
 
+    // This function will be called when the user clicks the sign out button
     const handleSignOut = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
@@ -20,6 +22,6 @@ function SignOutButton({}){
             Sign Out
         </button>
     );
-};
+}
 
 export default SignOutButton;

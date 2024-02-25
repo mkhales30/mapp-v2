@@ -9,7 +9,9 @@ function AuthLayout({ page, children }) {
             < div className='col-span-2 mx-8'>
 
                 <div className='flex flex-row w-full justify-end items-center gap-4 py-4 mb-28'>
+                    {/* If the page is the about page or the sign in page ask the user if they have an account */}
                     <p>{(page === 'about' || page === 'signIn') ? "Don't" : 'Already'} have an account? </p>
+
                     {page !== 'signIn' && (
                         <Link to={page === 'signUp' ? '/signIn' : '/signUp'}>
                             <button className='px-4 py-2 border border-black rounded-full'>

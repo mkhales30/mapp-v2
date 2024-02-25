@@ -8,24 +8,27 @@ import AddCourseModal from "../modals/AddCourseModal";
 import CourseBanner from "../components/Course/CourseBanner";
 
 function AppLayout(props) {
-
+    // State to store the courses
     const [courses, setCourses] = useState([]);
-
+    // Get the currently selected course from the redux store
     const selectedCourse = useSelector((state) => state.selectedCourse.value)
+   // Get the dispatch function from the redux store to dispatch actions
     const dispatch = useDispatch()
 
+    // set the state of the add course modal to false because it should not be open by default
     const [addCourseModal, setAddCourseModal] = useState(false);
 
+    // Function to toggle the add course modal
     const toggleAddCourseModal = () => {
         setAddCourseModal(!addCourseModal);
     }
 
-
-
+    // Function to fetch the courses from the firestore database
     const fetchCourses = async () => {
         try {
             const response = await getCourses(auth.currentUser.uid);
             setCourses(response);
+            // If there is no selected course, set the first course in the list as the currently eslected course
             if (selectedCourse === null) {
                 dispatch(updateSelectedCourse(response[0]))
             }
@@ -34,12 +37,12 @@ function AppLayout(props) {
         }
     };
 
-
+    // Update the currently selected course in the redux store
     const updateCourse = (selectedCourse) => {
         dispatch(updateSelectedCourse(selectedCourse))
     }
 
-    // Once this component is rendered this function will fire and call the fetchCourses method
+    // Once this component is rendered = it will fetch the courses from the database
     useEffect(() => {
         fetchCourses()
 

@@ -46,7 +46,7 @@ function AppRoutes({}) {
                        element={<ProtectedRoute element={StudentProfile}/>}
                 />
 
-               {/*Remove the following route later*/}
+               {/*Route that Redirects to first course*/}
                 <Route path="/" element={<ProtectedRoute element={App}/>}/>
 
             </Routes>
