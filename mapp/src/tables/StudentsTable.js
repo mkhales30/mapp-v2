@@ -10,16 +10,22 @@ import {useNavigate} from "react-router-dom";
 import {updateStudents} from "../store/slices/studentsSlice";
 
 function StudentsTable() {
+    // This will be used to navigate to the student profile page in the handleRowClick function
     const navigate = useNavigate();
+    // This will be used to dispatch actions to the redux store
     const dispatch = useDispatch();
 
+    // This will be used to set the loading state of the component
     const [isLoading, setIsLoading] = useState(true);
 
+    // Get the current state of the selected course from the redux store
     const selectedCourse = useSelector(state => state.selectedCourse);
-
+    // Getting the current state of the students from the redux store
     const students = useSelector(state => state.students);
+    // Getting the current state of the selected student from the redux store
     const selectedStudent = useSelector(state => state.selectedStudent);
 
+    // This useEffect will fetch the students of the selected course from firestore
     useEffect(() => {
         const fetchStudents = async () => {
             try {
@@ -38,14 +44,13 @@ function StudentsTable() {
 
     // Function to export all data to Excel
     const handleExportAllData = () => {
-
-        console.log("hello");
         const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(students);
+        const ws = XLSX.utils.json_to_sheet(students.value);
         XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
         XLSX.writeFile(wb, 'students_data.xlsx');
     };
 
+    // Function to handle row click
     const handleRowClick = (row) => {
         console.log(row)
         dispatch(updateSelectedStudent(row));
@@ -65,12 +70,12 @@ function StudentsTable() {
                     customStyles={customStyles}
                 />
 
-                {/*<button*/}
-                {/*    onClick={() => handleExportAllData()}*/}
-                {/*    className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>*/}
-                {/*    <div>Export All Data</div>*/}
+                <button
+                    onClick={() => handleExportAllData()}
+                    className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
+                    <div>Export All Data</div>
 
-                {/*</button>*/}
+                </button>
             </div>
         )}
     </>);
