@@ -31,10 +31,10 @@ function CourseBanner({breadCrumb, header}) {
                 {
                     breadCrumb && (
                         <div className='text-white -mt-16 pl-12 flex flex-row gap-2 items-center'>
-                            <div className='hover:cursor-pointer hover:underline'
-                                 onClick={() => dispatch(updateSelectedCourse(course))}>
+                            <Link className='hover:cursor-pointer hover:underline'
+                                 onClick={() => dispatch(updateSelectedCourse(course))} to={`/course/${course.id}`}>
                                 {course?.courseName}
-                            </div>
+                            </Link>
                             <FontAwesomeIcon className='w-2' icon={faChevronRight}/>
                             <div>{breadCrumb}</div>
                         </div>

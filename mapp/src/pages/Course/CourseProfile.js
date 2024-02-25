@@ -11,21 +11,18 @@ import StudentsTable from "../../tables/StudentsTable";
 import SessionsTable from "../../tables/SessionsTable";
 
 function CourseProfile() {
-    let {id} = useParams();
     const [isLoading, setIsLoading] = useState(true);
 
+    let {id} = useParams();
     const [course, setCourse] = useState(null);
 
+    // These variables are used to hide and show the various modals of the App
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
 
-    const toggleAddStudentModal = () => {
-        setAddStudentModal(!addStudentModal);
-    }
-
-    const toggleAddSessionModal = () => {
-        setAddSessionModal(!addSessionModal);
-    }
+    // Toggles for the modals to show/hide them
+    const toggleAddStudentModal = () => {setAddStudentModal(!addStudentModal);}
+    const toggleAddSessionModal = () => {setAddSessionModal(!addSessionModal);}
 
 
     useEffect(() => {
@@ -46,25 +43,23 @@ function CourseProfile() {
     return (
         <AppLayout>
             {
-                isLoading ? <p>Loading...</p> : (
-                    <div>
-                        <CourseBanner course={course}/>
-                        <CourseNavigationBar
-                            toggleAddStudentModal={toggleAddStudentModal}
-                            toggleAddSessionModal={toggleAddSessionModal}
-                        />
-                    </div>
-                )
+                isLoading ? <p>Loading...</p> :
+                    (
+                        <div>
+                            <CourseBanner course={course}/>
+                            <CourseNavigationBar
+                                toggleAddStudentModal={toggleAddStudentModal}
+                                toggleAddSessionModal={toggleAddSessionModal}
+                            />
+                        </div>
+                    )
             }
 
             {/*Add Student Modal -> opens when the add student button is clicked */}
             {addStudentModal && <AddStudentModal toggleModal={toggleAddStudentModal}/>}
 
             {/*Add Session Modal -> opens when the add session button is clicked */}
-            {addSessionModal &&
-                <AddSessionModal
-                                 toggleModal={toggleAddSessionModal}
-                />
+            {addSessionModal && <AddSessionModal toggleModal={toggleAddSessionModal}/>
             }
 
         </AppLayout>

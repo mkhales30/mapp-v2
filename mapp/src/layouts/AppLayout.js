@@ -5,6 +5,7 @@ import {auth} from "../firebase/firebase";
 import {updateSelectedCourse} from "../store/slices/selectedCourseSlice";
 import {useDispatch, useSelector} from "react-redux";
 import AddCourseModal from "../modals/AddCourseModal";
+import CourseBanner from "../components/Course/CourseBanner";
 
 function AppLayout(props) {
     const [courses, setCourses] = useState([]);

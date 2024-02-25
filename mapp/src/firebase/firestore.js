@@ -75,6 +75,18 @@ export async function getCourse(courseId) {
     }
 }
 
+// This function fetches a specific student from the database
+export async function getStudent(courseId, studentId) {
+    try {
+        const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
+        const docSnap = await getDoc(studentRef);
+        return docSnap.data();
+    } catch (error) {
+        console.error("Error fetching student:", error);
+        throw error;
+    }
+}
+
 
 // Function to get courses for a user
 export async function getCourses(uid) {
@@ -140,6 +152,7 @@ export async function getSessions(courseId) {
 
 export async function deleteStudent(courseId, studentId) {
     try {
+        console.log(courseId, studentId)
         // Construct the path to the specific student document
         const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
 
