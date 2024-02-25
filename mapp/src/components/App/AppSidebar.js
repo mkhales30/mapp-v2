@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateSelectedCourse} from "../../store/slices/selectedCourseSlice";
 import {Link} from "react-router-dom";
 
-function AppSidebar({courses, toggleModal}) {
+function AppSidebar({courses, toggleModal, updateCourse}) {
     const selectedCourse = useSelector((state) => state.selectedCourse.value)
     const dispatch = useDispatch()
     return (

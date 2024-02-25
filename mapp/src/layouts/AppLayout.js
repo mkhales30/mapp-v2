@@ -8,6 +8,7 @@ import AddCourseModal from "../modals/AddCourseModal";
 import CourseBanner from "../components/Course/CourseBanner";
 
 function AppLayout(props) {
+
     const [courses, setCourses] = useState([]);
 
     const selectedCourse = useSelector((state) => state.selectedCourse.value)
@@ -41,6 +42,7 @@ function AppLayout(props) {
     // Once this component is rendered this function will fire and call the fetchCourses method
     useEffect(() => {
         fetchCourses()
+
     }, []);
 
     return (

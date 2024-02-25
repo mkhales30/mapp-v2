@@ -26,10 +26,11 @@ function Student() {
     const handleClickRemove = async () => {
         console.log("Remove Pressed")
         try {
+            console.log("student id is," + student.id)
             // Access courseId
-            await deleteStudent(course.id, student.id);
+            await deleteStudent(course.id, id);
             // Redirect to the previous page
-            navigate('/');
+            navigate('/course/' + course.id )
         } catch (error) {
             console.error("Error deleting student:", error);
         }
@@ -37,11 +38,9 @@ function Student() {
 
     // This useEffect function fetches the student data from the database
     useEffect(() => {
-            console.log("Fetching student")
             const fetchStudent = async () => {
                 try {
                     const response = await getStudent(course.id, id);
-                    console.log(response)
                     setStudent(response);
                     setIsLoading(false);
                 } catch (error) {
@@ -55,7 +54,7 @@ function Student() {
     return (
         <AppLayout>
             {
-                isLoading ? <p>Loading</p> : (
+                isLoading ? <p>Loading...</p> : (
                     <>
                         <CourseBanner header={student.firstName + ' ' + student.lastName}/>
                         <div className='mx-12 py-4'>
