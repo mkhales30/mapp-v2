@@ -58,11 +58,7 @@ function CourseProfile() {
             }
 
             {/*Add Student Modal -> opens when the add student button is clicked */}
-            {addStudentModal &&
-                <AddStudentModal course={course}
-                                 toggleModal={toggleAddStudentModal}
-                />
-            }
+            {addStudentModal && <AddStudentModal toggleModal={toggleAddStudentModal}/>}
 
             {/*Add Session Modal -> opens when the add session button is clicked */}
             {addSessionModal &&
