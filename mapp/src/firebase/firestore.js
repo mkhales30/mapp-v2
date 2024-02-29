@@ -8,6 +8,7 @@ import {
   where,
   doc,
   deleteDoc,
+  updateDoc
 } from "firebase/firestore";
 
 // Constants for collection names
@@ -44,6 +45,27 @@ export async function addStudent(courseId, studentData) {
   }
 }
 
+// Function to edit a student's data
+export async function editStudent(courseId, studentId, newData) {
+  try {
+    const studentRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.STUDENTS,
+      studentId
+    );
+
+    console.log("Student reference:", studentRef);
+    await updateDoc(studentRef, newData);
+    const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.STUDENTS}/${studentId}`;
+    console.log("Student data updated successfully!", path);
+  } catch (error) {
+    console.error("Error editing student data in:", error);
+    throw error;
+  }
+}
+
 // Function to add a session to a course
 export async function addSession(courseId, sessionData) {
   try {
@@ -57,6 +79,27 @@ export async function addSession(courseId, sessionData) {
     return docRef.id;
   } catch (error) {
     console.error("Error adding session:", error);
+    throw error;
+  }
+}
+
+// Function to edit a session's data
+export async function editSession(courseId, sessionId, newData) {
+  try {
+    const sessionRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.SESSIONS,
+      sessionId
+    );
+
+    console.log("Session reference:", sessionRef);
+    await updateDoc(sessionRef, newData);
+    const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.SESSIONS}/${sessionId}`;
+    console.log("Session data updated successfully!", path);
+  } catch (error) {
+    console.error("Error editing session data:", error);
     throw error;
   }
 }
@@ -81,20 +124,20 @@ export async function getCourses(uid) {
 // Function to get students for a course
 export async function getStudents(courseId) {
   try {
-      const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
-      const q = query(studentsRef);
-      const querySnapshot = await getDocs(q);
+    const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
+    const q = query(studentsRef);
+    const querySnapshot = await getDocs(q);
 
-      const students = querySnapshot.docs.map(doc => ({ 
-          ...doc.data(), 
-          id: doc.id, 
-          courseId: courseId 
-      }));
+    const students = querySnapshot.docs.map(doc => ({
+      ...doc.data(),
+      id: doc.id,
+      courseId: courseId
+    }));
 
-      return students;
+    return students;
   } catch (error) {
-      console.error('Error fetching students:', error);
-      throw error; // Re-throw to allow app to handle if needed
+    console.error('Error fetching students:', error);
+    throw error; // Re-throw to allow app to handle if needed
   }
 }
 
@@ -126,23 +169,23 @@ export async function getSessions(courseId) {
 export async function deleteStudent(courseId, studentId) {
   try {
     // Construct the path to the specific student document
-    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId); 
+    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
 
     await deleteDoc(studentRef);
   } catch (error) {
     console.error("Error deleting student:", error);
-    throw error; 
+    throw error;
   }
 }
 
 export async function deleteCourse(courseId) {
-  try {  
-      const courseRef = doc(db, COLLECTIONS.COURSES, courseId); 
-      await deleteDoc(courseRef);
+  try {
+    const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
+    await deleteDoc(courseRef);
 
   } catch (error) {
-      console.error("Error deleting course:", error);
-      throw error;  
+    console.error("Error deleting course:", error);
+    throw error;
   }
 }
 
