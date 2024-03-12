@@ -1,6 +1,8 @@
 import {db} from './firebase'
 import {
+
     addDoc, collection, getDocs, onSnapshot, query, where, doc, deleteDoc, updateDoc
+
 } from "firebase/firestore";
 
 /* COLLECTIONS: An object that holds the names of the collections in the Firestore database */
@@ -57,11 +59,13 @@ export async function addStudent(courseId, studentData) {
     }
 }
 
+
 /* addSession: Adds a session to a course
     * @param courseId -  The id of the course
     * @param sessionData - The data of the session
     * @returns - The id of the session
  */
+
 export async function addSession(courseId, sessionData) {
     try {
         const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
@@ -73,10 +77,12 @@ export async function addSession(courseId, sessionData) {
     }
 }
 
+
 /* getCourses: Gets all courses for a user
     * @param uid -  The user id of the logged-in user
     * @returns - An array of courses
  */
+
 export async function getCourses(uid) {
     return new Promise((resolve, reject) => {
         const courses = []
@@ -97,6 +103,7 @@ export async function getCourses(uid) {
     * @param courseId -  The id of the course
  */
 export async function getStudents(courseId) {
+
     try {
         const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
         const q = query(studentsRef);
@@ -111,6 +118,7 @@ export async function getStudents(courseId) {
         console.error('Error fetching students:', error);
         throw error; // Re-throw to allow app to handle if needed
     }
+
 }
 
 
@@ -142,6 +150,7 @@ export async function getSessions(courseId) {
 
  */
 export async function deleteStudent(courseId, studentId) {
+
     try {
         // Construct the path to the specific student document
         const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
@@ -151,12 +160,14 @@ export async function deleteStudent(courseId, studentId) {
         console.error("Error deleting student:", error);
         throw error;
     }
+
 }
 
 /* deleteCourse: Deletes a course
     * @param courseId -  The id of the course
  */
 export async function deleteCourse(courseId) {
+
     try {
         const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
         await deleteDoc(courseRef);
@@ -165,6 +176,8 @@ export async function deleteCourse(courseId) {
         console.error("Error deleting course:", error);
         throw error;
     }
+
+ 
 }
 
 /* deleteSession: Deletes a session from a course

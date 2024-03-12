@@ -1,3 +1,4 @@
+
 import React, {useContext, useState} from "react";
 import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/react";
 import {ActiveTabContext} from "../../contexts/ActiveTabContext";
@@ -14,6 +15,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                 <div className="grow">
                     <TabsHeader className="flex gap-8 font-light text-gray-500 border-b rounded-none w-full">
                         {data.map(({label, value}) => (
+
                             <Tab
                                 key={value}
                                 value={value}
@@ -27,16 +29,20 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                 </div>
 
                 <div className="flex flex-row">
+
                     <button
                         disabled={!selectedCourse}
                         className={activeTab === "Students" ? "flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 t  text-white text-center px-4 py-2 rounded text-sm" : "hidden"}
                         onClick={toggleAddStudentModal}>
+
                         <div className="text-xs"> New Student</div>
                         <FontAwesomeIcon icon={faPlus}/>
+
                     </button>
 
                     <button
                         disabled={!selectedCourse}
+
                         className={activeTab === "Sessions" ? "flex flex-row gap-2 items-center block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm" : "hidden"}
                         onClick={toggleAddSessionModal}>
                         <div className="text-xs"> New Session</div>
@@ -44,6 +50,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                     </button>
                     {/*
                  Add the Export Data button
+
                      <button
                         disabled={!selectedCourse}
                         className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'
@@ -53,6 +60,7 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
 
                     </button>
                     */}
+
                 </div>
             </div>
 

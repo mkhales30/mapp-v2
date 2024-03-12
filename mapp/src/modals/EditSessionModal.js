@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
 import { updateSession } from '../firebase/firestore';
 
 function EditSessionModal({ course, session, toggleModal, updateSessions, updateSelectedSession, updateSelectedCourse }) {
@@ -68,6 +69,7 @@ function EditSessionModal({ course, session, toggleModal, updateSessions, update
       </div>
     </div>
   );
+
 }
 
 export default EditSessionModal;

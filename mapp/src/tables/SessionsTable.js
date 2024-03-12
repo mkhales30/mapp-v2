@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles, sessionsColumns } from "./customStyles";
@@ -6,6 +7,7 @@ import EditSessionModal from '../modals/EditSessionModal';
 function SessionsTable({ data, updateSelectedSession, courseId, updateSessions }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
+
 
   const handleRowClick = (row) => {
     updateSelectedSession(row);
@@ -16,9 +18,11 @@ function SessionsTable({ data, updateSelectedSession, courseId, updateSessions }
     setShowEditModal(true);
   };
 
+
   const handleCloseEditModal = () => {
     setShowEditModal(false);
   };
+
 
   const columnsWithActions = [...sessionsColumns, {
     name: 'Actions',
@@ -50,6 +54,7 @@ function SessionsTable({ data, updateSelectedSession, courseId, updateSessions }
       )}
     </div>
   );
+
 };
 
 export default SessionsTable;
