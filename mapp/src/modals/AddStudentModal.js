@@ -18,58 +18,63 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
 
     const [allStudents, setAllStudents] = useState([]);
 
-  
-    const updateStudentData = (e) => {
-        const { name, value } = e.target;  
-        const isEmailField = name === 'email';  
-      
-        setStudentData((prevState) => ({
-          ...prevState,
-          [name]: value, 
-          isEmailValid: isEmailField ? isValidEmail(value) : prevState.isEmailValid // Validate upon 'email' field changes
-        }));
-      };
+  const updateStudentData = (e) => {
+    const { name, value } = e.target;
+    const isEmailField = name === 'email';
 
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    setStudentData((prevState) => ({
+      ...prevState,
+      [name]: value,
+      isEmailValid: isEmailField ? isValidEmail(value) : prevState.isEmailValid
+    }));
+  };
+
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const handleAddStudent = async (e) => {
+    e.preventDefault();
+
+    if (studentData.selectedStudent) {
+      // Enroll existing student
+      const isEnrolled = await isStudentEnrolled(studentData.selectedStudent, course.id);
+      if (isEnrolled) {
+        alert('The selected student is already enrolled in this course.');
+        return;
       }
-  
-      const handleAddStudent = async (e) => {
-        e.preventDefault();
-      
-        if (!studentData.selectedStudent) {
-          alert('Please select a student to enroll.');
-          return;
-        }
-      
-        const isEnrolled = await isStudentEnrolled(studentData.selectedStudent, course.id);
-        if (isEnrolled) {
-          alert('The selected student is already enrolled in this course.');
-          return;
-        }
-      
-        await addEnrollment(studentData.selectedStudent, course.id);
-        updateStudents();
-        toggleModal();
-      };
 
-      useEffect(() => {
-        const fetchAllStudents = async () => {
-          try {
-            const students = await getAllStudents();
-            setAllStudents(students);
-          } catch (error) {
-            console.error('Error fetching all students:', error);
-          }
-        };
-      
-        fetchAllStudents();
-      }, []);
+      await addEnrollment(studentData.selectedStudent, course.id);
+    } else {
+      // Add new student
+      if (!studentData.firstName || !studentData.lastName || !studentData.email || !studentData.isEmailValid) {
+        alert('Please fill all required fields with valid input.');
+        return;
+      }
+
+      const studentId = await addStudent(studentData);
+      await addEnrollment(studentId, course.id);
+    }
+
+    updateStudents();
+    toggleModal();
+  };
+
+  useEffect(() => {
+    const fetchAllStudents = async () => {
+      try {
+        const students = await getAllStudents();
+        setAllStudents(students);
+      } catch (error) {
+        console.error('Error fetching all students:', error);
+      }
+    };
+
+    fetchAllStudents();
+  }, []);
 
     return (
-
-      
         <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
             <div
                 className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
@@ -83,18 +88,18 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
                     </button>
                     <form className="flex flex-col gap-2 ">
                     <div className='flex flex-col gap-1'>
-  <label className='font-light text-gray-600 text-sm'>Select Student</label>
+                    <label className='font-light text-gray-600 text-sm'>Select Existing Student (Optional)</label>
   <select
-    name="selectedStudent"
-    className='border-gray-200 border rounded w-full p-2 focus:outline-0'
-    value={studentData.selectedStudent}
-    onChange={updateStudentData}
-  >
-    <option value="">Select a student</option>
-    {allStudents.map(student => (
-      <option key={student.id} value={student.id}>
-        {student.firstName} {student.lastName}
-      </option>
+            name="selectedStudent"
+            className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+            value={studentData.selectedStudent}
+            onChange={updateStudentData}
+          >
+    <option value="">-- Select --</option>
+            {allStudents.map(student => (
+              <option key={student.id} value={student.id}>
+                {student.firstName} {student.lastName}
+              </option>
     ))}
   </select>
 </div>
