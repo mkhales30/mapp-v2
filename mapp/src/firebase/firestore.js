@@ -8,6 +8,7 @@ import {
   where,
   doc,
   deleteDoc,
+  updateDoc
 } from "firebase/firestore";
 
 // Constants for collection names
@@ -134,6 +135,25 @@ export async function deleteStudent(courseId, studentId) {
     throw error; 
   }
 }
+
+// Function to update enrollment status for a student
+export async function updateEnrollmentStatus(courseId, studentId, newStatus) {
+  try {
+    // Construct the path to the specific student document
+    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
+
+    // Update the enrollment status field
+    await updateDoc(studentRef, {
+      enrollmentStatus: newStatus,
+    });
+
+    console.log(`Enrollment status updated to ${newStatus} for student ${studentId}`);
+  } catch (error) {
+    console.error("Error updating enrollment status:", error);
+    throw error;
+  }
+}
+
 
 export async function deleteCourse(courseId) {
   try {  

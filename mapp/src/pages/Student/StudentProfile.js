@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import QRCode from './QRCode';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { deleteStudent } from '../../firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { updateEnrollmentStatus } from '../../firebase/firestore';
 
 function Student({ student,courseId }) {
   // Access student document ID directly
@@ -24,6 +25,35 @@ function Student({ student,courseId }) {
       console.error("Error deleting student:", error);
     }
   };
+
+
+  const [enrollmentStatus, setEnrollmentStatus] = useState('Enrolled');
+  const handleEnrollmentClick = async () => {
+    try {
+      let newStatus;
+      switch (enrollmentStatus) {
+        case 'Enrolled':
+          newStatus = 'Dropped';
+          break;
+        case 'Dropped':
+          newStatus = 'Withdrawn';
+          break;
+        case 'Withdrawn':
+          newStatus = 'Enrolled';
+          break;
+        default:
+          newStatus = 'Enrolled';
+      }
+  
+      // Update the enrollment status in Firestore
+      await updateEnrollmentStatus(courseId, student.id, newStatus);
+  
+      // Update the local state
+      setEnrollmentStatus(newStatus);
+    } catch (error) {
+      console.error("Error updating enrollment status:", error);
+    }
+  };
     
   return (
     <div>
@@ -41,12 +71,12 @@ function Student({ student,courseId }) {
 
           <div className='col-span-3'>
             <div className='flex flex-row gap-2 place-content-end'>
-              <button className='flex flex-row gap-2 rounded text-white text-sm px-4 py-2 bg-black'>
-                <p>Enrolled</p>
-                <a href="#">
-                  <FontAwesomeIcon icon={faChevronDown} />
-                </a>
-              </button>
+            <button onClick={handleEnrollmentClick} className={`flex flex-row gap-2 rounded text-white text-sm px-4 py-2 ${enrollmentStatus.toLowerCase()} ${enrollmentStatus.toLowerCase() === 'enrolled' ? 'bg-green-700' : enrollmentStatus.toLowerCase() === 'dropped' ? 'bg-yellow-600' : 'bg-red-700'}`}>
+              <p>{enrollmentStatus}</p>
+              <a href="#">
+                <FontAwesomeIcon icon={faChevronDown} />
+              </a>
+            </button>
 
               <button onClick= {handleClickRemove} className='hover:text-red-600 hover:border-red-600 text-gray-400 font-light text-xs py-2 px-4 border-gray-300-50 border-2 rounded'
               >
