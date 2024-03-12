@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles } from "./customStyles";
 import * as XLSX from 'xlsx';
-import { getCourses, getStudents } from '../firebase/firestore';
+import { getCourses, getStudents,toggleRefreshStudents } from '../firebase/firestore';
 import { auth } from '../firebase/firebase';
 import EditStudentModal from '../modals/EditStudentModal';
 
 
-function StudentsTable({ data, updateSelectedStudent }) {
+function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents  }) {
     // State variables
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(() => {
@@ -34,21 +34,19 @@ function StudentsTable({ data, updateSelectedStudent }) {
 
     // Fetch courses from firestore and set selected course
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const coursesData = await fetchCourses();
-                if (!selectedCourse && coursesData.length > 0) {
-                    setSelectedCourse(coursesData[0]);
-                    localStorage.setItem('selectedCourse', JSON.stringify(coursesData[0]));
-                }
-            } catch (error) {
-                console.error('Error fetching courses:', error);
+        const fetchStudents = async () => {
+          try {
+            if (selectedCourse) {
+              const studentsData = await getStudents(selectedCourse.id);
+              setStudents(studentsData);
             }
+          } catch (error) {
+            console.error('Error fetching students:', error);
+          }
         };
-
-        fetchData();
-
-    }, [selectedCourse]);
+      
+        fetchStudents();
+      }, [selectedCourse]);
 
     // Function to update selected course
     const updateSelectedCourse = (course) => {
@@ -164,6 +162,7 @@ function StudentsTable({ data, updateSelectedStudent }) {
                     toggleModal={handleModalClose}
                     updateSelectedCourse={updateSelectedCourse}
                     courses={courses}
+                    toggleRefreshStudents={toggleRefreshStudents}
                 />
             )}
         </div>

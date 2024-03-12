@@ -31,6 +31,12 @@ function App() {
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
 
+    const [refreshStudents, setRefreshStudents] = useState(false);
+
+    const toggleRefreshStudents = () => {
+        setRefreshStudents((prevState) => !prevState);
+      };
+
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
         console.log("Selected Student", selectedStudent)
@@ -105,15 +111,15 @@ function App() {
     // Once this component is rendered this function will fire and call the fetchCourses method
     useEffect(() => {
         let data = [];
-        fetchCourses()
-    }, []);
+        fetchCourses();
+      }, [refreshStudents]);
 
     // These are the tabs of the navigation bar, and the tables these tabs show
 
     const tabs = [{
         label: "Students",
         value: "Students",
-        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
+        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students} toggleRefreshStudents={toggleRefreshStudents}/>,
     }, {
         label: "Sessions",
         value: "Sessions",
@@ -166,7 +172,7 @@ function App() {
                               breadCrumb="Student"
                               header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
                               updateCourses={updateSelectedCourse}/>
-                <StudentProfile student={selectedStudent} courseId={selectedCourse.id}/>
+                <StudentProfile student={selectedStudent} courseId={selectedCourse.id} toggleRefreshStudents={toggleRefreshStudents}/>
             </div>}
 
             {/*Session Profile -> opens when there is a selectedSession*/}

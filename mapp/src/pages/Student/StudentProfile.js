@@ -2,10 +2,10 @@ import React from 'react';
 import QRCode from './QRCode';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { deleteStudent } from '../../firebase/firestore';
+import { removeStudentFromCourse } from '../../firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-function Student({ student,courseId }) {
+function Student({ student,courseId, toggleRefreshStudents }) {
   // Access student document ID directly
   const studentDocumentId = student.id;
   console.log(courseId);
@@ -16,12 +16,11 @@ function Student({ student,courseId }) {
   const handleClickRemove = async () => {
     console.log("Remove Pressed")
     try {
-      // Access courseId 
-      await deleteStudent(courseId, student.id); 
-      // Redirect to the previous page
+      await removeStudentFromCourse(student.id, courseId);
+      toggleRefreshStudents();
       navigate('/');
     } catch (error) {
-      console.error("Error deleting student:", error);
+      console.error("Error removing student from course:", error);
     }
   };
     

@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
-import {addStudent} from "../firebase/firestore";
-
+import {addStudent,updateDoc, doc, arrayUnion} from "../firebase/firestore";
+import { db } from '../firebase/firebase';
+import { isStudentEmailUnique,addEnrollment,isStudentEnrolled } from '../firebase/firestore';
+import { useEffect } from 'react';
+import { getAllStudents } from '../firebase/firestore';
 function AddStudentModal({ course, toggleModal, updateStudents }) {
     const [studentData, setStudentData] = useState({
       firstName: '',
@@ -12,6 +15,9 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
       enrollmentStatus: 'Enrolled',
       attendanceGrade: '100',
     });
+
+    const [allStudents, setAllStudents] = useState([]);
+
   
     const updateStudentData = (e) => {
         const { name, value } = e.target;  
@@ -29,21 +35,41 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
         return emailRegex.test(email);
       }
   
-    const handleAddStudent = async (e) => {
-      e.preventDefault(); // Prevent form submission
-  
-      // Check for empty fields
-      if (!studentData.firstName || !studentData.lastName || !studentData.email || !studentData.isEmailValid) { 
-        alert('Please fill all required fields with valid input.');
-        return;
-      }
-  
-      await addStudent(course.id, studentData);
-      updateStudents();
-      toggleModal();
-    };
+      const handleAddStudent = async (e) => {
+        e.preventDefault();
+      
+        if (!studentData.selectedStudent) {
+          alert('Please select a student to enroll.');
+          return;
+        }
+      
+        const isEnrolled = await isStudentEnrolled(studentData.selectedStudent, course.id);
+        if (isEnrolled) {
+          alert('The selected student is already enrolled in this course.');
+          return;
+        }
+      
+        await addEnrollment(studentData.selectedStudent, course.id);
+        updateStudents();
+        toggleModal();
+      };
+
+      useEffect(() => {
+        const fetchAllStudents = async () => {
+          try {
+            const students = await getAllStudents();
+            setAllStudents(students);
+          } catch (error) {
+            console.error('Error fetching all students:', error);
+          }
+        };
+      
+        fetchAllStudents();
+      }, []);
 
     return (
+
+      
         <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
             <div
                 className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
@@ -56,6 +82,22 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
                                          icon={faX}/>
                     </button>
                     <form className="flex flex-col gap-2 ">
+                    <div className='flex flex-col gap-1'>
+  <label className='font-light text-gray-600 text-sm'>Select Student</label>
+  <select
+    name="selectedStudent"
+    className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+    value={studentData.selectedStudent}
+    onChange={updateStudentData}
+  >
+    <option value="">Select a student</option>
+    {allStudents.map(student => (
+      <option key={student.id} value={student.id}>
+        {student.firstName} {student.lastName}
+      </option>
+    ))}
+  </select>
+</div>
                         <div className='flex flex-col gap-1'>
                             <label className='font-light text-gray-600 text-sm'>First Name</label>
                             <input
