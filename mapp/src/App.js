@@ -13,6 +13,8 @@ import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import EditCourseModal from './modals/EditCourseModal'
 
+
+
 function App() {
 
     // Students, Sessions and Courses collection will be stored in their respective variable
@@ -91,7 +93,7 @@ function App() {
     const fetchStudents = async (courseID) => {
         try {
             const response = await getStudents(courseID);
-            setStudents(response);
+            setStudents(response.map(student => ({...student}))); // No longer necessary!!
         } catch (error) {
             console.error('Error fetching students:', error);
         }
@@ -124,6 +126,7 @@ function App() {
         value: "Sessions",
         table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
     },];
+
 
 
     return (<>
@@ -179,7 +182,7 @@ function App() {
                               breadCrumb="Student"
                               header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
                               updateCourses={updateSelectedCourse}/>
-                <StudentProfile student={selectedStudent}/>
+                <StudentProfile student={selectedStudent} courseId={selectedCourse.id}/>
             </div>}
 
             {/*Session Profile -> opens when there is a selectedSession*/}

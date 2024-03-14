@@ -2,11 +2,29 @@ import React from 'react';
 import QRCode from './QRCode';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { deleteStudent } from '../../firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
-function Student({ student }) {
+function Student({ student,courseId }) {
   // Access student document ID directly
   const studentDocumentId = student.id;
+  console.log(courseId);
+  const navigate = useNavigate();
 
+
+  //handleDeleteStudent -> this function fires once the remove from class button is pressed, it then deletes the student from the database
+  const handleClickRemove = async () => {
+    console.log("Remove Pressed")
+    try {
+      // Access courseId 
+      await deleteStudent(courseId, student.id); 
+      // Redirect to the previous page
+      navigate('/');
+    } catch (error) {
+      console.error("Error deleting student:", error);
+    }
+  };
+    
   return (
     <div>
       <div className='mx-12 py-4'>
@@ -30,8 +48,7 @@ function Student({ student }) {
                 </a>
               </button>
 
-              <button
-                className='hover:text-red-600 hover:border-red-600 text-gray-400 font-light text-xs py-2 px-4 border-gray-300-50 border-2 rounded'
+              <button onClick= {handleClickRemove} className='hover:text-red-600 hover:border-red-600 text-gray-400 font-light text-xs py-2 px-4 border-gray-300-50 border-2 rounded'
               >
                 Remove from class
               </button>

@@ -8,20 +8,33 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
       firstName: '',
       lastName: '',
       email: '',
+      isEmailValid: false, // Track Email Validity
       enrollmentStatus: 'Enrolled',
       attendanceGrade: '100',
     });
   
     const updateStudentData = (e) => {
-      setStudentData({ ...studentData, [e.target.name]: e.target.value });
-    };
+        const { name, value } = e.target;  
+        const isEmailField = name === 'email';  
+      
+        setStudentData((prevState) => ({
+          ...prevState,
+          [name]: value, 
+          isEmailValid: isEmailField ? isValidEmail(value) : prevState.isEmailValid // Validate upon 'email' field changes
+        }));
+      };
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
   
     const handleAddStudent = async (e) => {
       e.preventDefault(); // Prevent form submission
   
       // Check for empty fields
-      if (!studentData.firstName || !studentData.lastName || !studentData.email) {
-        alert('Please fill in all required fields.');
+      if (!studentData.firstName || !studentData.lastName || !studentData.email || !studentData.isEmailValid) { 
+        alert('Please fill all required fields with valid input.');
         return;
       }
   
@@ -65,14 +78,17 @@ function AddStudentModal({ course, toggleModal, updateStudents }) {
                         </div>
 
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Email</label>
+                        <label className='font-light text-gray-600 text-sm'>Email</label>
                             <input
                                 name="email"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${!studentData.isEmailValid ? 'border-red-500' : ''}`} // Add Error Styling
                                 value={studentData.email}
                                 onChange={updateStudentData}
                             />
+                                {!studentData.isEmailValid && (
+                                <p className="text-xs text-red-500">Please enter a valid email address.</p>
+                            )} 
                         </div>
 
                     </form>
