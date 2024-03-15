@@ -129,19 +129,12 @@ function SessionProfile({session, course}) {
                     Scanning
                 </button>
 
-                <div className='col-span-1 row-span-1 flex flex-col text-gray-900 bg-gray-200 px-4 py-4 rounded-3xl'>
-                    <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faQrcode}/>
-                    <div className='font-light'>Scan in Students</div>
-                    {scanResult ?
-                        <div> Success: <a className='text-green-500' href={scanResult}>{scanResult}</a></div> :
-                        <div id="reader"></div>}
-                </div>
-                <div className="delete-session-area">
-                    <button onClick={handleDeleteSession}
-                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
-                        Delete Session
-                    </button>
-                </div>
+                {/*<div className="delete-session-area">*/}
+                {/*    <button onClick={handleDeleteSession}*/}
+                {/*            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">*/}
+                {/*        Delete Session*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </div>
             <SessionsAttendanceTable data={attendanceData}/>
             {scannerModal &&

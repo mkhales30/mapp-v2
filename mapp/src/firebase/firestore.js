@@ -58,28 +58,44 @@ export async function addStudent(courseId, studentData) {
 
 export async function recordAttendance(courseId, studentId, sessionId) {
     try {
+
         // Creating reference to course
         const courseRef = doc(db, COLLECTIONS.COURSES, courseId)
         // Creating reference to Student document in the course
         const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId)
         // Creating reference to session
         const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId)
+
         // Checking if student,course and session record exists
         const student = await getDoc(studentRef);
         const course = await getDoc(courseRef);
         const session = await getDoc(sessionRef);
-        // Creating a attendance record if so
-        if (student.exists() && course.exists() && session.exists()) {
-            addDoc(collection(db, COLLECTIONS.ATTENDANCE), {
-                courseRef,
-                studentRef,
-                sessionRef,
-                status: "Present",
-            })
-        } else {
-            // docSnap.data() will be undefined in this case
-            console.log("No such document!");
+
+       // Creating a query to check if the student has already been marked present for the session
+        const q = query(collection(db, COLLECTIONS.ATTENDANCE), where('studentRef', '==', studentRef), where('sessionRef', '==', sessionRef));
+        // Execute the query
+        const querySnapshot = await getDocs(q);
+
+        // If attendance record already exists, do nothing
+        if (!querySnapshot.empty) {
+            // do nothing
         }
+        // However, if attendance record does not exist, record the attendance of the student
+        else{
+            // Creating a attendance record if the student does not have one for the session
+            if (student.exists() && course.exists() && session.exists()) {
+                addDoc(collection(db, COLLECTIONS.ATTENDANCE), {
+                    courseRef,
+                    studentRef,
+                    sessionRef,
+                    status: "Present",
+                })
+            } else {
+                // docSnap.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }
+
     } catch (error) {
         console.error('Error recording attendance')
     }

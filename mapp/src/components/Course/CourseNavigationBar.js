@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
-import { Tab, TabPanel, Tabs, TabsBody, TabsHeader, } from "@material-tailwind/react";
-import { ActiveTabContext } from "../../contexts/ActiveTabContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import React, {useContext, useState} from "react";
+import {Tab, TabPanel, Tabs, TabsBody, TabsHeader,} from "@material-tailwind/react";
+import {ActiveTabContext} from "../../contexts/ActiveTabContext";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import handleExportAllData from "../../../src/tables/StudentsTable";
-import { deleteCourse } from "../../firebase/firestore";
-import { useNavigate } from "react-router-dom";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {deleteCourse} from "../../firebase/firestore";
+import {useNavigate} from "react-router-dom";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
-export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSessionModal, selectedCourse }) {
+export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessionModal, selectedCourse}) {
     const [activeTab, setActiveTab] = useState("Students");
     const activeTabContext = useContext(ActiveTabContext)
 
@@ -37,7 +37,7 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
             <div className='flex flex-row gap-8'>
                 <div className='grow'>
                     <TabsHeader className='flex gap-8 font-light text-gray-500 border-b rounded-none w-full'>
-                        {data.map(({ label, value }) => (
+                        {data.map(({label, value}) => (
                             <Tab
                                 key={value}
                                 value={value}
@@ -67,7 +67,6 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                     </button>
 
 
-
                     {/* Add the Export Data button
                      <button
                         disabled={!selectedCourse}
@@ -84,14 +83,14 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                         onClick={handleDeleteCourse} // We'll create this function next
                     >
                         <div> Delete Course</div>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon icon={faTrash}/>
                     </button>
 
                 </div>
             </div>
 
             <TabsBody>
-                {data.map(({ value, table }) => (
+                {data.map(({value, table}) => (
                     <TabPanel
                         className='p-0'
                         key={value} value={value}>
