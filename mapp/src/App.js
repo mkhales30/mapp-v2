@@ -195,6 +195,7 @@ function App() {
                               updateSelectedCourse={updateSelectedCourse}
                               header={selectedSession.sessionName}/>
                 <SessionProfile
+                    updateSelectedStudent={updateSelectedStudent}
                     course={selectedCourse}
                     session={selectedSession}/>
             </div>}

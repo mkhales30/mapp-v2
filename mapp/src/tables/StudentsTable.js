@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import DataTable from 'react-data-table-component';
-import { customStyles } from "./customStyles";
+import {customStyles} from "./customStyles";
 import * as XLSX from 'xlsx';
-import { getCourses, getStudents } from '../firebase/firestore';
-import { auth } from '../firebase/firebase';
+import {getCourses, getStudents} from '../firebase/firestore';
+import {auth} from '../firebase/firebase';
 import EditStudentModal from '../modals/EditStudentModal';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChevronDown} from "@fortawesome/free-solid-svg-icons";
 
 
-function StudentsTable({ data, updateSelectedStudent }) {
+function StudentsTable({data, updateSelectedStudent}) {
     // State variables
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(() => {
@@ -74,6 +76,10 @@ function StudentsTable({ data, updateSelectedStudent }) {
 
     }, [selectedCourse]);
 
+    const filterOptions = {
+        'Date': 'Date',
+    }
+
     const columns = [
         {
             name: 'First Name',
@@ -103,22 +109,22 @@ function StudentsTable({ data, updateSelectedStudent }) {
         {
             name: 'Actions',
             cell: (row) => (
-                <button onClick={() => handleEditClick(row)} className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded">Edit</button>
+                <button onClick={() => handleEditClick(row)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded">Edit</button>
             ),
             ignoreRowClick: true,
             button: "true",
-            style: { paddingRight: '4px' }
+            style: {paddingRight: '4px'}
         },
     ];
 
-  // Function to export all data to Excel
-  const handleExportAllData = () => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
-    XLSX.writeFile(wb, 'students_data.xlsx');
-};
-
+    // Function to export all data to Excel
+    const handleExportAllData = () => {
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(data);
+        XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
+        XLSX.writeFile(wb, 'students_data.xlsx');
+    };
 
 
     const handleRowClick = (row) => {
@@ -139,33 +145,37 @@ function StudentsTable({ data, updateSelectedStudent }) {
 
 
     return (
-        <div className='container mt-5 border rounded border-gray-200'>
+        <div>
+            <div className='container mt-5 border rounded border-gray-200'>
 
-            <DataTable
-                columns={columns}
-                data={data}
-                onRowClicked={handleRowClick}
-                pagination
-                customStyles={customStyles}
-            />
+                <DataTable
+                    columns={columns}
+                    data={data}
+                    onRowClicked={handleRowClick}
+                    pagination
+                    customStyles={customStyles}
+                />
 
-            <div style={{ marginTop: '-1%' }}>
+                {editStudentModal && selectedStudent && (
+                    <EditStudentModal
+                        student={selectedStudent}
+                        toggleModal={handleModalClose}
+                        updateSelectedCourse={updateSelectedCourse}
+                        courses={courses}
+                    />
+                )}
+            </div>
+
+            <div className="flex items-center justify-end gap-2  my-4">
                 <button
                     onClick={() => handleExportAllData()}
-                    className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
-                    <div>Export All Data</div>
+                    className='w-full gap-2 bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
+                    Click to Export Student Report
                 </button>
             </div>
 
-            {editStudentModal && selectedStudent && (
-                <EditStudentModal
-                    student={selectedStudent}
-                    toggleModal={handleModalClose}
-                    updateSelectedCourse={updateSelectedCourse}
-                    courses={courses}
-                />
-            )}
         </div>
+
     );
 };
 

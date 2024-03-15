@@ -7,7 +7,7 @@ import {deleteSession} from '../../firebase/firestore';
 import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 
 
-function SessionProfile({session, course}) {
+function SessionProfile({session, course, updateSelectedStudent}) {
     const [scannerModal, setScannerModal] = useState(false)
     const [attendanceData, setAttendanceData] = useState([])
 
@@ -81,34 +81,6 @@ function SessionProfile({session, course}) {
             </div>
     }
 
-    // const data = [
-    //     {
-    //         id: 1,
-    //         lastName: 'Khawaja',
-    //         firstName: 'Duaa',
-    //         status: 'Not Scanned',
-    //         in: '3:00pm',
-    //         note: 'Left early for event'
-    //     },
-    //     {
-    //         id: 2,
-    //         lastName: 'Moore',
-    //         firstName: 'Amber',
-    //         status: 'Not Scanned',
-    //         in: '3:01pm',
-    //         note: 'Arrived late'
-    //     },
-    //     {
-    //         id: 3,
-    //         lastName: 'Rahman',
-    //         firstName: 'Khales',
-    //         status: 'Not Scanned',
-    //         in: '2:59pm',
-    //         note: ''
-    //     },
-    //
-    // ]
-
     const handleDeleteSession = async () => {
         try {
             await deleteSession(courseId, sessionId);
@@ -136,7 +108,7 @@ function SessionProfile({session, course}) {
                 {/*</div>*/}
 
             </div>
-            <SessionsAttendanceTable data={attendanceData}/>
+            <SessionsAttendanceTable data={attendanceData} updateSelectedStudent={updateSelectedStudent}/>
             {scannerModal &&
                 <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal}/>
             }

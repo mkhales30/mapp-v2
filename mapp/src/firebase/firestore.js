@@ -92,22 +92,22 @@ export async function recordAttendance(courseId, studentId, sessionId) {
         // get the session start time
         const sessionStartTimeString = sessionData.sessionStart;
 
-        if(sessionStartTimeString !== null) {
+        if (sessionStartTimeString !== null) {
             const sessionStartTimeDate = new Date(sessionStartTimeString);
             sessionStartTime = sessionStartTimeDate.toISOString();
             console.log("Session start time:", sessionStartTime)
-        }else{
+        } else {
             sessionStartTime = null;
         }
 
         // get the session grace period
         const gracePeriodString = sessionData.gracePeriod;
         console.log("Grace period string:", gracePeriodString)
-        if(gracePeriodString !== null) {
+        if (gracePeriodString !== null) {
             const gracePeriodDate = new Date(gracePeriodString);
             gracePeriod = gracePeriodDate.toISOString();
             console.log("Grace period:", gracePeriod)
-        }else{
+        } else {
             gracePeriod = null;
         }
 
@@ -116,12 +116,12 @@ export async function recordAttendance(courseId, studentId, sessionId) {
         console.log("Current time:", currentTime)
 
         // if the course has a start time and has not started yet
-        if(sessionStartTime && currentTime < sessionStartTime){
+        if (sessionStartTime && currentTime < sessionStartTime) {
             window.alert("The session has not started yet, you can not record attendance for this session")
             return
         }
         // if the course has a grace period and the current time is outside the grace period
-        if(gracePeriod && currentTime > gracePeriod){
+        if (gracePeriod && currentTime > gracePeriod) {
             window.alert("The grace period has ended, you can no longer record attendance for this session")
             return
         }
@@ -133,7 +133,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
 
         // If attendance record already exists (student in class) , update the status of the student to be present
         if (!querySnapshot.empty) {
-            querySnapshot.forEach( async (document) => {
+            querySnapshot.forEach(async (document) => {
                 const attendanceRef = doc(db, COLLECTIONS.ATTENDANCE, document.id);
                 await updateDoc(attendanceRef, {
                     status: "Present"
@@ -241,6 +241,28 @@ export async function getCourses(uid) {
             reject(error)
         })
     })
+}
+
+// Function that gets the attendance data for a student in a specific course
+export async function getStudentAttendanceData(studentId, courseId) {
+    // Creating reference to course
+    const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
+    // Creating reference to Student document in the course
+    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId);
+    const data = [];
+    const q = query(collection(db, COLLECTIONS.ATTENDANCE), where('studentRef', '==', studentRef), where('courseRef', '==', courseRef));
+
+    onSnapshot(q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                data.push({...doc.data(), id: doc.id});
+            });
+
+            console.log("Attendance data:", data);
+        }
+    )
+
+    return data;
+
 }
 
 export async function getAttendanceData(sessionId, courseId) {
