@@ -82,6 +82,50 @@ export async function recordAttendance(courseId, studentId, sessionId) {
         const course = await getDoc(courseRef);
         const session = await getDoc(sessionRef);
 
+        // get the session data
+        const sessionData = session.data();
+
+        // variables to store the session start time and grace period
+        let sessionStartTime = null;
+        let gracePeriod = null;
+
+        // get the session start time
+        const sessionStartTimeString = sessionData.sessionStart;
+
+        if(sessionStartTimeString !== null) {
+            const sessionStartTimeDate = new Date(sessionStartTimeString);
+            sessionStartTime = sessionStartTimeDate.toISOString();
+            console.log("Session start time:", sessionStartTime)
+        }else{
+            sessionStartTime = null;
+        }
+
+        // get the session grace period
+        const gracePeriodString = sessionData.gracePeriod;
+        console.log("Grace period string:", gracePeriodString)
+        if(gracePeriodString !== null) {
+            const gracePeriodDate = new Date(gracePeriodString);
+            gracePeriod = gracePeriodDate.toISOString();
+            console.log("Grace period:", gracePeriod)
+        }else{
+            gracePeriod = null;
+        }
+
+        // get the current time
+        const currentTime = new Date().toISOString();
+        console.log("Current time:", currentTime)
+
+        // if the course has a start time and has not started yet
+        if(sessionStartTime && currentTime < sessionStartTime){
+            window.alert("The session has not started yet, you can not record attendance for this session")
+            return
+        }
+        // if the course has a grace period and the current time is outside the grace period
+        if(gracePeriod && currentTime > gracePeriod){
+            window.alert("The grace period has ended, you can no longer record attendance for this session")
+            return
+        }
+
         // Checking if attendance record already exists get first
         const q = query(collection(db, COLLECTIONS.ATTENDANCE), where('studentRef', '==', studentRef), where('sessionRef', '==', sessionRef));
         // Execute the query

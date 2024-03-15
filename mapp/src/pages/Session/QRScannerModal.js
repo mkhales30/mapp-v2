@@ -14,7 +14,7 @@ function QRScannerModal({toggleModal, courseId, sessionId}) {
                 width: 290,
                 height: 200,
             }, fps: 0.5
-        })
+        }, true)
 
         scanner.render(success)
 
