@@ -121,6 +121,32 @@ export async function getStudents(courseId) {
 
 }
 
+/* editStudent: Edits a student in a course
+    * @param courseId -  The id of the course
+    * @param studentId - The id of the student
+    * @param newData - The new data for the student
+ */
+export async function editStudent(courseId, studentId, newData) {
+    try {
+        const studentRef = doc(
+            db,
+            COLLECTIONS.COURSES,
+            courseId,
+            COLLECTIONS.STUDENTS,
+            studentId
+        );
+
+        console.log("Student reference:", studentRef);
+        await updateDoc(studentRef, newData);
+        const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.STUDENTS}/${studentId}`;
+        console.log("Student data updated successfully!", path);
+    } catch (error) {
+        console.error("Error editing student data in:", error);
+        throw error;
+    }
+}
+
+
 
 /* getSessions: Gets all sessions for a course
     * @param courseId -  The id of the course
