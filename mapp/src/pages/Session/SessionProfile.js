@@ -12,6 +12,7 @@ function SessionProfile({session, course}) {
     const [attendanceData, setAttendanceData] = useState([])
 
     const fetchAttendanceData = async (sessionID, courseId) => {
+        console.log("fetching attendance data")
         try {
             const response = await getAttendanceData(sessionID, courseId);
             setAttendanceData(response);
@@ -28,11 +29,8 @@ function SessionProfile({session, course}) {
     const [manualSerialNumber, setManualSerialNumber] = useState('');
     const sessionId = session.id;
     const courseId = session.courseId;
-    console.log(sessionId);
-    console.log(courseId);
 
     useEffect(() => {
-        console.log("fetching data")
         fetchAttendanceData(session.id, course.id)
     }, [scannerModal]);
 

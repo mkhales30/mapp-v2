@@ -70,7 +70,6 @@ export async function addStudent(courseId, studentData) {
 
 export async function recordAttendance(courseId, studentId, sessionId) {
     try {
-
         // Creating reference to course
         const courseRef = doc(db, COLLECTIONS.COURSES, courseId)
         // Creating reference to Student document in the course
@@ -83,29 +82,19 @@ export async function recordAttendance(courseId, studentId, sessionId) {
         const course = await getDoc(courseRef);
         const session = await getDoc(sessionRef);
 
-        // Creating a query to check if the student has already been marked present for the session
+        // Checking if attendance record already exists get first
         const q = query(collection(db, COLLECTIONS.ATTENDANCE), where('studentRef', '==', studentRef), where('sessionRef', '==', sessionRef));
         // Execute the query
         const querySnapshot = await getDocs(q);
 
-        // If attendance record already exists, do nothing
+        // If attendance record already exists (student in class) , update the status of the student to be present
         if (!querySnapshot.empty) {
-            // do nothing
-        }
-        // However, if attendance record does not exist, record the attendance of the student
-        else {
-            // Creating a attendance record if the student does not have one for the session
-            if (student.exists() && course.exists() && session.exists()) {
-                addDoc(collection(db, COLLECTIONS.ATTENDANCE), {
-                    courseRef,
-                    studentRef,
-                    sessionRef,
-                    status: "Present",
+            querySnapshot.forEach( async (document) => {
+                const attendanceRef = doc(db, COLLECTIONS.ATTENDANCE, document.id);
+                await updateDoc(attendanceRef, {
+                    status: "Present"
                 })
-            } else {
-                // docSnap.data() will be undefined in this case
-                console.log("No such document!");
-            }
+            })
         }
 
     } catch (error) {
@@ -113,7 +102,11 @@ export async function recordAttendance(courseId, studentId, sessionId) {
     }
 }
 
-// Function to edit a student's data
+/* editStudent: Edits a student in a course
+    * @param courseId -  The id of the course
+    * @param studentId - The id of the student
+    * @param newData - The new data for the student
+ */
 export async function editStudent(courseId, studentId, newData) {
     try {
         const studentRef = doc(
@@ -145,7 +138,20 @@ export async function addSession(courseId, sessionData) {
     try {
         const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
         const docRef = await addDoc(sessionsRef, sessionData)
+
+        // After the session is created we need to create an attendance record for each student in the course
+        const students = await getStudents(courseId);
+        for (const student of students) {
+            await addDoc(collection(db, COLLECTIONS.ATTENDANCE), {
+                courseRef: doc(db, COLLECTIONS.COURSES, courseId),
+                studentRef: doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, student.id),
+                sessionRef: doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, docRef.id),
+                status: "Not Scanned",
+            })
+        }
+
         return docRef.id
+
     } catch (error) {
         console.error('Error adding session:', error)
         throw error
@@ -252,32 +258,6 @@ export async function getStudents(courseId) {
     }
 
 }
-
-/* editStudent: Edits a student in a course
-    * @param courseId -  The id of the course
-    * @param studentId - The id of the student
-    * @param newData - The new data for the student
- */
-export async function editStudent(courseId, studentId, newData) {
-    try {
-        const studentRef = doc(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.STUDENTS,
-            studentId
-        );
-
-        console.log("Student reference:", studentRef);
-        await updateDoc(studentRef, newData);
-        const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.STUDENTS}/${studentId}`;
-        console.log("Student data updated successfully!", path);
-    } catch (error) {
-        console.error("Error editing student data in:", error);
-        throw error;
-    }
-}
-
 
 /* getSessions: Gets all sessions for a course
     * @param courseId -  The id of the course
