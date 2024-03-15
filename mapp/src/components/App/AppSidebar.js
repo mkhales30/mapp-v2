@@ -20,12 +20,6 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
             </a>
             */}
 
-            {/*Students Section */}
-            <a href='#' className='flex flex-row gap-4 items-center'>
-                <FontAwesomeIcon className='h-4 w-4 text-gray-600' icon={faUserGroup}/>
-                <div className='text-gray-500 font-light hover:text-green-600'>Students</div>
-            </a>
-
             {/* My Courses Section */}
 
             <div href='#'

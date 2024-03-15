@@ -67,7 +67,6 @@ function SignUpForm() {
             } catch (error) {
                 // Handle any registration errors here
                 alert("Registration failed. Please try again.");
-                console.log(error);
             }
         } else {
             next();

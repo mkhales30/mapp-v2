@@ -36,6 +36,7 @@ function StatusCell({ value, onChange }) {
         }
     };
 
+
     const { bgColor, textColor } = getStatusColor();
 
     return (
@@ -45,7 +46,11 @@ function StatusCell({ value, onChange }) {
     );
 }
 
-function SessionsAttendanceTable({ data }) {
+function SessionsAttendanceTable({ data, updateSelectedStudent }) {
+
+    const handleRowClick = (row) => {
+        updateSelectedStudent(row)
+    };
 
     const handleChange = (row, newStatus) => {
         // Update the status of the row
@@ -88,6 +93,7 @@ function SessionsAttendanceTable({ data }) {
                 columns={columns}
                 data={data}
                 pagination
+                onRowClicked={handleRowClick}
                 customStyles={customStyles}
             />
         </div>

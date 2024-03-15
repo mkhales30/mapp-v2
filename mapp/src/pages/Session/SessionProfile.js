@@ -1,110 +1,119 @@
-import React, {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Html5QrcodeScanner} from "html5-qrcode";
-import {faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
-import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable';
-import { useNavigate } from 'react-router-dom';
-import { deleteSession } from '../../firebase/firestore';
+import React, {useEffect, useState} from 'react'
+import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable'
+import QRScannerModal from './QRScannerModal'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {getAttendanceData} from '../../firebase/firestore'
+import {deleteSession} from '../../firebase/firestore';
+import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 
-function SessionProfile({session}) {
+
+function SessionProfile({session, course, updateSelectedStudent}) {
+    const [scannerModal, setScannerModal] = useState(false)
+    const [attendanceData, setAttendanceData] = useState([])
+
+    const fetchAttendanceData = async (sessionID, courseId) => {
+        console.log("fetching attendance data")
+        try {
+            const response = await getAttendanceData(sessionID, courseId);
+            setAttendanceData(response);
+        } catch (error) {
+            console.error('Error fetching attendance data:', error);
+        }
+    };
+
+    const toggleScannerModal = () => {
+        setScannerModal(!scannerModal)
+    }
 
     const [scanResult, setScanResult] = useState(null);
     const [manualSerialNumber, setManualSerialNumber] = useState('');
     const sessionId = session.id;
     const courseId = session.courseId;
-    console.log(sessionId);
-    console.log(courseId);
 
     useEffect(() => {
-        const scanner = new Html5QrcodeScanner('reader', {
-            qrbox: {
-                width: 200,
-                height: 200,
-            }, fps: 5
-        })
+        fetchAttendanceData(session.id, course.id)
+    }, [scannerModal]);
 
-        scanner.render(success, error);
+    let noticeMessage
 
-        function success(result) {
-            setScanResult(result)
-        }
+    if (session.sessionStart) {
+        noticeMessage =
+            <div
+                className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
+                <FontAwesomeIcon icon={faCircleExclamation}/>
+                {/*If the Start time in future*/}
+                {Date.now() < new Date(session.sessionStart) &&
+                    <p className="text-sm">
+                        This class is scheduled to start at <span className="font-bold">
+                            {new Date(session.sessionStart).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })} on {new Date(session.sessionStart).toDateString()}
+                        </span>
+                    </p>
+                }
+                {/*If the current time is still within the grace period*/}
+                {session.gracePeriod != null && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
+                    <p className="text-sm">
+                        Class has started, Not scanned students will be marked as absent at <span
+                        className="font-bold">{new Date(session.gracePeriod).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })} on {new Date(session.sessionStart).toDateString()} </span>
+                    </p>
+                }
+                {/*Message to display after grace period has passed*/}
+                {session.gracePeriod !== null && Date.now() > new Date(session.gracePeriod) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
+                }
+                {/*Message to display once the start time has passed (and no grace period was specified)*/}
+                {session.gracePeriod == null && Date.now() > new Date(session.sessionStart) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
+                }
 
-        function error(err) {
-            console.warn(err)
-        }
-    }, []);
-
-    const data = [
-        {
-            id: 1,
-            lastName: 'Khawaja',
-            firstName: 'Duaa',
-            status: 'Not Scanned',
-            in: '3:00pm',
-            note: 'Left early for event'
-        },
-        {
-            id: 2,
-            lastName: 'Moore',
-            firstName: 'Amber',
-            status: 'Not Scanned',
-            in: '3:01pm',
-            note: 'Arrived late'
-        },
-        {
-            id: 3,
-            lastName: 'Rahman',
-            firstName: 'Khales',
-            status: 'Not Scanned',
-            in: '2:59pm',
-            note: ''
-        },
-
-    ]
+            </div>
+    } else {
+        noticeMessage =
+            <div
+                className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
+                <FontAwesomeIcon icon={faCircleExclamation}/>
+                <p className="text-sm">Start Scanning when you are ready to begin class</p>
+            </div>
+    }
 
     const handleDeleteSession = async () => {
         try {
             await deleteSession(courseId, sessionId);
         } catch (error) {
-            console.error('Error deleting session:', error); 
+            console.error('Error deleting session:', error);
         }
     };
 
     return (
-        <div className='mx-12 py-4'>
-            <div className='grid grid-cols-2 gap-2'>
-                <div className='grid grid-cols-2 h-fit justify-stretch gap-2'>
-                    <div className='flex flex-col text-green-900 bg-green-200 px-4 py-4 rounded-3xl'>
-                        <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faUserGroup}/>
-                        <div className='text-5xl font-semibold'>23</div>
-                        <div className='font-light'>Present</div>
-                    </div>
+        <div className="mx-12 py-4">
+            {noticeMessage}
 
-                    <div className='flex flex-col text-red-900 bg-red-200 px-4 py-4 rounded-3xl'>
-                        <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faUserXmark}/>
-                        <div className='text-5xl font-semibold'>5</div>
-                        <div className='font-light'>Absent</div>
-                    </div>
-                </div>
+            <div className="flex justify-between">
+                <div className="text-2xl font-medium"> Attendance Report</div>
+                <button className="bg-black text-sm text-white rounded py-2 px-4" onClick={toggleScannerModal}>Start
+                    Scanning
+                </button>
 
-                
-                <div className='col-span-1 row-span-1 flex flex-col text-gray-900 bg-gray-200 px-4 py-4 rounded-3xl'>
-                    <FontAwesomeIcon className='h-6 w-6 pb-6' icon={faQrcode}/>
-                    <div className='font-light'>Scan in Students</div>
-                    {scanResult ?
-                        <div> Success: <a className='text-green-500' href={scanResult}>{scanResult}</a></div> :
-                        <div id="reader"></div>}
-                </div>
-                <div className="delete-session-area"> 
-    <button onClick={handleDeleteSession} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
-        Delete Session
-    </button>
-</div>
+
+                {/*<div className="delete-session-area">*/}
+                {/*    <button onClick={handleDeleteSession}*/}
+                {/*            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">*/}
+                {/*        Delete Session*/}
+                {/*    </button>*/}
+                {/*</div>*/}
+
             </div>
-            <div className='text-2xl font-medium mt-12'> Attendance Report</div>
-            <SessionsAttendanceTable data={data}/>
+            <SessionsAttendanceTable data={attendanceData} updateSelectedStudent={updateSelectedStudent}/>
+            {scannerModal &&
+                <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal}/>
+            }
         </div>
-    );
+    )
 }
 
-export default SessionProfile;
+export default SessionProfile
