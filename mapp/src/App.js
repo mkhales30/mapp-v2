@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {auth} from './firebase/firebase'
-import {db, getCourses, getSessions, getStudents} from "./firebase/firestore"
+import React, { useEffect, useState } from "react";
+import { auth } from './firebase/firebase'
+import { db, getCourses, getSessions, getStudents } from "./firebase/firestore"
 import AddCourseModal from "./modals/AddCourseModal";
 import CourseBanner from "./components/Course/CourseBanner";
 import AppSidebar from "./components/App/AppSidebar";
@@ -11,8 +11,7 @@ import StudentProfile from "./pages/Student/StudentProfile";
 import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
-
-
+import SettingsProfile from "./pages/Settings/SettingsProfile";
 
 function App() {
 
@@ -30,6 +29,17 @@ function App() {
     const [addCourseModal, setAddCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
+
+    // Variables to toggle the SettingsProfile
+    const [showSettingsProfile, setShowSettingsProfile] = useState(false);
+
+    // State variable to track the current mode
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // Toggle function for dark mode
+    const toggleDarkMode = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
 
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
@@ -52,6 +62,7 @@ function App() {
         // Get the students and sessions for the selected course
         fetchStudents(selectedCourse.id)
         fetchSessions(selectedCourse.id);
+        setShowSettingsProfile(false);
     }
 
     // These toggle modal functions will set the modal to open when their respective open buttons are clicked
@@ -86,7 +97,7 @@ function App() {
     const fetchStudents = async (courseID) => {
         try {
             const response = await getStudents(courseID);
-            setStudents(response.map(student => ({...student}))); // No longer necessary!!
+            setStudents(response.map(student => ({ ...student }))); // No longer necessary!!
         } catch (error) {
             console.error('Error fetching students:', error);
         }
@@ -113,73 +124,102 @@ function App() {
     const tabs = [{
         label: "Students",
         value: "Students",
-        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students}/>,
+        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students} />,
     }, {
         label: "Sessions",
         value: "Sessions",
-        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions}/>,
+        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions} />,
     },];
 
+    const appStyles = {
+        backgroundColor: isDarkMode ? '#333' : '#fff',
+        color: isDarkMode ? '#fff' : '#333',
+    };
 
+    return (
+        <>
+            <div className="grid grid-cols-4 h-screen">
+                {/* Dashboard Sidebar */}
+                <AppSidebar
+                    isDarkMode={isDarkMode}
+                    setIsDarkMode={setIsDarkMode}
+                    selectedCourse={selectedCourse ? selectedCourse : ''}
+                    courses={courses}
+                    toggleModal={toggleAddCourseModal}
+                    updateCourse={updateSelectedCourse}
+                    showSettings={setShowSettingsProfile}
+                />
 
-    return (<>
-        <div className="grid grid-cols-4 h-screen">
+                {/* Main Content Area */}
+                <div className={`col-span-3 ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
+                    {/* Shows SettingsProfile if showSettingsProfile is true */}
+                    {showSettingsProfile && <SettingsProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} toggleDarkMode={toggleDarkMode} setSelectedCourse={setSelectedCourse} />}
 
-            {/*Dashboard Sidebar*/}
-            <AppSidebar selectedCourse={selectedCourse ? selectedCourse : ''} courses={courses}
-                        toggleModal={toggleAddCourseModal} updateCourse={updateSelectedCourse}/>
+                    {/* Main Content Area -> Shows when there isn't a selectedStudent or selectedSession or showSettingsProfile */}
+                    {!selectedStudent && !selectedSession && !showSettingsProfile && (
+                        <div>
+                            <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse} />
+                            <div className='px-12 py-4'>
+                                <CourseNavigationBar
+                                    selectedCourse={selectedCourse}
+                                    data={tabs}
+                                    toggleAddStudentModal={toggleAddStudentModal}
+                                    toggleAddSessionModal={toggleAddSessionModal}
+                                />
+                            </div>
+                        </div>
+                    )}
 
-            {/*Main Content Area -> Shows when there isn't a selectedStudent or selectedSession*/}
-            {!selectedStudent && !selectedSession &&
-                <div className='col-span-3'>
-                    <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}/>
-                    <div className='px-12 py-4'>
-                        <CourseNavigationBar selectedCourse={selectedCourse}
-                                             data={tabs}
-                                             toggleAddStudentModal={toggleAddStudentModal}
-                                             toggleAddSessionModal={toggleAddSessionModal}/>
-                    </div>
-                </div>}
+                    {/* Add Course Modal -> opens when the add course button is clicked */}
+                    {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} />}
 
-            {/*Add Course Modal -> opens when the add course button is clicked*/}
-            {addCourseModal &&
-                <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal}/>
-            }
+                    {/* Add Student Modal -> opens when the add student button is clicked */}
+                    {addStudentModal && (
+                        <AddStudentModal
+                            course={selectedCourse}
+                            updateStudents={() => fetchStudents(selectedCourse.id)}
+                            toggleModal={toggleAddStudentModal}
+                        />
+                    )}
 
-            {/*Add Student Modal -> opens when the add student button is clicked */}
-            {addStudentModal &&
-                <AddStudentModal course={selectedCourse}
-                                 updateStudents={() => fetchStudents(selectedCourse.id)}
-                                 toggleModal={toggleAddStudentModal}/>
-            }
+                    {/* Add Session Modal -> opens when the add session button is clicked */}
+                    {addSessionModal && (
+                        <AddSessionModal
+                            course={selectedCourse}
+                            updateSessions={() => fetchSessions(selectedCourse.id)}
+                            toggleModal={toggleAddSessionModal}
+                        />
+                    )}
 
-            {/*Add Session Modal -> opens when the add session button is clicked */}
-            {addSessionModal &&
-                <AddSessionModal course={selectedCourse}
-                                 updateSessions={() => fetchSessions(selectedCourse.id)}
-                                 toggleModal={toggleAddSessionModal}/>
-            }
+                    {/* Student Profile -> opens when there is a selectedStudent */}
+                    {selectedStudent && (
+                        <div className='col-span-3'>
+                            <CourseBanner
+                                course={selectedCourse}
+                                breadCrumb="Student"
+                                header={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
+                                updateCourses={updateSelectedCourse}
+                            />
+                            <StudentProfile student={selectedStudent} courseId={selectedCourse.id} isDarkMode={isDarkMode}/>
+                        </div>
+                    )}
 
-            {/*Student Profile -> opens when there is a selectedStudent */}
-            {selectedStudent && <div className='col-span-3'>
-                <CourseBanner course={selectedCourse}
-                              breadCrumb="Student"
-                              header={selectedStudent.firstName + ' ' + selectedStudent.lastName}
-                              updateCourses={updateSelectedCourse}/>
-                <StudentProfile student={selectedStudent} courseId={selectedCourse.id}/>
-            </div>}
-
-            {/*Session Profile -> opens when there is a selectedSession*/}
-            {selectedSession && <div className='col-span-3'>
-                <CourseBanner course={selectedCourse}
-                              breadCrumb="Sessions"
-                              header={selectedSession.date}
-                              updateCourses={updateSelectedCourse}/>
-                <SessionProfile session={selectedSession}/>
-            </div>}
-
-        </div>
-    </>)
+                    {/* Session Profile -> opens when there is a selectedSession */}
+                    {selectedSession && (
+                        <div className='col-span-3'>
+                            <CourseBanner
+                                course={selectedCourse}
+                                breadCrumb="Sessions"
+                                header={selectedSession.date}
+                                updateCourses={updateSelectedCourse}
+                            />
+                            <SessionProfile session={selectedSession} />
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default App;

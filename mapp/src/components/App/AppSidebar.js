@@ -1,14 +1,20 @@
 import React from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {auth} from '../../firebase/firebase'
-import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
 
-function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
+function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode }) {
+
+    //console.log(auth.currentUser);
+
+    const appStyles = {
+        backgroundColor: isDarkMode ? '#333' : '#fff',
+        color: isDarkMode ? '#fff' : '#333',
+    };
+
     return (
 
-        <div
-            className='overflow-x-scroll flex flex-col border-gray-200 border-r-2 px-8 py-12 md:content-center gap-y-8 items-start'>
+        <div className={`overflow-x-scroll flex flex-col border-gray-200 border-r-2 px-8 py-12 md:content-center gap-y-8 items-start ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
 
             {/* User greeting
             <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
@@ -22,19 +28,19 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
 
             {/*Students Section */}
             <a href='#' className='flex flex-row gap-4 items-center'>
-                <FontAwesomeIcon className='h-4 w-4 text-gray-600' icon={faUserGroup}/>
-                <div className='text-gray-500 font-light hover:text-green-600'>Students</div>
+                <FontAwesomeIcon className='h-4 w-4' icon={faUserGroup} />
+                <div className='font-light'>Students</div>
             </a>
 
             {/* My Courses Section */}
 
             <div href='#'
-                 className='flex flex-row w-full justify-between text-gray-400 text-sm font-light'>
+                className='flex flex-row w-full justify-between text-gray-400 text-sm font-light'>
                 <div className='uppercase'>MY COURSES</div>
                 {/*Add Course Button*/}
                 <button className='hover:text-green-500 flex flex-row gap-2 text-gray-400 opacity-50 items-center' onClick={toggleModal}>
                     <div className={'font-light text-sm uppercase'}>Add course</div>
-                    <FontAwesomeIcon icon={faPlus}/>
+                    <FontAwesomeIcon icon={faPlus} />
                 </button>
             </div>
 
@@ -43,8 +49,8 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                     return (
                         <button
                             onClick={() => updateCourse(course)} key={index}
-                            className=' flex flex-row gap-4 items-center text-gray-600'>
-                            <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark}/>
+                            className=' flex flex-row gap-4 items-center font-light'>
+                            <FontAwesomeIcon className='sm:hidden md:block h-4 w-4' icon={faBookBookmark} />
                             <div
                                 className={selectedCourse.id === course.id ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}>
                                 <div className='uppercase text-xs'>{'Section ' + course.courseSection}</div>
@@ -64,13 +70,15 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
                 <div>SETTINGS</div>
             </div>
             <a className='flex flex-row gap-4 items-center'>
-                <FontAwesomeIcon className='h-4 w-4 text-gray-600' icon={faGear}/>
-                <button className='text-gray-500 font-light hover:text-green-600'>Settings</button>
+                <FontAwesomeIcon className='h-4 w-4 font-light' icon={faGear} />
+                <button className={`font-light ${!selectedCourse ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}`} onClick={showSettings}>
+                    Settings
+                </button>
             </a>
 
             <div className='flex flex-row gap-4 items-center'>
-                <FontAwesomeIcon className='h-4 w-4' icon={faArrowRightFromBracket}/>
-                <SignOutButton/>
+                <FontAwesomeIcon className='h-4 w-4' icon={faArrowRightFromBracket} />
+                <SignOutButton />
             </div>
 
 

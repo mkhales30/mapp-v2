@@ -1,7 +1,7 @@
 import React from 'react';
-import {getAuth, signOut} from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 
-function SignOutButton({}){
+function SignOutButton({ }) {
     const auth = getAuth();
 
     const handleSignOut = () => {
@@ -16,7 +16,7 @@ function SignOutButton({}){
     };
 
     return (
-        <button className='font-light text-gray-500 hover:text-green-600' onClick={handleSignOut}>
+        <button className='font-light hover:text-green-600' onClick={handleSignOut}>
             Sign Out
         </button>
     );
