@@ -3,13 +3,20 @@ import React, {useState} from 'react';
 import FormWrapper from "../../components/FormWrapper";
 import TextInput from "../../components/TextInput";
 import SecondaryButton from "../../components/SecondaryButton";
-import {getAuth, signInWithEmailAndPassword} from "firebase/auth"; // Import your Firebase configuration
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth"; 
+import PasswordResetForm from './PasswordResetForm';// Import your Firebase configuration
 
 function SignInForm() {
     const auth = getAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     // const history = useHistory(); // Commented out for future routing
+
+    const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
+
+    const togglePasswordResetModal = () => {
+        setShowPasswordResetModal(!showPasswordResetModal);
+    };
 
     const handleSignIn = async (e) => {
 
@@ -33,6 +40,7 @@ function SignInForm() {
     };
 
     return (
+        <div>
         <form onSubmit={handleSignIn}>
             <FormWrapper title="Log In">
                 <div className="flex flex-col gap-4">
@@ -55,6 +63,13 @@ function SignInForm() {
                 </div>
             </FormWrapper>
         </form>
+        <button type="button" onClick={togglePasswordResetModal}>
+      Forgot Password?
+    </button>
+    {showPasswordResetModal && (
+      <PasswordResetForm toggleModal={togglePasswordResetModal} />
+    )}
+        </div>
     );
 }
 
