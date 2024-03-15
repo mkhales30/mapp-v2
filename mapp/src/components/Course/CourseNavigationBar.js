@@ -34,35 +34,39 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
 
     return (
         <Tabs value={activeTab}>
-            <div className='flex flex-row gap-8'>
-                <div className='grow'>
-                    <TabsHeader className='flex gap-8 font-light text-gray-500 border-b rounded-none w-full'>
+            <div className="flex flex-row gap-8">
+                <div className="grow">
+                    <TabsHeader className="flex gap-8 font-light text-gray-500 border-b rounded-none w-full">
                         {data.map(({label, value}) => (
+
                             <Tab
                                 key={value}
                                 value={value}
                                 onClick={() => setActiveTab(value)}
-                                className={activeTab === value ? "w-fit text-gray-800 font-medium hover:cursor-pointer border-b-2 border-green-400" : "w-fit hover:cursor-pointer"}>
-                                <div className='mb-2'>{label}</div>
+                                className={activeTab === value ? "w-fit text-gray-800 font-medium hover:cursor-pointer border-b-2 border-green-400" : "w-fit hover:cursor-pointer"}
+                            >
+                                <div className="mb-2">{label}</div>
                             </Tab>
                         ))}
                     </TabsHeader>
                 </div>
 
-                <div className='flex flex-row space-x-2'>
+                <div className="flex flex-row space-x-2">
                     <button
                         disabled={!selectedCourse}
                         className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 t  text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddStudentModal}>
-                        <div className='text-xs'> New Student</div>
+
+                        <div className="text-xs"> New Student</div>
                         <FontAwesomeIcon icon={faPlus}/>
+
                     </button>
 
                     <button
                         disabled={!selectedCourse}
                         className={activeTab === 'Sessions' ? 'flex flex-row gap-2 items-center block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddSessionModal}>
-                        <div className='text-xs'> New Session</div>
+                        <div className="text-xs"> New Session</div>
                         <FontAwesomeIcon icon={faPlus}/>
                     </button>
 
@@ -71,10 +75,10 @@ export function CourseNavigationBar({data, toggleAddStudentModal, toggleAddSessi
                      <button
                         disabled={!selectedCourse}
                         className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'
-                        onClick={() => handleExportAllData()}
+                        onClick={() => handleExportAllData()} 
                        >
                         <div>Export Data</div>
-
+                        
                     </button>
                     */}
                     <button

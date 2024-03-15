@@ -12,8 +12,7 @@ import {
     deleteDoc,
 } from "firebase/firestore";
 
-
-// Constants for collection names
+/* COLLECTIONS: An object that holds the names of the collections in the Firestore database */
 const COLLECTIONS = {
     COURSES: 'Courses',
     STUDENTS: 'Students',
@@ -22,32 +21,44 @@ const COLLECTIONS = {
     ATTENDANCE: 'Attendance'
 }
 
-// Function to add a course
+/*
+    The following functions are used to interact with the Firestore database.
+    They are used to add, edit, and delete courses, students, and sessions.
+    They also get courses, students, and sessions from the database.
+*/
+
+
+/* addCourse: Adds a course to the database
+    * @param courseName -  The name of the course
+    * @param courseSection - The section of the course
+    * @param uid -  The user id of the user who created the course
+ */
 export function addCourse(courseName, courseSection, uid) {
     addDoc(collection(db, COLLECTIONS.COURSES), {
-        courseName,
-        courseSection,
-        uid,
+        courseName, courseSection, uid,
     })
 }
 
+/* addStudent: Adds a student to a course
+    * @param courseId -  The id of the course
+    * @param studentData - The data of the student
+    * @returns - The id of the student
+ */
 export function editCourse(courseName, courseSection, id) {
     const courseRef = doc(db, COLLECTIONS.COURSES, id);
     updateDoc(courseRef, {
-        courseName,
-        courseSection,
+        courseName, courseSection,
     })
 }
 
-// Function to add a student to a course
+/* addStudent: Adds a student to a course
+    * @param courseId -  The id of the course
+    * @param studentData - The data of the student
+    * @returns - The id of the student
+ */
 export async function addStudent(courseId, studentData) {
     try {
-        const studentsRef = collection(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.STUDENTS
-        )
+        const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS)
         const docRef = await addDoc(studentsRef, studentData)
         return docRef.id
     } catch (error) {
@@ -55,6 +66,7 @@ export async function addStudent(courseId, studentData) {
         throw error
     }
 }
+
 
 export async function recordAttendance(courseId, studentId, sessionId) {
     try {
@@ -71,7 +83,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
         const course = await getDoc(courseRef);
         const session = await getDoc(sessionRef);
 
-       // Creating a query to check if the student has already been marked present for the session
+        // Creating a query to check if the student has already been marked present for the session
         const q = query(collection(db, COLLECTIONS.ATTENDANCE), where('studentRef', '==', studentRef), where('sessionRef', '==', sessionRef));
         // Execute the query
         const querySnapshot = await getDocs(q);
@@ -81,7 +93,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
             // do nothing
         }
         // However, if attendance record does not exist, record the attendance of the student
-        else{
+        else {
             // Creating a attendance record if the student does not have one for the session
             if (student.exists() && course.exists() && session.exists()) {
                 addDoc(collection(db, COLLECTIONS.ATTENDANCE), {
@@ -122,15 +134,16 @@ export async function editStudent(courseId, studentId, newData) {
     }
 }
 
-// Function to add a session to a course
+
+/* addSession: Adds a session to a course
+    * @param courseId -  The id of the course
+    * @param sessionData - The data of the session
+    * @returns - The id of the session
+ */
+
 export async function addSession(courseId, sessionData) {
     try {
-        const sessionsRef = collection(
-            db,
-            COLLECTIONS.COURSES,
-            courseId,
-            COLLECTIONS.SESSIONS
-        )
+        const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
         const docRef = await addDoc(sessionsRef, sessionData)
         return docRef.id
     } catch (error) {
@@ -160,7 +173,10 @@ export async function editSession(courseId, sessionId, newData) {
     }
 }
 
-// Function to get courses for a user
+/* getCourses: Gets all courses for a user
+    * @param uid -  The user id of the logged-in user
+    * @returns - An array of courses
+ */
 export async function getCourses(uid) {
     return new Promise((resolve, reject) => {
         const courses = []
@@ -213,8 +229,11 @@ export async function getAttendanceData(sessionId, courseId) {
     });
 }
 
-// Function to get students for a course
+/* getStudents: Gets all students for a course
+    * @param courseId -  The id of the course
+ */
 export async function getStudents(courseId) {
+
     try {
         const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
         const q = query(studentsRef);
@@ -231,19 +250,43 @@ export async function getStudents(courseId) {
         console.error('Error fetching students:', error);
         throw error; // Re-throw to allow app to handle if needed
     }
+
 }
 
-
-// Function to get sessions for a course
-export async function getSessions(courseId) {
+/* editStudent: Edits a student in a course
+    * @param courseId -  The id of the course
+    * @param studentId - The id of the student
+    * @param newData - The new data for the student
+ */
+export async function editStudent(courseId, studentId, newData) {
     try {
-        const sessions = []
-        const sessionsRef = collection(
+        const studentRef = doc(
             db,
             COLLECTIONS.COURSES,
             courseId,
-            COLLECTIONS.SESSIONS
-        )
+            COLLECTIONS.STUDENTS,
+            studentId
+        );
+
+        console.log("Student reference:", studentRef);
+        await updateDoc(studentRef, newData);
+        const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.STUDENTS}/${studentId}`;
+        console.log("Student data updated successfully!", path);
+    } catch (error) {
+        console.error("Error editing student data in:", error);
+        throw error;
+    }
+}
+
+
+/* getSessions: Gets all sessions for a course
+    * @param courseId -  The id of the course
+    * @returns - An array of sessions
+ */
+export async function getSessions(courseId) {
+    try {
+        const sessions = []
+        const sessionsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS)
         const q = query(sessionsRef)
 
         const querySnapshot = await getDocs(q);
@@ -258,6 +301,11 @@ export async function getSessions(courseId) {
     }
 }
 
+/* deleteStudent: Deletes a student from a course
+    * @param courseId -  The id of the course
+    * @param studentId - The id of the student
+
+ */
 export async function deleteStudent(courseId, studentId) {
     try {
         // Construct the path to the specific student document
@@ -270,18 +318,23 @@ export async function deleteStudent(courseId, studentId) {
     }
 }
 
+/* deleteCourse: Deletes a course
+    * @param courseId -  The id of the course
+ */
 export async function deleteCourse(courseId) {
     try {
         const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
         await deleteDoc(courseRef);
-
     } catch (error) {
         console.error("Error deleting course:", error);
         throw error;
     }
 }
 
-// Function to delete a session 
+/* deleteSession: Deletes a session from a course
+    * @param courseId -  The id of the course
+    * @param sessionId - The id of the session
+ */
 export async function deleteSession(courseId, sessionId) {
     try {
         const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
@@ -290,5 +343,22 @@ export async function deleteSession(courseId, sessionId) {
         console.error("Error deleting session:", error);
         throw error;
     }
+}
 
+/* updateSession: Updates a session in a course
+    * @param courseId -  The id of the course
+    * @param sessionId - The id of the session
+    * @param newData - The new data for the session
+ */
+export async function updateSession(courseId, sessionId, newData) {
+    try {
+        const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
+
+        await updateDoc(sessionRef, newData);
+
+        console.log("Session information updated successfully!");
+    } catch (error) {
+        console.error("Error updating session information:", error);
+        throw error;
+    }
 }

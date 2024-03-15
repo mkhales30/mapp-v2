@@ -111,15 +111,14 @@ function StudentsTable({ data, updateSelectedStudent }) {
         },
     ];
 
-    // Function to export all data to Excel
-    const handleExportAllData = () => {
+  // Function to export all data to Excel
+  const handleExportAllData = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
+    XLSX.writeFile(wb, 'students_data.xlsx');
+};
 
-        console.log("hello");
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
-        XLSX.writeFile(wb, 'students_data.xlsx');
-    };
 
 
     const handleRowClick = (row) => {

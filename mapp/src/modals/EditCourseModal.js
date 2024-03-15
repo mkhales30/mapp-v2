@@ -5,14 +5,16 @@ import {editCourse} from '../firebase/firestore'
 
 function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
 
-    // Add Course Form Handler
+    // courseData -> holds the data of the course
     const [courseData, setCourseData] = useState({
         courseName: '',
         courseSection: '',
         courseID: currentCourse.id,
     })
 
+    // name and value -> holds the name and value of the updated input field
     let name, value;
+
     const updateCourseData = (e) => {
         name = e.target.name;
         value = e.target.value;
@@ -21,9 +23,14 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
 
     {/*handleAddCourse -> this function fires once the add course button is pressed, it then adds to the database*/}
     const handleEditCourse = async () => {
-        await editCourse(courseData.courseName, courseData.courseSection, courseData.courseID);
-        updateCourses(); // Update courses in the parent component
-        toggleModal();
+        const hasEmptyRequiredFields = courseData.courseName === '' || courseData.courseSection === '';
+        if(hasEmptyRequiredFields) {
+            alert("Please fill out the required fields");
+        }else{
+            await editCourse(courseData.courseName, courseData.courseSection, courseData.courseID);
+            updateCourses(); // Update courses in the parent component
+            toggleModal();
+        }
     };
 
     return (
@@ -31,8 +38,7 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
             <div
                 className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
             <div className="absolute grid h-screen w-screen place-items-center">
-                <div
-                    className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
+                <div className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
                     <p className="text-2xl text-center">Edit Course</p>
                     <button>
                         <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}

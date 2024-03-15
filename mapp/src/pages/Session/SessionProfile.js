@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react'
 import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable'
 import QRScannerModal from './QRScannerModal'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faQrcode, faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 import {getAttendanceData} from '../../firebase/firestore'
 import {deleteSession} from '../../firebase/firestore';
+import {faCircleExclamation} from '@fortawesome/free-solid-svg-icons'
 
 
 function SessionProfile({session, course}) {
@@ -23,6 +23,7 @@ function SessionProfile({session, course}) {
     const toggleScannerModal = () => {
         setScannerModal(!scannerModal)
     }
+
     const [scanResult, setScanResult] = useState(null);
     const [manualSerialNumber, setManualSerialNumber] = useState('');
     const sessionId = session.id;
@@ -42,7 +43,7 @@ function SessionProfile({session, course}) {
             <div
                 className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
                 <FontAwesomeIcon icon={faCircleExclamation}/>
-                {/*Start time in future*/}
+                {/*If the Start time in future*/}
                 {Date.now() < new Date(session.sessionStart) &&
                     <p className="text-sm">
                         This class is scheduled to start at <span className="font-bold">
@@ -53,7 +54,7 @@ function SessionProfile({session, course}) {
                         </span>
                     </p>
                 }
-                {/*Within grace period*/}
+                {/*If the current time is still within the grace period*/}
                 {session.gracePeriod != null && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
                     <p className="text-sm">
                         Class has started, Not scanned students will be marked as absent at <span
@@ -63,11 +64,11 @@ function SessionProfile({session, course}) {
                     })} on {new Date(session.sessionStart).toDateString()} </span>
                     </p>
                 }
-                {/*After grace period*/}
+                {/*Message to display after grace period has passed*/}
                 {session.gracePeriod !== null && Date.now() > new Date(session.gracePeriod) &&
                     <p className="text-sm">Class has ended, please see the attendance report below</p>
                 }
-                {/*Start time in past (and no grace period)*/}
+                {/*Message to display once the start time has passed (and no grace period was specified)*/}
                 {session.gracePeriod == null && Date.now() > new Date(session.sessionStart) &&
                     <p className="text-sm">Class has ended, please see the attendance report below</p>
                 }
@@ -120,7 +121,6 @@ function SessionProfile({session, course}) {
 
     return (
         <div className="mx-12 py-4">
-
             {noticeMessage}
 
             <div className="flex justify-between">
@@ -129,12 +129,14 @@ function SessionProfile({session, course}) {
                     Scanning
                 </button>
 
+
                 {/*<div className="delete-session-area">*/}
                 {/*    <button onClick={handleDeleteSession}*/}
                 {/*            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">*/}
                 {/*        Delete Session*/}
                 {/*    </button>*/}
                 {/*</div>*/}
+
             </div>
             <SessionsAttendanceTable data={attendanceData}/>
             {scannerModal &&
