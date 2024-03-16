@@ -7,14 +7,12 @@ function PasswordResetForm({ toggleModal }) {
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
-    console.log('Form submitted');
     e.preventDefault();
     const auth = getAuth();
 
     try {
       await sendPasswordResetEmail(auth, email);
       setResetSent(true);
-      console.log('Password reset email sent.');
     } catch (error) {
       console.error('Error sending password reset email:', error);
       setError('Failed to send password reset email. Please try again.');
