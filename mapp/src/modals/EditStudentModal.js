@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { editStudent } from '../firebase/firestore';
 
-function EditStudentModal({ student, toggleModal, courses }) {
+function EditStudentModal({ student, toggleModal, courses, toggleRefreshStudents  }) {
     const [studentData, setStudentData] = useState({
         firstName: student.firstName,
         lastName: student.lastName,
@@ -14,17 +14,15 @@ function EditStudentModal({ student, toggleModal, courses }) {
     // Function to handle editing student data
     const handleEditStudent = async (event) => {
         event.preventDefault();
-        const studentCourse = courses.find(course => course.id === student.courseId); // Finding the course corresponding to the student's courseId
-
+      
         try {
-            console.log("Updating student with course ID:", studentCourse.id, "and student ID:", student.id);
-            await editStudent(studentCourse.id, student.id, studentData); // Calling the editStudent function to update the student in Firestore
-            toggleModal();
+          await editStudent(student.id, studentData);
+          toggleModal();
+          toggleRefreshStudents();
         } catch (error) {
-            console.error('Error updating student in modal:', error);
-            console.log('Course ID:', studentCourse.id, 'Student ID:', student.id);
+          console.error('Error updating student in modal:', error);
         }
-    };
+      };
 
     // Function to update student data in state
     const updateStudentData = (e) => {
