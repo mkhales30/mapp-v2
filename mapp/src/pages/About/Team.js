@@ -3,7 +3,7 @@ import hollyImg from '../../assets/holly.jpeg';
 import khalesImg from '../../assets/khales.png';
 import duaaImg from '../../assets/duaa.png';
 import reannImg from '../../assets/reann.png';
-import tiImg from '../../assets/avatar.png';
+import tiImg from '../../assets/ti.jpeg';
 
 const teamMembers = [
   { name: 'Holly Boaz', imgSrc: hollyImg },
