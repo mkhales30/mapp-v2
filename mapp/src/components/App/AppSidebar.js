@@ -5,8 +5,7 @@ import SignOutButton from "./SignOutButton";
 
 function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode }) {
 
-    //console.log(auth.currentUser);
-
+    // Apply styles directly based on the current mode
     const appStyles = {
         backgroundColor: isDarkMode ? '#333' : '#fff',
         color: isDarkMode ? '#fff' : '#333',
@@ -33,7 +32,6 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
             </a>
 
             {/* My Courses Section */}
-
             <div href='#'
                 className='flex flex-row w-full justify-between text-gray-400 text-sm font-light'>
                 <div className='uppercase'>MY COURSES</div>
@@ -71,6 +69,11 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
             </div>
             <a className='flex flex-row gap-4 items-center'>
                 <FontAwesomeIcon className='h-4 w-4 font-light' icon={faGear} />
+                {/* 
+                Button with conditional classes based on whether a course is selected.
+                - If no course is selected, apply styles for default state.
+                - If a course is selected, apply styles for hover effect.
+                */}
                 <button className={`font-light ${!selectedCourse ? 'text-green-600 flex flex-col font-light items-start' : 'flex flex-col font-light hover:text-green-600 items-start'}`} onClick={showSettings}>
                     Settings
                 </button>

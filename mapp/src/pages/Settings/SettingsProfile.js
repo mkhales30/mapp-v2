@@ -4,23 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { auth } from '../../firebase/firebase';
 
-function SettingsProfile({ isDarkMode, setIsDarkMode, setSelectedCourse }) {
-
-  // Load the user's preferred mode state on component mount
-  useEffect(() => {
-    const savedMode = localStorage.getItem('isDarkMode');
-    setIsDarkMode(savedMode === 'true');
-  }, [setIsDarkMode]); // Added setIsDarkMode as dependency
-
-  // Effect to save mode preference whenever it changes
-  useEffect(() => {
-    // Save mode preference to localStorage
-    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
-  }, [isDarkMode]); // Added isDarkMode as dependency
+function SettingsProfile({ isDarkMode, setIsDarkMode, setSelectedCourse, setSelectedStudent }) {
 
   // Set selectedCourse to null when component mounts
   useEffect(() => {
     setSelectedCourse(null);
+    setSelectedStudent(null);
   }, [setSelectedCourse]);
 
   // Apply styles directly based on the current mode
@@ -29,7 +18,7 @@ function SettingsProfile({ isDarkMode, setIsDarkMode, setSelectedCourse }) {
     color: isDarkMode ? '#fff' : '#333',
   };
 
-  // Apply styles directly based on the current mode
+  // Apply styles directly for border on the current mode
   const sectionBorderStyle = {
     borderColor: isDarkMode ? 'gray' : 'black'
   };
@@ -61,9 +50,9 @@ function SettingsProfile({ isDarkMode, setIsDarkMode, setSelectedCourse }) {
           <div className='text-18px black-text font-bold'>{'Theme and Appearance'}</div> <br />
           {/* Content for Appearance */}
           <div className="mt-2">
-             {/* Toggle switch for Appearance */}
-             <label className="flex items-center">
-             <FontAwesomeIcon icon={faSun} size="lg" className="mr-2" />
+            {/* Toggle switchs for Appearance */}
+            <label className="flex items-center">
+              <FontAwesomeIcon icon={faSun} size="lg" className="mr-2" />
               <span className="mr-2">Light Mode</span>
               <input
                 type="checkbox"

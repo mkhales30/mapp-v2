@@ -41,6 +41,18 @@ function App() {
         setIsDarkMode(prevMode => !prevMode);
     };
 
+    // Load the user's preferred mode state on component mount
+    useEffect(() => {
+        const savedMode = localStorage.getItem('isDarkMode');
+        setIsDarkMode(savedMode === 'true');
+    }, [setIsDarkMode]);
+
+    // Effect to save mode preference whenever it changes
+    useEffect(() => {
+        // Save mode preference to localStorage
+        localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+    }, [isDarkMode]);
+
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
         console.log("Selected Student", selectedStudent)
@@ -53,15 +65,17 @@ function App() {
         setSelectedSession(selectedSession);
     }
 
-    // If a course is selected, this function will update the active course
     const updateSelectedCourse = (selectedCourse) => {
         setSelectedCourse(selectedCourse);
         // We reset the active student and active session so the Session Profile and Student profile won't show
         setSelectedStudent(null);
         setSelectedSession(null);
-        // Get the students and sessions for the selected course
-        fetchStudents(selectedCourse.id)
-        fetchSessions(selectedCourse.id);
+        // Check if selectedCourse is not null before fetching students and sessions
+        if (selectedCourse) {
+            // Get the students and sessions for the selected course
+            fetchStudents(selectedCourse.id)
+            fetchSessions(selectedCourse.id);
+        }
         setShowSettingsProfile(false);
     }
 
@@ -119,22 +133,22 @@ function App() {
         fetchCourses()
     }, []);
 
-    // These are the tabs of the navigation bar, and the tables these tabs show
-
-    const tabs = [{
-        label: "Students",
-        value: "Students",
-        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students} />,
-    }, {
-        label: "Sessions",
-        value: "Sessions",
-        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions} />,
-    },];
-
+    // Apply styles directly based on the current mode
     const appStyles = {
         backgroundColor: isDarkMode ? '#333' : '#fff',
         color: isDarkMode ? '#fff' : '#333',
     };
+
+    // These are the tabs of the navigation bar, and the tables these tabs show
+    const tabs = [{
+        label: "Students",
+        value: "Students",
+        table: <StudentsTable updateSelectedStudent={updateSelectedStudent} data={students} isDarkMode={isDarkMode} />,
+    }, {
+        label: "Sessions",
+        value: "Sessions",
+        table: <SessionsTable updateSelectedSession={updateSelectedSession} data={sessions} isDarkMode={isDarkMode} />,
+    },];
 
     return (
         <>
@@ -153,25 +167,26 @@ function App() {
                 {/* Main Content Area */}
                 <div className={`col-span-3 ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
                     {/* Shows SettingsProfile if showSettingsProfile is true */}
-                    {showSettingsProfile && <SettingsProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} toggleDarkMode={toggleDarkMode} setSelectedCourse={setSelectedCourse} />}
+                    {showSettingsProfile && <SettingsProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} toggleDarkMode={toggleDarkMode} setSelectedCourse={setSelectedCourse} setSelectedStudent={setSelectedStudent} />}
 
                     {/* Main Content Area -> Shows when there isn't a selectedStudent or selectedSession or showSettingsProfile */}
                     {!selectedStudent && !selectedSession && !showSettingsProfile && (
                         <div>
                             <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse} />
-                            <div className='px-12 py-4'>
+                            <div className={`px-12 py-4 ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
                                 <CourseNavigationBar
                                     selectedCourse={selectedCourse}
                                     data={tabs}
                                     toggleAddStudentModal={toggleAddStudentModal}
                                     toggleAddSessionModal={toggleAddSessionModal}
+                                    isDarkMode={isDarkMode}
                                 />
                             </div>
                         </div>
                     )}
 
                     {/* Add Course Modal -> opens when the add course button is clicked */}
-                    {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} />}
+                    {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} isDarkMode={isDarkMode} />}
 
                     {/* Add Student Modal -> opens when the add student button is clicked */}
                     {addStudentModal && (
@@ -179,6 +194,7 @@ function App() {
                             course={selectedCourse}
                             updateStudents={() => fetchStudents(selectedCourse.id)}
                             toggleModal={toggleAddStudentModal}
+                            isDarkMode={isDarkMode}
                         />
                     )}
 
@@ -188,6 +204,7 @@ function App() {
                             course={selectedCourse}
                             updateSessions={() => fetchSessions(selectedCourse.id)}
                             toggleModal={toggleAddSessionModal}
+                            isDarkMode={isDarkMode}
                         />
                     )}
 
@@ -200,7 +217,7 @@ function App() {
                                 header={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
                                 updateCourses={updateSelectedCourse}
                             />
-                            <StudentProfile student={selectedStudent} courseId={selectedCourse.id} isDarkMode={isDarkMode}/>
+                            <StudentProfile student={selectedStudent} courseId={selectedCourse.id} isDarkMode={isDarkMode} />
                         </div>
                     )}
 
@@ -213,7 +230,7 @@ function App() {
                                 header={selectedSession.date}
                                 updateCourses={updateSelectedCourse}
                             />
-                            <SessionProfile session={selectedSession} />
+                            <SessionProfile session={selectedSession} isDarkMode={isDarkMode} />
                         </div>
                     )}
                 </div>

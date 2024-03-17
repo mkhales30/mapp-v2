@@ -12,10 +12,10 @@ function StatusCell({ value, onChange }) {
     const handleChange = () => {
         const newStatus =
             status === 'Present' ? 'Absent' :
-            status === 'Absent' ? 'Late in' :
-            status === 'Late in' ? 'Early out' :
-            status === 'Early out' ? 'Excused' :
-            'Present';
+                status === 'Absent' ? 'Late in' :
+                    status === 'Late in' ? 'Early out' :
+                        status === 'Early out' ? 'Excused' :
+                            'Present';
         setStatus(newStatus);
         onChange(newStatus);
     };
@@ -45,13 +45,23 @@ function StatusCell({ value, onChange }) {
     );
 }
 
-function SessionsAttendanceTable({ data }) {
+function SessionsAttendanceTable({ data, isDarkMode }) {
 
     const handleChange = (row, newStatus) => {
         // Update the status of the row
         // Use a setState function or dispatch an action here depending on state management approach
         row.status = newStatus;
     };
+
+    // Conditional row styles to change cursor to pointer when hovering over rows
+    const conditionalRowStyles = [
+        {
+            when: (row) => true,
+            style: {
+                cursor: 'pointer',
+            },
+        },
+    ];
 
     const columns = [
         {
@@ -88,7 +98,41 @@ function SessionsAttendanceTable({ data }) {
                 columns={columns}
                 data={data}
                 pagination
-                customStyles={customStyles}
+                customStyles={{
+                    headRow: {
+                        style: {
+                            backgroundColor: isDarkMode ? '#333' : '#fff',
+                            color: isDarkMode ? '#fff' : '#333',
+                            borderBottomColor: isDarkMode ? '#fff' : '',
+                        },
+                    },
+                    rows: {
+                        style: {
+                            color: isDarkMode ? '#fff' : '#333',
+                            background: isDarkMode ? '#333' : '#fff',
+                            border: `1px solid ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        },
+                    },
+                    borderBottomColor: {
+                        style: {
+                            color: isDarkMode ? '#fff' : '#333',
+                            background: isDarkMode ? '#333' : '#fff',
+                        },
+                    },
+                    pagination: {
+                        style: {
+                            backgroundColor: isDarkMode ? '#333' : '',
+                            color: isDarkMode ? '#fff' : '',
+                            border: `1px ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        },
+                    },
+                    pageButtonStyles: {
+                        base: {
+                            color: isDarkMode ? '#fff' : '#333',
+                        },
+                    },
+                }}
+                conditionalRowStyles={conditionalRowStyles}
             />
         </div>
     );
