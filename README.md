@@ -1,8 +1,9 @@
 # MAPP Attendence App V2<br>
 An application that aids in quickly managing class attendance by identifying and recognizing students attendance using a QR code.
 
-**Repo Location:** <br>
-https://github.com/hollykaboaz/mapp-v2
+**Repo Locations:** <br>
+Version 1: https://github.com/hollykaboaz/mapp-makers <br>
+Version 2: https://github.com/hollykaboaz/mapp-v2
 
 **Process Tracking Tool:** <br>
 JIRA
