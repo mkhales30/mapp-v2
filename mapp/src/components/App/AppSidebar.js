@@ -24,15 +24,20 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
         // Fetch profile picture URL from Firestore document when component mounts
         const fetchProfilePictureURL = async () => {
             try {
-                const userDocRef = db.collection('Users').doc(auth.currentUser.uid);
-                const userDocSnapshot = await userDocRef.get();
-                if (userDocSnapshot.exists()) {
-                    const userData = userDocSnapshot.data();
+                if (auth.currentUser) {
+                    
+                    const userDocRef = db.collection('Users').doc(auth.currentUser.uid);
+                    const userDocSnapshot = await userDocRef.get();
+                    if (userDocSnapshot.exists()) {
+                     const userData = userDocSnapshot.data();
                     setProfilePictureURL(userData.profilePictureURL);
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching profile picture:", error);
-                // Handle error
+                
+
+               
             }
         };
         fetchProfilePictureURL();
@@ -48,7 +53,7 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
             <img className='rounded-full w-12 h-12 cursor-pointer' src={profilePictureURL}  alt="" onClick={openModal} />
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
-                    <div className='font-light'>{auth.currentUser.firstName}</div>
+                     <div className='font-dark'>{auth.currentUser.email}</div>
                 </div>
                 <ProfilePictureUploadModal isOpen={isModalOpen} onClose={closeModal} onUpload={(url) => setProfilePictureURL(url)}/>
        
