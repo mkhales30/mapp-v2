@@ -7,7 +7,7 @@ import { auth } from '../firebase/firebase';
 import EditStudentModal from '../modals/EditStudentModal';
 
 
-function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents  }) {
+function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isDarkMode }) {
     // State variables
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(() => {
@@ -136,22 +136,68 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents  }) 
         setSelectedStudent(null);
     };
 
+    // Conditional row styles to change cursor to pointer when hovering over rows
+    const conditionalRowStyles = [
+        {
+            when: (row) => true,
+            style: {
+                cursor: 'pointer',
+            },
+        },
+    ];
 
     return (
-        <div className='container mt-5 border rounded border-gray-200'>
-
+        <div className={`container mt-5 border rounded border-gray-200`}
+            style={{
+                backgroundColor: isDarkMode ? '#333' : '#fff',
+                color: isDarkMode ? '#fff' : '#333',
+            }}>
             <DataTable
                 columns={columns}
                 data={data}
                 onRowClicked={handleRowClick}
                 pagination
-                customStyles={customStyles}
+                customStyles={{
+                    headRow: {
+                        style: {
+                            backgroundColor: isDarkMode ? '#333' : '#fff',
+                            color: isDarkMode ? '#fff' : '#333',
+                            borderBottomColor: isDarkMode ? '#fff' : '',
+                        },
+                    },
+                    rows: {
+                        style: {
+                            color: isDarkMode ? '#fff' : '#333',
+                            background: isDarkMode ? '#333' : '#fff',
+                            border: `1px solid ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        },
+                    },
+                    borderBottomColor: {
+                        style: {
+                            color: isDarkMode ? '#fff' : '#333',
+                            background: isDarkMode ? '#333' : '#fff',
+                        },
+                    },
+                    pagination: {
+                        style: {
+                            backgroundColor: isDarkMode ? '#333' : '',
+                            color: isDarkMode ? '#fff' : '',
+                            border: `1px ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        },
+                    },
+                    pageButtonStyles: {
+                        base: {
+                            color: isDarkMode ? '#fff' : '#333',
+                        },
+                    },
+                }}
+                conditionalRowStyles={conditionalRowStyles}
             />
 
             <div style={{ marginTop: '-1%' }}>
                 <button
                     onClick={() => handleExportAllData()}
-                    className='flex flex-row gap-2 block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm'>
+                    className={`flex flex-row gap-2 block ${isDarkMode ? 'bg-stone-800 border border-white' : 'bg-gray-800 text-white'} hover:bg-green-800 text-center px-4 py-2 rounded text-sm`}>
                     <div>Export All Data</div>
                 </button>
             </div>

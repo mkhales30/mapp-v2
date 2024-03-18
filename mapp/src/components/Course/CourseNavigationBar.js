@@ -3,14 +3,13 @@ import { Tab, TabPanel, Tabs, TabsBody, TabsHeader, } from "@material-tailwind/r
 import { ActiveTabContext } from "../../contexts/ActiveTabContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import handleExportAllData from "../../../src/tables/StudentsTable";
 import { deleteCourse } from "../../firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSessionModal, selectedCourse }) {
+export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSessionModal, selectedCourse, isDarkMode }) {
+
     const [activeTab, setActiveTab] = useState("Students");
-    const activeTabContext = useContext(ActiveTabContext)
+    const activeTabContext = useContext(ActiveTabContext);
 
     const handleDeleteCourse = async () => {
         try {
@@ -34,15 +33,15 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
 
     return (
         <Tabs value={activeTab}>
-            <div className='flex flex-row gap-8'>
+            <div className={`flex flex-row gap-8 ${isDarkMode ? 'text-white' : ''}`}>
                 <div className='grow'>
-                    <TabsHeader className='flex gap-8 font-light text-gray-500 border-b rounded-none w-full'>
+                    <TabsHeader className={`flex gap-8 font-light border-b rounded-none w-full ${isDarkMode ? 'text-white' : 'text-gray-500'}`}>
                         {data.map(({ label, value }) => (
                             <Tab
                                 key={value}
                                 value={value}
                                 onClick={() => setActiveTab(value)}
-                                className={activeTab === value ? "w-fit text-gray-800 font-medium hover:cursor-pointer border-b-2 border-green-400" : "w-fit hover:cursor-pointer"}>
+                                className={activeTab === value ? (isDarkMode ? "w-fit text-green-600 font-medium hover:cursor-pointer border-b-2 border-green-400" : "w-fit text-gray-800 font-medium hover:cursor-pointer border-b-2 border-green-400") : "w-fit hover:cursor-pointer"}>
                                 <div className='mb-2'>{label}</div>
                             </Tab>
                         ))}
@@ -52,7 +51,7 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                 <div className='flex flex-row space-x-2'>
                     <button
                         disabled={!selectedCourse}
-                        className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 t  text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                        className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
                         onClick={toggleAddStudentModal}>
                         <div> New Student</div>
                         <FontAwesomeIcon icon={faPlus} />
@@ -66,8 +65,6 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                         <FontAwesomeIcon icon={faPlus} />
                     </button>
 
-
-
                     {/* Add the Export Data button 
                      <button
                         disabled={!selectedCourse}
@@ -78,6 +75,7 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                         
                     </button>
                     */}
+
                     <button
                         disabled={!selectedCourse} // Disable if no course is selected 
                         className='flex flex-row gap-2 items-center block bg-red-600  hover:bg-red-700 t  text-white text-center px-4 py-2 rounded text-sm'
