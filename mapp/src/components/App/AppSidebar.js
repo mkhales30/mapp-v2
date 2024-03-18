@@ -49,7 +49,7 @@ function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
             className='overflow-x-scroll flex flex-col border-gray-200 border-r-2 px-8 py-12 md:content-center gap-y-8 items-start'>
 
             {/* User greeting */}
-            <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
+            <a className='flex flex-row  items-center text-gray-500 gap-x-4' title ="click to add profile image">
             <img className='rounded-full w-12 h-12 cursor-pointer' src={profilePictureURL}  alt="" onClick={openModal} />
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
