@@ -1,24 +1,59 @@
-import React from 'react';
+import {React, useState, useEffect }from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {auth} from '../../firebase/firebase'
 import {faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
+import ProfilePictureUploadModal from '../../modals/ProfilePictureUploadModal';
+import { db } from '../../firebase/firebase';
 
 function AppSidebar({courses, toggleModal, updateCourse, selectedCourse}) {
+
+    const [profilePictureURL, setProfilePictureURL] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    
+
+    useEffect(() => {
+        // Fetch profile picture URL from Firestore document when component mounts
+        const fetchProfilePictureURL = async () => {
+            try {
+                const userDocRef = db.collection('Users').doc(auth.currentUser.uid);
+                const userDocSnapshot = await userDocRef.get();
+                if (userDocSnapshot.exists()) {
+                    const userData = userDocSnapshot.data();
+                    setProfilePictureURL(userData.profilePictureURL);
+                }
+            } catch (error) {
+                console.error("Error fetching profile picture:", error);
+                // Handle error
+            }
+        };
+        fetchProfilePictureURL();
+    }, []);
+
     return (
 
         <div
             className='overflow-x-scroll flex flex-col border-gray-200 border-r-2 px-8 py-12 md:content-center gap-y-8 items-start'>
 
-            {/* User greeting
+            {/* User greeting */}
             <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
-                <img className='rounded-full w-12 h-12' src="" alt=""/>
+            <img className='rounded-full w-12 h-12 cursor-pointer' src={profilePictureURL}  alt="" onClick={openModal} />
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
                     <div className='font-light'>{auth.currentUser.firstName}</div>
                 </div>
+                <ProfilePictureUploadModal isOpen={isModalOpen} onClose={closeModal} onUpload={(url) => setProfilePictureURL(url)}/>
+       
             </a>
-            */}
+           
 
             {/* My Courses Section */}
 
