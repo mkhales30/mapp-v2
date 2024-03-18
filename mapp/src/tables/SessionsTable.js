@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
-import {customStyles} from "./customStyles";
+import { customStyles } from "./customStyles";
 import { getCourses, getSessions } from '../firebase/firestore';
 import { auth } from '../firebase/firebase';
 import EditSessionModal from '../modals/EditSessionModal';
 
 
-function SessionsTable ({data, updateSelectedSession, isDarkMode}){
+function SessionsTable({ data, updateSelectedSession, isDarkMode }) {
     // State variables
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(() => {
@@ -87,7 +87,15 @@ function SessionsTable ({data, updateSelectedSession, isDarkMode}){
         },
         {
             name: 'Notes',
-            selector: (row) => 'N/A',
+            cell: (row) => (
+                <div className="notes-column">
+                    {row.sessionNotes ? (
+                        <span style={{ fontStyle: 'italic' }}>{row.sessionNotes}</span>
+                    ) : (
+                        <span>N/A</span>
+                    )}
+                </div>
+            ),
             sortable: true,
         },
         {

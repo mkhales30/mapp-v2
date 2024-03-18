@@ -5,10 +5,18 @@ import { addSession } from "../firebase/firestore";
 
 function AddSessionModal({ updateSessions, toggleModal, course, isDarkMode }) {
 
-    // Add session Form Handler
-    const [sessionData, setSessionData] = useState({
-        sessionName: '',
-    })
+    const [sessionData, setSessionData] = useState(() => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const month = monthNames[currentDate.getMonth()];
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const formattedDate = `${month} ${day}, ${year}`;
+    
+        return {
+            sessionName: formattedDate,
+        };
+    });
 
     let name, value;
     const updateSessionData = (e) => {
@@ -19,7 +27,7 @@ function AddSessionModal({ updateSessions, toggleModal, course, isDarkMode }) {
 
     const handleAddSession = async () => {
         await addSession(course.id, sessionData);
-        updateSessions(); // Update sessions in the parent component
+        updateSessions();
         toggleModal();
     };
 

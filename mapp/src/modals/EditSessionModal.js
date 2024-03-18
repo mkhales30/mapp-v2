@@ -48,6 +48,14 @@ function EditSessionModal({ session, toggleModal, courses, isDarkMode }) {
                                 value={sessionData.sessionName}
                                 onChange={updateSessionData}
                             />
+                            <label className='font-light text-gray-600 text-sm'>Session Notes</label>
+                            <input
+                                name="sessionNotes"
+                                type="text"
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
+                                value={sessionData.sessionNotes}
+                                onChange={updateSessionData}
+                            />
                         </div>
                         <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg' type="submit">
                             Update Session
