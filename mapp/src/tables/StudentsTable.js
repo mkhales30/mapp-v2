@@ -109,16 +109,28 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isD
         },
     ];
 
-    // Function to export all data to Excel
-    const handleExportAllData = () => {
+  // Function to export all data to Excel
+  const handleExportAllData = () => {
+    // Specify the columns you want to export
+    const columnsToExport = ['firstName', 'lastName', 'enrollmentStatus', 'lastAttended', 'attendanceGrade'];
 
-        console.log("hello");
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.json_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
-        XLSX.writeFile(wb, 'students_data.xlsx');
+    // Filter data to include only selected columns
+    const filteredData = data.map((row) => {
+        const filteredRow = {};
+        columnsToExport.forEach((column) => {
+            filteredRow[column] = row[column];
+        });
+        return filteredRow;
+    });
+
+    // Create Excel workbook and sheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(filteredData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
+
+    // Save the workbook to a file
+    XLSX.writeFile(wb, 'students_data.xlsx');
     };
-
 
     const handleRowClick = (row) => {
         updateSelectedStudent(row)
