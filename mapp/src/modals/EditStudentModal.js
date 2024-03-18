@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { editStudent } from '../firebase/firestore';
 
-function EditStudentModal({ student, toggleModal, courses, toggleRefreshStudents  }) {
+function EditStudentModal({ student, toggleModal, courses, toggleRefreshStudents, isDarkMode  }) {
     const [studentData, setStudentData] = useState({
         firstName: student.firstName,
         lastName: student.lastName,
@@ -34,48 +34,48 @@ function EditStudentModal({ student, toggleModal, courses, toggleRefreshStudents
         <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
             <div className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
             <div className="absolute grid h-screen w-screen place-items-center">
-                <div className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
-                    <p className="text-2xl text-center">Edit Student</p>
+                <div className={`relative flex flex-col gap-4 ${isDarkMode ? 'bg-gray-300' : 'bg-white'} min-w-[500px] max-h-[500px] p-8 rounded`}>
+                <p className="text-2xl text-center" style={{ color: isDarkMode ? '#333' : '#000' }}>Edit Student</p>
                     <button>
-                        <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal} icon={faTimes} />
+                    <FontAwesomeIcon className="absolute top-2 right-2 w-3 h-3" onClick={toggleModal} icon={faX} style={{ color: isDarkMode ? '#333' : '' }} />
                     </button>
                     <form className="flex flex-col gap-2" onSubmit={handleEditStudent}>
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>First Name</label>
+                        <label className="font-light text-sm" style={{ color: isDarkMode ? '#333' : '#000' }}>First Name</label>
                             <input
                                 name="firstName"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={studentData.firstName}
                                 onChange={updateStudentData}
                             />
                         </div>
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Last Name</label>
+                        <label className="font-light text-sm" style={{ color: isDarkMode ? '#333' : '#000' }}>Last Name</label>
                             <input
                                 name="lastName"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={studentData.lastName}
                                 onChange={updateStudentData}
                             />
                         </div>
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Email</label>
+                        <label className="font-light text-sm" style={{ color: isDarkMode ? '#333' : '#000' }}>Email</label>
                             <input
                                 name="email"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={studentData.email}
                                 onChange={updateStudentData}
                             />
                         </div>
                         <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Enrollment Status</label>
+                        <label className="font-light text-sm" style={{ color: isDarkMode ? '#333' : '#000' }}>Enrollment Status</label>
                             <input
                                 name="enrollmentStatus"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={studentData.enrollmentStatus}
                                 onChange={updateStudentData}
                             />
