@@ -8,7 +8,8 @@ import {
   where,
   doc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  getDoc
 } from "firebase/firestore";
 
 // Constants for collection names
@@ -29,18 +30,25 @@ export function addCourse(courseName, courseSection, uid) {
 }
 
 // Function to add a student to a course
-export async function addStudent(courseId, studentData) {
+export async function addStudent(studentData) {
   try {
-    const studentsRef = collection(
-      db,
-      COLLECTIONS.COURSES,
-      courseId,
-      COLLECTIONS.STUDENTS
-    );
+    const studentsRef = collection(db, COLLECTIONS.STUDENTS);
     const docRef = await addDoc(studentsRef, studentData);
     return docRef.id;
   } catch (error) {
     console.error("Error adding student:", error);
+    throw error;
+  }
+}
+
+// Function to edit a student's data
+export async function editStudent(studentId, newData) {
+  try {
+    const studentRef = doc(db, COLLECTIONS.STUDENTS, studentId);
+    await updateDoc(studentRef, newData);
+    console.log("Student data updated successfully!");
+  } catch (error) {
+    console.error("Error editing student data:", error);
     throw error;
   }
 }
@@ -58,6 +66,27 @@ export async function addSession(courseId, sessionData) {
     return docRef.id;
   } catch (error) {
     console.error("Error adding session:", error);
+    throw error;
+  }
+}
+
+// Function to edit a session's data
+export async function editSession(courseId, sessionId, newData) {
+  try {
+    const sessionRef = doc(
+      db,
+      COLLECTIONS.COURSES,
+      courseId,
+      COLLECTIONS.SESSIONS,
+      sessionId
+    );
+
+    console.log("Session reference:", sessionRef);
+    await updateDoc(sessionRef, newData);
+    const path = `${COLLECTIONS.COURSES}/${courseId}/${COLLECTIONS.SESSIONS}/${sessionId}`;
+    console.log("Session data updated successfully!", path);
+  } catch (error) {
+    console.error("Error editing session data:", error);
     throw error;
   }
 }
@@ -82,20 +111,21 @@ export async function getCourses(uid) {
 // Function to get students for a course
 export async function getStudents(courseId) {
   try {
-      const studentsRef = collection(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS);
-      const q = query(studentsRef);
-      const querySnapshot = await getDocs(q);
+    const enrollmentsRef = collection(db, 'Enrollments');
+    const q = query(enrollmentsRef, where('courseId', '==', doc(db, 'Courses', courseId)));
+    const querySnapshot = await getDocs(q);
 
-      const students = querySnapshot.docs.map(doc => ({ 
-          ...doc.data(), 
-          id: doc.id, 
-          courseId: courseId 
-      }));
+    const studentPromises = querySnapshot.docs.map(async (doc) => {
+      const enrollmentData = doc.data();
+      const studentDoc = await getDoc(enrollmentData.studentId);
+      return { id: studentDoc.id, ...studentDoc.data() };
+    });
 
-      return students;
+    const students = await Promise.all(studentPromises);
+    return students;
   } catch (error) {
-      console.error('Error fetching students:', error);
-      throw error; // Re-throw to allow app to handle if needed
+    console.error('Error fetching students:', error);
+    throw error;
   }
 }
 
@@ -124,15 +154,12 @@ export async function getSessions(courseId) {
   }
 }
 
-export async function deleteStudent(courseId, studentId) {
+export async function removeStudentFromCourse(studentId, courseId) {
   try {
-    // Construct the path to the specific student document
-    const studentRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.STUDENTS, studentId); 
-
-    await deleteDoc(studentRef);
+    await deleteEnrollment(studentId, courseId);
   } catch (error) {
-    console.error("Error deleting student:", error);
-    throw error; 
+    console.error("Error deleting enrollment:", error);
+    throw error;
   }
 }
 
@@ -156,13 +183,13 @@ export async function updateEnrollmentStatus(courseId, studentId, newStatus) {
 
 
 export async function deleteCourse(courseId) {
-  try {  
-      const courseRef = doc(db, COLLECTIONS.COURSES, courseId); 
-      await deleteDoc(courseRef);
+  try {
+    const courseRef = doc(db, COLLECTIONS.COURSES, courseId);
+    await deleteDoc(courseRef);
 
   } catch (error) {
-      console.error("Error deleting course:", error);
-      throw error;  
+    console.error("Error deleting course:", error);
+    throw error;
   }
 }
 
@@ -173,6 +200,73 @@ export async function deleteSession(courseId, sessionId) {
     await deleteDoc(sessionRef);
   } catch (error) {
     console.error("Error deleting session:", error);
+    throw error;
+  }
+}
+
+export async function isStudentEmailUnique(email) {
+  try {
+    const studentsRef = collection(db, 'Students');
+    const q = query(studentsRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.empty;
+  } catch (error) {
+    console.error('Error checking student email uniqueness:', error);
+    throw error;
+  }
+}
+
+export async function addEnrollment(studentId, courseId) {
+  try {
+    const enrollmentsRef = collection(db, 'Enrollments');
+    await addDoc(enrollmentsRef, {
+      studentId: doc(db, 'Students', studentId),
+      courseId: doc(db, 'Courses', courseId),
+    });
+  } catch (error) {
+    console.error('Error adding enrollment:', error);
+    throw error;
+  }
+}
+
+export async function deleteEnrollment(studentId, courseId) {
+  try {
+    const enrollmentsRef = collection(db, 'Enrollments');
+    const q = query(enrollmentsRef, where('studentId', '==', doc(db, 'Students', studentId)), where('courseId', '==', doc(db, 'Courses', courseId)));
+    const querySnapshot = await getDocs(q);
+
+    const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+    await Promise.all(deletePromises);
+  } catch (error) {
+    console.error("Error deleting enrollment:", error);
+    throw error;
+  }
+}
+
+export async function getAllStudents() {
+  try {
+    const studentsRef = collection(db, 'Students');
+    const querySnapshot = await getDocs(studentsRef);
+    const students = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return students;
+  } catch (error) {
+    console.error('Error fetching all students:', error);
+    throw error;
+  }
+}
+
+export async function isStudentEnrolled(studentId, courseId) {
+  try {
+    const enrollmentsRef = collection(db, 'Enrollments');
+    const q = query(
+      enrollmentsRef,
+      where('studentId', '==', doc(db, 'Students', studentId)),
+      where('courseId', '==', doc(db, 'Courses', courseId))
+    );
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error('Error checking student enrollment:', error);
     throw error;
   }
 }
