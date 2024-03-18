@@ -209,6 +209,7 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isD
                     updateSelectedCourse={updateSelectedCourse}
                     courses={courses}
                     toggleRefreshStudents={toggleRefreshStudents}
+                    isDarkMode={isDarkMode}
                 />
             )}
         </div>

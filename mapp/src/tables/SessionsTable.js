@@ -176,6 +176,7 @@ function SessionsTable ({data, updateSelectedSession, isDarkMode}){
                     toggleModal={handleModalClose}
                     updateSelectedCourse={updateSelectedCourse}
                     courses={courses}
+                    isDarkMode={isDarkMode}
                 />
             )}
         </div>
