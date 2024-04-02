@@ -12,6 +12,8 @@ import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import SettingsProfile from "./pages/Settings/SettingsProfile";
+import ProfilePictureUploadModal from "./modals/ProfilePictureUploadModal";
+
 
 function App() {
 
@@ -24,6 +26,7 @@ function App() {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [selectedSession, setSelectedSession] = useState(null);
+    const [profilePictureURL, setProfilePictureURL] = useState(null);
 
     // These variables are used to hide and show the various modals of the App
     const [addCourseModal, setAddCourseModal] = useState(false);
@@ -31,6 +34,16 @@ function App() {
     const [addSessionModal, setAddSessionModal] = useState(false);
 
     const [refreshStudents, setRefreshStudents] = useState(false);
+    const [profilePictureUploadModal, setProfilePictureUploadModal] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleUpload = (downloadURL) => {
+        setProfilePictureURL(downloadURL);
+      };
+    // Function to toggle the visibility of the profile picture upload modal
+    const toggleProfilePictureUploadModal = () => {
+        setProfilePictureUploadModal(!profilePictureUploadModal);
+    };
 
     const toggleRefreshStudents = () => {
         setRefreshStudents((prevState) => !prevState);
@@ -171,6 +184,8 @@ function App() {
                     toggleModal={toggleAddCourseModal}
                     updateCourse={updateSelectedCourse}
                     showSettings={setShowSettingsProfile}
+                    toggleProfilePictureUploadModal={toggleProfilePictureUploadModal} // Pass the toggle function to the sidebar
+                    profilePictureURL={profilePictureURL}
                 />
 
                 {/* Main Content Area */}
@@ -214,6 +229,14 @@ function App() {
                             updateSessions={() => fetchSessions(selectedCourse.id)}
                             toggleModal={toggleAddSessionModal}
                             isDarkMode={isDarkMode}
+                        />
+                    )}
+                     {/* Profile Picture Upload Modal */}
+                     {profilePictureUploadModal && (
+                        <ProfilePictureUploadModal
+                            isOpen={profilePictureUploadModal}
+                            onClose={toggleProfilePictureUploadModal}
+                            onUpload={handleUpload} // Define a function to handle profile picture upload
                         />
                     )}
 
