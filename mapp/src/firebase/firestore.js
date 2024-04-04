@@ -30,15 +30,19 @@ export function addCourse(courseName, courseSection, uid) {
 }
 
 // Function to add a student to a course
-export async function addStudent(studentData) {
-  try {
-    const studentsRef = collection(db, COLLECTIONS.STUDENTS);
-    const docRef = await addDoc(studentsRef, studentData);
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding student:", error);
-    throw error;
-  }
+export async function addStudent(studentsData) {
+  const addStudentPromises = studentsData.map(async (studentData) => {
+    try {
+      const studentsRef = collection(db, COLLECTIONS.STUDENTS);
+      const docRef = await addDoc(studentsRef, studentData);
+      return docRef.id;
+    } catch (error) {
+      console.error("Error adding student:", error);
+      throw error;
+    }
+  });
+
+  return Promise.all(addStudentPromises);
 }
 
 // Function to edit a student's data
@@ -254,18 +258,45 @@ export async function getAllStudents() {
   }
 }
 
-export async function isStudentEnrolled(studentId, courseId) {
+export async function isStudentEnrolled(email, courseId) {
   try {
+    const studentsRef = collection(db, 'Students');
+    const q = query(studentsRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return false;
+    }
+
+    const studentId = querySnapshot.docs[0].id;
     const enrollmentsRef = collection(db, 'Enrollments');
-    const q = query(
+    const enrollmentQuery = query(
       enrollmentsRef,
       where('studentId', '==', doc(db, 'Students', studentId)),
       where('courseId', '==', doc(db, 'Courses', courseId))
     );
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
+    const enrollmentSnapshot = await getDocs(enrollmentQuery);
+    return !enrollmentSnapshot.empty;
   } catch (error) {
     console.error('Error checking student enrollment:', error);
+    throw error;
+  }
+}
+
+export async function getUserData(uid) {
+  try {
+    const usersRef = collection(db, COLLECTIONS.USERS);
+    const q = query(usersRef, where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      return { id: userDoc.id, ...userDoc.data() };
+    } else {
+      console.log("No user data found for the given uid");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
     throw error;
   }
 }
