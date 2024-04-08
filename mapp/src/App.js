@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { auth } from './firebase/firebase'
-import { db, getCourses, getSessions, getStudents } from "./firebase/firestore"
+import { auth } from "./firebase/firebase";
+import {
+  getCourses,
+  getSessions,
+  getStudents,
+  getUserData,
+  COLLECTIONS,
+  doc,
+  updateDoc,
+  getDoc,
+  db,
+} from "./firebase/firestore";
 import AddCourseModal from "./modals/AddCourseModal";
 import CourseBanner from "./components/Course/CourseBanner";
 import AppSidebar from "./components/App/AppSidebar";
@@ -13,7 +23,6 @@ import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import SettingsProfile from "./pages/Settings/SettingsProfile";
 import ProfilePictureUploadModal from "./modals/ProfilePictureUploadModal";
-
 
 function App() {
 
@@ -37,8 +46,15 @@ function App() {
     const [profilePictureUploadModal, setProfilePictureUploadModal] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleUpload = (downloadURL) => {
+    const handleUpload = async (downloadURL) => {
         setProfilePictureURL(downloadURL);
+      
+        try {
+          const userDocRef = doc(db, 'Users', auth.currentUser.uid);
+          await updateDoc(userDocRef, { profilePictureURL: downloadURL });
+        } catch (error) {
+          console.error("Error updating profile picture URL in Firestore:", error);
+        }
       };
     // Function to toggle the visibility of the profile picture upload modal
     const toggleProfilePictureUploadModal = () => {
@@ -152,6 +168,25 @@ function App() {
         let data = [];
         fetchCourses();
     }, [refreshStudents]);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+          if (auth.currentUser) {
+            try {
+              const userDocRef = doc(db, 'Users', auth.currentUser.uid);
+              const userDoc = await getDoc(userDocRef);
+              if (userDoc.exists()) {
+                const userData = userDoc.data();
+                setProfilePictureURL(userData.profilePictureURL || null);
+              }
+            } catch (error) {
+              console.error("Error fetching user data:", error);
+            }
+          }
+        };
+      
+        fetchUserData();
+      }, []);
 
     // Apply styles directly based on the current mode
     const appStyles = {

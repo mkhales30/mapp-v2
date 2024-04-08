@@ -1,4 +1,3 @@
-import { db } from "./firebase";
 import {
   addDoc,
   collection,
@@ -6,14 +5,15 @@ import {
   onSnapshot,
   query,
   where,
-  doc,
   deleteDoc,
+  getDoc,
+  doc,
   updateDoc,
-  getDoc
 } from "firebase/firestore";
+import { db } from "./firebase";
 
 // Constants for collection names
-const COLLECTIONS = {
+export const COLLECTIONS = {
   COURSES: "Courses",
   STUDENTS: "Students",
   SESSIONS: "Sessions",
@@ -300,3 +300,5 @@ export async function getUserData(uid) {
     throw error;
   }
 }
+
+export { doc, updateDoc, db ,getDoc};
