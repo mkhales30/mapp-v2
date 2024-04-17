@@ -85,7 +85,8 @@ export async function addSession(courseId, sessionData) {
                 const studentData = studentDoc.data();
                 const attendanceRef = collection(db, 'Attendance');
                 await addDoc(attendanceRef, {
-                    studentId: enrollmentData.studentId,
+                    studentId: enrollmentData.studentId, // Reference to student document
+                    id: studentDoc.id, // Student ID
                     sessionId: docRef.id,
                     courseId: doc(db, 'Courses', courseId),
                     firstName: studentData.firstName,
