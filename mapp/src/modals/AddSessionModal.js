@@ -71,7 +71,7 @@ function AddSessionModal({updateSessions, toggleModal, course, isDarkMode}) {
                                     <input
                                         name="gracePeriod"
                                         type="datetime-local"
-                                        className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                        className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                         value={sessionData.gracePeriod}
                                         onChange={updateSessionData}
                                     />
