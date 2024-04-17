@@ -13,6 +13,7 @@ import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import SettingsProfile from "./pages/Settings/SettingsProfile";
 import ProfilePictureUploadModal from "./modals/ProfilePictureUploadModal";
+import EditCourseModal from "./modals/EditCourseModal";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
     // These variables are used to hide and show the various modals of the App
     const [addCourseModal, setAddCourseModal] = useState(false);
+    const [editCourseModal, setEditCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
 
@@ -104,6 +106,10 @@ function App() {
         setAddCourseModal(!addCourseModal);
     }
 
+    const toggleEditCourseModal = () => {
+        setEditCourseModal(!editCourseModal);
+    }
+
     const toggleAddStudentModal = () => {
         setAddStudentModal(!addStudentModal);
     }
@@ -111,6 +117,8 @@ function App() {
     const toggleAddSessionModal = () => {
         setAddSessionModal(!addSessionModal);
     }
+
+
 
     // This function fetches the courses of the current logged-in user from firestore
     const fetchCourses = async () => {
@@ -196,7 +204,9 @@ function App() {
                     {/* Main Content Area -> Shows when there isn't a selectedStudent or selectedSession or showSettingsProfile */}
                     {!selectedStudent && !selectedSession && !showSettingsProfile && (
                         <div>
-                            <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse} />
+                            <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}
+                                          header={selectedCourse && selectedCourse.courseName} toggleEditCourseModal={toggleEditCourseModal}
+                            />
                             <div className={`px-12 py-4 ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
                                 <CourseNavigationBar
                                     selectedCourse={selectedCourse}
@@ -211,6 +221,12 @@ function App() {
 
                     {/* Add Course Modal -> opens when the add course button is clicked */}
                     {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} isDarkMode={isDarkMode} />}
+
+                    {/* Edit Course Modal -> opens when the edit course button is clicked */}
+                    {editCourseModal &&
+                        <EditCourseModal updateCourses={fetchCourses} toggleModal={toggleEditCourseModal}
+                                         currentCourse={selectedCourse}/>
+                    }
 
                     {/* Add Student Modal -> opens when the add student button is clicked */}
                     {addStudentModal && (
@@ -244,7 +260,6 @@ function App() {
                     {selectedStudent && (
                         <div className='col-span-3'>
                             <CourseBanner
-                                course={selectedCourse}
                                 breadCrumb="Student"
                                 header={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
                                 updateCourses={updateSelectedCourse}
@@ -259,6 +274,7 @@ function App() {
                             <CourseBanner
                                 course={selectedCourse}
                                 breadCrumb="Sessions"
+                                session = {selectedSession}
                                 header={selectedSession.date}
                                 updateCourses={updateSelectedCourse}
                             />

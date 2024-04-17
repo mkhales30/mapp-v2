@@ -29,6 +29,15 @@ export function addCourse(courseName, courseSection, uid) {
   });
 }
 
+// Function to edit a course
+export function editCourse(courseName, courseSection, id) {
+  const courseRef = doc(db, COLLECTIONS.COURSES, id);
+  updateDoc(courseRef, {
+    courseName,
+    courseSection,
+  })
+}
+
 // Function to add a student to a course
 export async function addStudent(studentData) {
   try {
