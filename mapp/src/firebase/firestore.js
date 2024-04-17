@@ -91,6 +91,7 @@ export async function addSession(courseId, sessionData) {
                     firstName: studentData.firstName,
                     lastName: studentData.lastName,
                     status: 'Not Scanned',
+                    date: new Date().toDateString(),
                     in: '',
                     note: ''
                 });
@@ -117,6 +118,25 @@ export async function getAttendanceData(sessionId, courseId) {
         return attendance;
     } catch (error) {
         console.error('Error fetching attendance data:', error);
+        throw error;
+    }
+
+}
+
+// Function to get student attendance data for a session
+export async function getStudentAttendanceData(studentId, courseId) {
+    try {
+        const attendance = [];
+        const attendanceRef = collection(db, 'Attendance');
+        const q = query(attendanceRef, where('courseId', '==', doc(db, `Courses/${courseId}`)), where('studentId', '==', doc(db, `Students/${studentId}`)));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            attendance.push({id: doc.id, date: new Date(doc.date).toISOString, ...doc.data()});
+        });
+
+        return attendance;
+    } catch (error) {
+        console.error('Error fetching student attendance data:', error);
         throw error;
     }
 
@@ -173,7 +193,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
 
         // get the session grace period
         const gracePeriodString = sessionData.gracePeriod ?? null
-        if (gracePeriodString !== null ) {
+        if (gracePeriodString !== null) {
             const gracePeriodDate = new Date(gracePeriodString);
             gracePeriod = gracePeriodDate.toISOString();
         } else {
@@ -201,9 +221,38 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                     in: new Date().toLocaleTimeString(),
                 });
             });
-        }
-        else {
-            window.alert('Student not enrolled in course');
+        } else {
+            // check if student enrolled in course
+            if (await isStudentEnrolled(studentId, courseId)) {
+
+                // Get the student document
+                const studentDoc = await getDoc(doc(db, `Students/${studentId}`));
+
+                // Get the student data
+                const studentData = studentDoc.data();
+
+                // Get the firstName and lastName properties
+                const firstName = studentData.firstName;
+                const lastName = studentData.lastName;
+
+                // create an attendance record for the student for the session
+                await addDoc(attendanceRef, {
+                    studentId: doc(db, `Students/${studentId}`),
+                    sessionId: sessionId,
+                    firstName: firstName,
+                    lastName: lastName,
+                    courseId: doc(db, `Courses/${courseId}`),
+                    status: 'Present',
+                    date: new Date().toLocaleTimeString(),
+                    in: new Date().toLocaleTimeString(),
+                    note: ''
+                });
+            } else {
+                window.confirm('Student not enrolled in course. Would you like to enroll them?')
+                await addEnrollment(studentId, courseId);
+                await recordAttendance(courseId, studentId, sessionId);
+                return;
+            }
         }
 
     } catch

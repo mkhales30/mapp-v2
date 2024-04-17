@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import QRCode from './QRCode';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { removeStudentFromCourse } from '../../firebase/firestore';
+import {getStudentAttendanceData, removeStudentFromCourse} from '../../firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { updateEnrollmentStatus } from '../../firebase/firestore';
+import StudentsAttendanceTable from "../../tables/StudentsAttendanceTable";
 
 function Student({ student,courseId, toggleRefreshStudents, isDarkMode }) {
   // Access student document ID directly
   const studentDocumentId = student.id;
-  console.log(courseId);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [attendanceData, setAttendanceData] = useState([])
+
+  // Fetch attendance data  for student from firestore
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      try {
+        const response = await getStudentAttendanceData(student.id, courseId);
+        setAttendanceData(response);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching student attendance data:', error);
+      }
+    }
+
+    fetchAttendanceData();
+  }, []);
 
 
   //handleDeleteStudent -> this function fires once the remove from class button is pressed, it then deletes the student from the database
@@ -110,6 +127,7 @@ function Student({ student,courseId, toggleRefreshStudents, isDarkMode }) {
         </div>
 
         <div className='text-2xl font-medium mt-12'>Attendance Report</div>
+        {!loading && <StudentsAttendanceTable data={attendanceData} isDarkMode={isDarkMode} />}
         <QRCode studentDocumentId={studentDocumentId} student={student} />
       </div>
     </div>

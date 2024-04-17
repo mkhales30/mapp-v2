@@ -83,6 +83,7 @@ function App() {
     // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
     const updateSelectedSession = (selectedSession) => {
         setSelectedSession(selectedSession);
+        setSelectedStudent(null);
     }
 
     // If a course is selected, this function will update the active course
