@@ -19,12 +19,12 @@ function StudentsAttendanceTable({data}) {
         {
             name: 'Scanned In',
             selector: (row) => row.in,
-            sortable: true,
+            sortable: false,
         },
         {
             name: 'Note',
             selector: (row) => row.note,
-            sortable: true,
+            sortable: false,
         },
     ];
 
