@@ -239,6 +239,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                 // create an attendance record for the student for the session
                 await addDoc(attendanceRef, {
                     studentId: doc(db, `Students/${studentId}`),
+                    id: studentDoc.id,
                     sessionId: sessionId,
                     firstName: firstName,
                     lastName: lastName,
@@ -249,10 +250,16 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                     note: ''
                 });
             } else {
-                window.confirm('Student not enrolled in course. Would you like to enroll them?')
-                await addEnrollment(studentId, courseId);
-                await recordAttendance(courseId, studentId, sessionId);
-                return;
+
+                // if yes add student to course
+                if (window.confirm('Student not enrolled in course. Would you like to enroll them?')) {
+                    await addEnrollment(studentId, courseId);
+                    await recordAttendance(courseId, studentId, sessionId);
+                    return;
+                }else{
+                    return;
+                }
+
             }
         }
 
