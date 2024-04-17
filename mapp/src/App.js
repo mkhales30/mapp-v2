@@ -262,7 +262,7 @@ function App() {
                                 header={selectedSession.date}
                                 updateCourses={updateSelectedCourse}
                             />
-                            <SessionProfile session={selectedSession} isDarkMode={isDarkMode} />
+                            <SessionProfile course={selectedCourse} session={selectedSession} isDarkMode={isDarkMode} />
                         </div>
                     )}
                 </div>

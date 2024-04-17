@@ -1,0 +1,11 @@
+
+#reader img[alt="Info icon"] {
+	display: none;
+}
+
+
+#html5-qrcode-anchor-scan-type-change {
+	text-decoration: none !important;
+	color: #3ea983;
+}
+
