@@ -4,12 +4,12 @@ import {customStyles} from "./customStyles";
 
 
 function StudentsAttendanceTable({data}) {
-
     const columns = [
         {
             name: 'Date',
             selector: (row) => row.date,
             sortable: false,
+            format: (row) => row.date.toDate().toDateString(), //format firestor timestamp to date string
         },
         {
             name: 'Status',
@@ -38,6 +38,6 @@ function StudentsAttendanceTable({data}) {
             />
         </div>
     );
-};
+}
 
 export default StudentsAttendanceTable;

@@ -101,29 +101,29 @@ function Student({ student,courseId, toggleRefreshStudents, isDarkMode }) {
             </div>
           </div>
 
-          <div className={`bg-green-200 rounded-2xl col-span-2 mr-4 ${isDarkMode ? 'text-gray-800 border-green-500 border-2' : ''}`}>
-            <div className='p-4'>
-              <div className='text-5xl text-green-950'>
-                {student.attendanceGrade ? student.attendanceGrade : '100'}%
-              </div>
-              <div className="mt-1">Attendance</div>
-            </div>
-            <div className={`w-full bg-green-950 rounded-b-2xl px-4 py-2 ${isDarkMode ? 'text-gray-100' : 'text-white'}`}>
-              View All
-            </div>
-          </div>
+          {/*<div className={`bg-green-200 rounded-2xl col-span-2 mr-4 ${isDarkMode ? 'text-gray-800 border-green-500 border-2' : ''}`}>*/}
+          {/*  <div className='p-4'>*/}
+          {/*    <div className='text-5xl text-green-950'>*/}
+          {/*      {student.attendanceGrade ? student.attendanceGrade : '100'}%*/}
+          {/*    </div>*/}
+          {/*    <div className="mt-1">Attendance</div>*/}
+          {/*  </div>*/}
+          {/*  <div className={`w-full bg-green-950 rounded-b-2xl px-4 py-2 ${isDarkMode ? 'text-gray-100' : 'text-white'}`}>*/}
+          {/*    View All*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
-          <div className={`bg-red-200 rounded-2xl col-span-2 mr-4 ${isDarkMode ? 'text-gray-800 border-red-500 border-2' : ''}`}>
-            <div className='p-4'>
-              <div className='text-5xl text-red-950'>
-                {student.absences ? student.absences : 0}
-              </div>
-              <div className="mt-1">Absences</div>
-            </div>
-            <div className={`w-full bg-red-950 rounded-b-2xl px-4 py-2 ${isDarkMode ? 'text-gray-100' : 'text-white'}`}>
-              View All
-            </div>
-          </div>
+          {/*<div className={`bg-red-200 rounded-2xl col-span-2 mr-4 ${isDarkMode ? 'text-gray-800 border-red-500 border-2' : ''}`}>*/}
+          {/*  <div className='p-4'>*/}
+          {/*    <div className='text-5xl text-red-950'>*/}
+          {/*      {student.absences ? student.absences : 0}*/}
+          {/*    </div>*/}
+          {/*    <div className="mt-1">Absences</div>*/}
+          {/*  </div>*/}
+          {/*  <div className={`w-full bg-red-950 rounded-b-2xl px-4 py-2 ${isDarkMode ? 'text-gray-100' : 'text-white'}`}>*/}
+          {/*    View All*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
 
         <div className='text-2xl font-medium mt-12'>Attendance Report</div>

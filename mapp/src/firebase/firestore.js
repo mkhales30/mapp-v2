@@ -92,7 +92,7 @@ export async function addSession(courseId, sessionData) {
                     firstName: studentData.firstName,
                     lastName: studentData.lastName,
                     status: 'Not Scanned',
-                    date: new Date().toDateString(),
+                    date: new Date (new Date().toDateString()),
                     in: '',
                     note: ''
                 });
@@ -245,7 +245,7 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                     lastName: lastName,
                     courseId: doc(db, `Courses/${courseId}`),
                     status: 'Present',
-                    date: new Date().toLocaleTimeString(),
+                    date: new Date (new Date().toLocaleTimeString()),
                     in: new Date().toLocaleTimeString(),
                     note: ''
                 });
