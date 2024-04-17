@@ -9,7 +9,7 @@ function StudentsAttendanceTable({data}) {
         {
             name: 'Date',
             selector: (row) => row.date,
-            sortable: true,
+            sortable: false,
         },
         {
             name: 'Status',
