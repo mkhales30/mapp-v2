@@ -19,7 +19,7 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
                     <FontAwesomeIcon className="w-2" icon={faChevronRight}/>
                     <div>{breadCrumb}</div>
                 </div>
-                <div class='text-white text-2xl'>
+                <div className='text-white text-2xl'>
                     {session.sessionName}
                 </div>
             </div>
@@ -27,7 +27,6 @@ function CourseBanner({course, breadCrumb, updateCourses, toggleEditCourseModal,
 
     // Default Banner View with 'Edit Course' Button
     else if (course) {
-        console.log("here")
         banner =
             <div>
                 {/*Edit Course Button*/}

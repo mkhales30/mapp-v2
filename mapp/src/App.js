@@ -82,7 +82,6 @@ function App() {
 
     // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
     const updateSelectedSession = (selectedSession) => {
-        console.log("Selected Session", selectedSession)
         setSelectedSession(selectedSession);
     }
 

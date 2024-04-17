@@ -4,14 +4,18 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import {faCircleExclamation, faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
 import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable';
 import { useNavigate } from 'react-router-dom';
-import { deleteSession } from '../../firebase/firestore';
+import {deleteSession, getAttendanceData} from '../../firebase/firestore';
 import QRScannerModal from "./QRScannerModal";
 
 function SessionProfile({ session, isDarkMode, course }) {
     const [scannerModal, setScannerModal] = useState(false)
-    const [manualSerialNumber, setManualSerialNumber] = useState('');
+    const [loading, setLoading] = useState(true);
+
     const sessionId = session.id;
     const courseId = session.courseId;
+
+    /* Data for the attendance table */
+    const [attendanceData, setAttendanceData] = useState([]);
 
     let noticeMessage
 
@@ -60,40 +64,52 @@ function SessionProfile({ session, isDarkMode, course }) {
             </div>
     }
 
-    console.log(sessionId);
-    console.log(courseId);
+    useEffect(() => {
+        const fetchAttendanceData = async () => {
+            try {
+                const attendanceData = await getAttendanceData( sessionId, courseId);
+                setAttendanceData(attendanceData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching attendance data:', error);
+            }
+        };
+
+        fetchAttendanceData();
+
+    } , [scannerModal]);
 
     const toggleScannerModal = () => {
         setScannerModal(!scannerModal)
     }
 
-    const data = [
-        {
-            id: 1,
-            lastName: 'Khawaja',
-            firstName: 'Duaa',
-            status: 'Not Scanned',
-            in: '3:00pm',
-            note: 'Left early for event'
-        },
-        {
-            id: 2,
-            lastName: 'Moore',
-            firstName: 'Amber',
-            status: 'Not Scanned',
-            in: '3:01pm',
-            note: 'Arrived late'
-        },
-        {
-            id: 3,
-            lastName: 'Rahman',
-            firstName: 'Khales',
-            status: 'Not Scanned',
-            in: '2:59pm',
-            note: ''
-        },
-
-    ]
+    // const data = [
+    //     {
+    //         id: 1,
+    //         lastName: 'Khawaja',
+    //         firstName: 'Duaa',
+    //         status: 'Not Scanned',
+    //         in: '3:00pm',
+    //         note: 'Left early for event'
+    //     },
+    //     {
+    //         id: 2,
+    //         lastName: 'Moore',
+    //         firstName: 'Amber',
+    //         status: 'Not Scanned',
+    //         in: '3:01pm',
+    //         note: 'Arrived late'
+    //     },
+    //     {
+    //         id: 3,
+    //         lastName: 'Rahman',
+    //         firstName: 'Khales',
+    //         status: 'Not Scanned',
+    //         in: '2:59pm',
+    //         note: ''
+    //     },
+    //
+    // ]
 
     const handleDeleteSession = async () => {
         try {
@@ -109,7 +125,7 @@ function SessionProfile({ session, isDarkMode, course }) {
 
             <div className="flex justify-between">
                 <div className="text-2xl font-medium"> Attendance Report</div>
-                <div class="flex gap-1">
+                <div className="flex gap-1">
                     <button className="bg-black text-sm text-white rounded py-2 px-4" onClick={toggleScannerModal}>Start
                         Scanning
                     </button>
@@ -125,7 +141,9 @@ function SessionProfile({ session, isDarkMode, course }) {
 
 
             </div>
-            <SessionsAttendanceTable data={data} isDarkMode={isDarkMode}/>
+
+            { !loading &&  <SessionsAttendanceTable data={attendanceData} isDarkMode={isDarkMode}/> }
+
             {scannerModal &&
                 <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal}/>
             }

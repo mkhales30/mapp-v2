@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faX} from '@fortawesome/free-solid-svg-icons'
 import {Html5QrcodeScanner} from 'html5-qrcode'
 import '../../styles/scanner.css'
+import {recordAttendance} from "../../firebase/firestore";
 
 function QRScannerModal({toggleModal, courseId, sessionId}) {
     const [scanResult, setScanResult] = useState(null)
@@ -16,11 +17,11 @@ function QRScannerModal({toggleModal, courseId, sessionId}) {
         }, true)
 
         function failure(error) {
-            console.error(error)
+
         }
 
         function success(studentID) {
-            // recordAttendance(courseId, studentID, sessionId)
+            recordAttendance(courseId, studentID, sessionId)
             setScanResult(studentID)
         }
 
@@ -29,17 +30,16 @@ function QRScannerModal({toggleModal, courseId, sessionId}) {
     }, [])
 
     function closeScanner() {
-        const video = document.querySelector('video');
-
-        // A video's MediaStream object is available through its srcObject attribute
-        const mediaStream = video.srcObject;
-
-        // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
-        const tracks = mediaStream.getTracks();
-
-        // Or stop all like so:
-        tracks.forEach(track => track.stop())
-
+        // const video = document.querySelector('video');
+        //
+        // // A video's MediaStream object is available through its srcObject attribute
+        // const mediaStream = video.srcObject;
+        //
+        // // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+        // const tracks = mediaStream.getTracks();
+        //
+        // // Or stop all like so:
+        // tracks.forEach(track => track.stop())
         toggleModal()
     }
 
