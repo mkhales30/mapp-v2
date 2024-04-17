@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, auth } from "../firebase/firebase"; // Assuming you've exported your Firestore instance as 'db'
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 
-function ProfilePictureUploadModal({ isOpen, onClose, onUpload }) {
+function ProfilePictureUploadModal({ isOpen, onClose, onUpload, isDarkMode }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -64,18 +64,18 @@ function ProfilePictureUploadModal({ isOpen, onClose, onUpload }) {
         <div className="h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30">
           <div className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
           <div className="absolute grid h-screen w-screen place-items-center">
-            <div className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
+            <div className={`relative flex flex-col gap-4 ${isDarkMode ? 'bg-gray-300 text-white' : 'bg-gray-200 text-black'} min-w-[500px] max-h-[500px] p-8 rounded`}>
               <p className="text-2xl text-center">Upload Profile Picture</p>
               <button>
                 <FontAwesomeIcon
                   className={" absolute top-2 right-2 w-3 h-3"}
                   onClick={onClose}
-                  icon={faTimes}
+                  icon={faX}
                 />
               </button>
               <input type="file" onChange={handleFileChange} />
               <button
-                className="bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg"
+                className={`bg-${isDarkMode ? 'gray-700' : 'stone-800'} text-white text-center px-4 py-2 w-full rounded text-lg`}
                 onClick={handleSubmit}
               >
                 Upload

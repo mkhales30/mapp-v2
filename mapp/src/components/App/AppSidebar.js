@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
 import { auth } from '../../firebase/firebase';
 
-function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode,profilePictureURL, toggleProfilePictureUploadModal }) {
+function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode, profilePictureURL, toggleProfilePictureUploadModal }) {
 
     // Apply styles directly based on the current mode
     const appStyles = {
@@ -18,10 +18,12 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
 
            {/* User greeting*/}
             <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
-                <img className='rounded-full w-12 h-12' src={profilePictureURL}  alt=""  onClick={toggleProfilePictureUploadModal}/>
-                <div className='flex flex-col'>
+            <button onClick={toggleProfilePictureUploadModal} className='rounded-full w-14 h-14 flex items-center justify-center bg-gray-200'>
+                 <FontAwesomeIcon icon={faUserEdit} className='text-gray-500' style={{ fontSize: '1.5em', marginRight: '-6'}} />
+            </button>
+                <div className={`flex flex-col ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
                     <div className='text-sm'>Welcome back,</div>
-                    <div className='font-light'>{auth.currentUser.email}</div>
+                    <div className='font-light'>Dr. {auth.currentUser.email}</div>
                    {/* <button onClick={props.toggleProfilePictureUploadModal}>Upload Profile Picture</button>*/}
                 </div>
                 

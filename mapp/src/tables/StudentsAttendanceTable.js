@@ -3,7 +3,37 @@ import DataTable from 'react-data-table-component';
 import {customStyles} from "./customStyles";
 
 
-function StudentsAttendanceTable({data}) {
+function StudentsAttendanceTable({data, isDarkMode}) {
+    const customTableStyles = {
+        headRow: {
+            style: {
+                backgroundColor: isDarkMode ? '#333' : '#fff',
+                color: isDarkMode ? '#fff' : '#333',
+                borderBottomColor: isDarkMode ? '#fff' : '',
+            },
+        },
+        rows: {
+            style: {
+                color: isDarkMode ? '#fff' : '#333',
+                background: isDarkMode ? '#333' : '#fff',
+                border: `1px solid ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+            },
+        },
+        pagination: {
+            style: {
+                backgroundColor: isDarkMode ? '#333' : '',
+                color: isDarkMode ? '#fff' : '',
+                border: `1px ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+            },
+        },
+        pageButtonStyles: {
+            base: {
+                color: isDarkMode ? '#fff' : '#333',
+            },
+        },
+    };
+
+
     const columns = [
         {
             name: 'Date',
@@ -34,7 +64,7 @@ function StudentsAttendanceTable({data}) {
                 columns={columns}
                 data={data}
                 pagination
-                customStyles={customStyles}
+                customStyles={customTableStyles}
             />
         </div>
     );
