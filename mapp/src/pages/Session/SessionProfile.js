@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import {deleteSession, getAttendanceData} from '../../firebase/firestore';
 import QRScannerModal from "./QRScannerModal";
 
-function SessionProfile({ session, isDarkMode, course }) {
+function SessionProfile({ session, isDarkMode, course, updateSelectedStudent }) {
     const [scannerModal, setScannerModal] = useState(false)
     const [loading, setLoading] = useState(true);
 
@@ -83,34 +83,6 @@ function SessionProfile({ session, isDarkMode, course }) {
         setScannerModal(!scannerModal)
     }
 
-    // const data = [
-    //     {
-    //         id: 1,
-    //         lastName: 'Khawaja',
-    //         firstName: 'Duaa',
-    //         status: 'Not Scanned',
-    //         in: '3:00pm',
-    //         note: 'Left early for event'
-    //     },
-    //     {
-    //         id: 2,
-    //         lastName: 'Moore',
-    //         firstName: 'Amber',
-    //         status: 'Not Scanned',
-    //         in: '3:01pm',
-    //         note: 'Arrived late'
-    //     },
-    //     {
-    //         id: 3,
-    //         lastName: 'Rahman',
-    //         firstName: 'Khales',
-    //         status: 'Not Scanned',
-    //         in: '2:59pm',
-    //         note: ''
-    //     },
-    //
-    // ]
-
     const handleDeleteSession = async () => {
         try {
             await deleteSession(courseId, sessionId);
@@ -142,7 +114,7 @@ function SessionProfile({ session, isDarkMode, course }) {
 
             </div>
 
-            { !loading &&  <SessionsAttendanceTable data={attendanceData} isDarkMode={isDarkMode}/> }
+            { !loading &&  <SessionsAttendanceTable data={attendanceData} isDarkMode={isDarkMode} updateSelectedStudent={updateSelectedStudent}/> }
 
             {scannerModal &&
                 <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal}/>

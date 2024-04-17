@@ -76,8 +76,8 @@ function App() {
 
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
-        console.log("Selected Student", selectedStudent)
         setSelectedStudent(selectedStudent);
+        setSelectedSession(null);
     }
 
     // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
@@ -277,7 +277,7 @@ function App() {
                                 header={selectedSession.date}
                                 updateCourses={updateSelectedCourse}
                             />
-                            <SessionProfile course={selectedCourse} session={selectedSession} isDarkMode={isDarkMode} />
+                            <SessionProfile course={selectedCourse} session={selectedSession} isDarkMode={isDarkMode}  updateSelectedStudent={updateSelectedStudent}/>
                         </div>
                     )}
                 </div>
