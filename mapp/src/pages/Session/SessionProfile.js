@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { faQrcode, faUserGroup, faUserXmark } from "@fortawesome/free-solid-svg-icons";
+import {faCircleExclamation, faQrcode, faUserGroup, faUserXmark} from "@fortawesome/free-solid-svg-icons";
 import SessionsAttendanceTable from '../../tables/SessionsAttendanceTable';
 import { useNavigate } from 'react-router-dom';
 import { deleteSession } from '../../firebase/firestore';
@@ -12,6 +12,54 @@ function SessionProfile({ session, isDarkMode, course }) {
     const [manualSerialNumber, setManualSerialNumber] = useState('');
     const sessionId = session.id;
     const courseId = session.courseId;
+
+    let noticeMessage
+
+    if (session.sessionStart) {
+        noticeMessage =
+            <div
+                className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
+                <FontAwesomeIcon icon={faCircleExclamation}/>
+                {/*If the Start time in future*/}
+                {Date.now() < new Date(session.sessionStart) &&
+                    <p className="text-sm">
+                        This class is scheduled to start at <span className="font-bold">
+                            {new Date(session.sessionStart).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })} on {new Date(session.sessionStart).toDateString()}
+                        </span>
+                    </p>
+                }
+                {/*If the current time is still within the grace period*/}
+                {session.gracePeriod != null && Date.now() > new Date(session.sessionStart) && Date.now() < new Date(session.gracePeriod) &&
+                    <p className="text-sm">
+                        Class has started, Not scanned students will be marked as absent at <span
+                        className="font-bold">{new Date(session.gracePeriod).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })} on {new Date(session.sessionStart).toDateString()} </span>
+                    </p>
+                }
+                {/*Message to display after grace period has passed*/}
+                {session.gracePeriod !== null && Date.now() > new Date(session.gracePeriod) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
+                }
+                {/*Message to display once the start time has passed (and no grace period was specified)*/}
+                {session.gracePeriod == null && Date.now() > new Date(session.sessionStart) &&
+                    <p className="text-sm">Class has ended, please see the attendance report below</p>
+                }
+
+            </div>
+    } else {
+        noticeMessage =
+            <div
+                className="bg-blue-50  text-blue-900 flex p-4 rounded gap-4 mb-4 items-center border-2 border-blue-500/20">
+                <FontAwesomeIcon icon={faCircleExclamation}/>
+                <p className="text-sm">Start Scanning when you are ready to begin class</p>
+            </div>
+    }
+
     console.log(sessionId);
     console.log(courseId);
 
@@ -57,7 +105,7 @@ function SessionProfile({ session, isDarkMode, course }) {
 
     return (
         <div className="mx-12 py-4">
-            {/*{noticeMessage}*/}
+            {noticeMessage}
 
             <div className="flex justify-between">
                 <div className="text-2xl font-medium"> Attendance Report</div>
