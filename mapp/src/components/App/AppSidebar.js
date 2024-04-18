@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
 import { auth } from '../../firebase/firebase';
+import { getUserData } from '../../firebase/firestore';
 
 function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode,profilePictureURL, toggleProfilePictureUploadModal }) {
+
+    const [userData, setUserData] = useState(null);
 
     // Apply styles directly based on the current mode
     const appStyles = {
         backgroundColor: isDarkMode ? '#333' : '#fff',
         color: isDarkMode ? '#fff' : '#333',
     };
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+          if (auth.currentUser) {
+            try {
+              const data = await getUserData(auth.currentUser.uid);
+              setUserData(data);
+            } catch (error) {
+              console.error("Error fetching user data:", error);
+            }
+          }
+        };
+      
+        fetchUserData();
+      }, []);
 
     return (
 
@@ -21,8 +39,8 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
                 <img className='rounded-full w-12 h-12' src={profilePictureURL}  alt=""  onClick={toggleProfilePictureUploadModal}/>
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
-                    <div className='font-light'>{auth.currentUser.email}</div>
-                   {/* <button onClick={props.toggleProfilePictureUploadModal}>Upload Profile Picture</button>*/}
+                    <div className='font-light'>{userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...'}</div>
+                    {/* <button onClick={props.toggleProfilePictureUploadModal}>Upload Profile Picture</button>*/}
                 </div>
                 
             </a>
