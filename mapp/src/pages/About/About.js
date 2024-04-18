@@ -24,7 +24,7 @@ function About({}){
 
             <div className="mb-6">
                 <div className="text-2xl font-bold mb-6 mt-14">How is MAPP Different?</div>
-                <p>The MAPP (Mentally and Physically Present) app revolutionizes classroom attendance by enabling mentors and 
+                <p>The MAPP (Mentally and Physically Present) app transforms classroom attendance by enabling mentors and
                     instructors to track both the physical and cognitive engagement of students. Beyond mere attendance, it facilitates 
                     detailed note-taking on individual and collective student dynamics for enhanced course management. A standout feature 
                     includes the generation of unique QR codes for each student, ensuring authenticity in attendance records and significantly 
