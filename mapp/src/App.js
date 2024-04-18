@@ -12,6 +12,9 @@ import SessionProfile from "./pages/Session/SessionProfile";
 import AddStudentModal from "./modals/AddStudentModal";
 import AddSessionModal from "./modals/AddSessionModal";
 import SettingsProfile from "./pages/Settings/SettingsProfile";
+import ProfilePictureUploadModal from "./modals/ProfilePictureUploadModal";
+import EditCourseModal from "./modals/EditCourseModal";
+
 
 function App() {
 
@@ -24,13 +27,25 @@ function App() {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [selectedSession, setSelectedSession] = useState(null);
+    const [profilePictureURL, setProfilePictureURL] = useState(null);
 
     // These variables are used to hide and show the various modals of the App
     const [addCourseModal, setAddCourseModal] = useState(false);
+    const [editCourseModal, setEditCourseModal] = useState(false);
     const [addStudentModal, setAddStudentModal] = useState(false);
     const [addSessionModal, setAddSessionModal] = useState(false);
 
     const [refreshStudents, setRefreshStudents] = useState(false);
+    const [profilePictureUploadModal, setProfilePictureUploadModal] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleUpload = (downloadURL) => {
+        setProfilePictureURL(downloadURL);
+      };
+    // Function to toggle the visibility of the profile picture upload modal
+    const toggleProfilePictureUploadModal = () => {
+        setProfilePictureUploadModal(!profilePictureUploadModal);
+    };
 
     const toggleRefreshStudents = () => {
         setRefreshStudents((prevState) => !prevState);
@@ -61,14 +76,14 @@ function App() {
 
     // If a student is selected, this function will update the active student ( Note: The Student Profile appears when there is an active Student) 
     const updateSelectedStudent = (selectedStudent) => {
-        console.log("Selected Student", selectedStudent)
         setSelectedStudent(selectedStudent);
+        setSelectedSession(null);
     }
 
     // If a session is selected, this function will update the active session ( Note: The Session Profile appears when there is an active Session)
     const updateSelectedSession = (selectedSession) => {
-        console.log("Selected Session", selectedSession)
         setSelectedSession(selectedSession);
+        setSelectedStudent(null);
     }
 
     // If a course is selected, this function will update the active course
@@ -91,6 +106,10 @@ function App() {
         setAddCourseModal(!addCourseModal);
     }
 
+    const toggleEditCourseModal = () => {
+        setEditCourseModal(!editCourseModal);
+    }
+
     const toggleAddStudentModal = () => {
         setAddStudentModal(!addStudentModal);
     }
@@ -98,6 +117,8 @@ function App() {
     const toggleAddSessionModal = () => {
         setAddSessionModal(!addSessionModal);
     }
+
+
 
     // This function fetches the courses of the current logged-in user from firestore
     const fetchCourses = async () => {
@@ -171,6 +192,8 @@ function App() {
                     toggleModal={toggleAddCourseModal}
                     updateCourse={updateSelectedCourse}
                     showSettings={setShowSettingsProfile}
+                    toggleProfilePictureUploadModal={toggleProfilePictureUploadModal} // Pass the toggle function to the sidebar
+                    profilePictureURL={profilePictureURL}
                 />
 
                 {/* Main Content Area */}
@@ -181,7 +204,9 @@ function App() {
                     {/* Main Content Area -> Shows when there isn't a selectedStudent or selectedSession or showSettingsProfile */}
                     {!selectedStudent && !selectedSession && !showSettingsProfile && (
                         <div>
-                            <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse} />
+                            <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}
+                                          header={selectedCourse && selectedCourse.courseName} toggleEditCourseModal={toggleEditCourseModal}
+                            />
                             <div className={`px-12 py-4 ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
                                 <CourseNavigationBar
                                     selectedCourse={selectedCourse}
@@ -196,6 +221,12 @@ function App() {
 
                     {/* Add Course Modal -> opens when the add course button is clicked */}
                     {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} isDarkMode={isDarkMode} />}
+
+                    {/* Edit Course Modal -> opens when the edit course button is clicked */}
+                    {editCourseModal &&
+                        <EditCourseModal updateCourses={fetchCourses} toggleModal={toggleEditCourseModal}
+                                         currentCourse={selectedCourse}/>
+                    }
 
                     {/* Add Student Modal -> opens when the add student button is clicked */}
                     {addStudentModal && (
@@ -216,12 +247,19 @@ function App() {
                             isDarkMode={isDarkMode}
                         />
                     )}
+                     {/* Profile Picture Upload Modal */}
+                     {profilePictureUploadModal && (
+                        <ProfilePictureUploadModal
+                            isOpen={profilePictureUploadModal}
+                            onClose={toggleProfilePictureUploadModal}
+                            onUpload={handleUpload} // Define a function to handle profile picture upload
+                        />
+                    )}
 
                     {/* Student Profile -> opens when there is a selectedStudent */}
                     {selectedStudent && (
                         <div className='col-span-3'>
                             <CourseBanner
-                                course={selectedCourse}
                                 breadCrumb="Student"
                                 header={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
                                 updateCourses={updateSelectedCourse}
@@ -236,10 +274,11 @@ function App() {
                             <CourseBanner
                                 course={selectedCourse}
                                 breadCrumb="Sessions"
+                                session = {selectedSession}
                                 header={selectedSession.date}
                                 updateCourses={updateSelectedCourse}
                             />
-                            <SessionProfile session={selectedSession} isDarkMode={isDarkMode} />
+                            <SessionProfile course={selectedCourse} session={selectedSession} isDarkMode={isDarkMode}  updateSelectedStudent={updateSelectedStudent}/>
                         </div>
                     )}
                 </div>

@@ -3,13 +3,13 @@ import DataTable from 'react-data-table-component';
 import {customStyles} from "./customStyles";
 
 
-function StudentsAttendanceTable ({data}) {
-
+function StudentsAttendanceTable({data}) {
     const columns = [
         {
             name: 'Date',
             selector: (row) => row.date,
-            sortable: true,
+            sortable: false,
+            format: (row) => row.date.toDate().toDateString(), //format firestor timestamp to date string
         },
         {
             name: 'Status',
@@ -19,17 +19,17 @@ function StudentsAttendanceTable ({data}) {
         {
             name: 'Scanned In',
             selector: (row) => row.in,
-            sortable: true,
+            sortable: false,
         },
         {
             name: 'Note',
             selector: (row) => row.note,
-            sortable: true,
+            sortable: false,
         },
     ];
 
     return (
-        <div className='container mt-5 border rounded border-gray-200' style={{ marginBottom: '20px' }}>
+        <div className='container mt-5 border rounded border-gray-200 mb-20'>
             <DataTable
                 columns={columns}
                 data={data}
@@ -38,6 +38,6 @@ function StudentsAttendanceTable ({data}) {
             />
         </div>
     );
-};
+}
 
 export default StudentsAttendanceTable;

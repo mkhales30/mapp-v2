@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import DataTable from 'react-data-table-component';
-import { customStyles } from "./customStyles";
 import * as XLSX from 'xlsx';
-import { getCourses, getStudents,toggleRefreshStudents } from '../firebase/firestore';
-import { auth } from '../firebase/firebase';
+import {getCourses, getStudents} from '../firebase/firestore';
+import {auth} from '../firebase/firebase';
 import EditStudentModal from '../modals/EditStudentModal';
 
 
-function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isDarkMode }) {
+function StudentsTable({data, updateSelectedStudent, toggleRefreshStudents, isDarkMode}) {
     // State variables
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(() => {
@@ -35,18 +34,18 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isD
     // Fetch courses from firestore and set selected course
     useEffect(() => {
         const fetchStudents = async () => {
-          try {
-            if (selectedCourse) {
-              const studentsData = await getStudents(selectedCourse.id);
-              setStudents(studentsData);
+            try {
+                if (selectedCourse) {
+                    const studentsData = await getStudents(selectedCourse.id);
+                    setStudents(studentsData);
+                }
+            } catch (error) {
+                console.error('Error fetching students:', error);
             }
-          } catch (error) {
-            console.error('Error fetching students:', error);
-          }
         };
-      
+
         fetchStudents();
-      }, [selectedCourse]);
+    }, [selectedCourse]);
 
     // Function to update selected course
     const updateSelectedCourse = (course) => {
@@ -101,35 +100,36 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isD
         {
             name: 'Actions',
             cell: (row) => (
-                <button onClick={() => handleEditClick(row)} className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-2 px-4 rounded">Edit</button>
+                <button onClick={() => handleEditClick(row)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-normal py-1 px-4 rounded">Edit</button>
             ),
             ignoreRowClick: true,
             button: "true",
-            style: { paddingRight: '4px' }
+            style: {paddingRight: '4px'}
         },
     ];
 
-  // Function to export all data to Excel
-  const handleExportAllData = () => {
-    // Specify the columns you want to export
-    const columnsToExport = ['firstName', 'lastName', 'enrollmentStatus', 'lastAttended', 'attendanceGrade'];
+    // Function to export all data to Excel
+    const handleExportAllData = () => {
+        // Specify the columns you want to export
+        const columnsToExport = ['firstName', 'lastName', 'enrollmentStatus', 'lastAttended', 'attendanceGrade'];
 
-    // Filter data to include only selected columns
-    const filteredData = data.map((row) => {
-        const filteredRow = {};
-        columnsToExport.forEach((column) => {
-            filteredRow[column] = row[column];
+        // Filter data to include only selected columns
+        const filteredData = data.map((row) => {
+            const filteredRow = {};
+            columnsToExport.forEach((column) => {
+                filteredRow[column] = row[column];
+            });
+            return filteredRow;
         });
-        return filteredRow;
-    });
 
-    // Create Excel workbook and sheet
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(filteredData);
-    XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
+        // Create Excel workbook and sheet
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(filteredData);
+        XLSX.utils.book_append_sheet(wb, ws, 'Students_Data');
 
-    // Save the workbook to a file
-    XLSX.writeFile(wb, 'students_data.xlsx');
+        // Save the workbook to a file
+        XLSX.writeFile(wb, 'students_data.xlsx');
     };
 
     const handleRowClick = (row) => {
@@ -159,73 +159,80 @@ function StudentsTable({ data, updateSelectedStudent, toggleRefreshStudents, isD
     ];
 
     return (
-        <div className={`container mt-5 border rounded border-gray-200`}
-            style={{
-                backgroundColor: isDarkMode ? '#333' : '#fff',
-                color: isDarkMode ? '#fff' : '#333',
-            }}>
-            <DataTable
-                columns={columns}
-                data={data}
-                onRowClicked={handleRowClick}
-                pagination
-                customStyles={{
-                    headRow: {
-                        style: {
-                            backgroundColor: isDarkMode ? '#333' : '#fff',
-                            color: isDarkMode ? '#fff' : '#333',
-                            borderBottomColor: isDarkMode ? '#fff' : '',
+        <div>
+            <div className={"container mt-5 border rounded border-gray-200"}
+                 style={{
+                     backgroundColor: isDarkMode ? '#333' : '#fff',
+                     color: isDarkMode ? '#fff' : '#333',
+                 }}>
+                <DataTable
+                    columns={columns}
+                    data={data}
+                    onRowClicked={handleRowClick}
+                    pagination
+                    customStyles={{
+                        headRow: {
+                            style: {
+                                backgroundColor: isDarkMode ? '#333' : '#fff',
+                                color: isDarkMode ? '#fff' : '#333',
+                                borderBottomColor: isDarkMode ? '#fff' : '',
+                            },
                         },
-                    },
-                    rows: {
-                        style: {
-                            color: isDarkMode ? '#fff' : '#333',
-                            background: isDarkMode ? '#333' : '#fff',
-                            border: `1px solid ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        rows: {
+                            style: {
+                                color: isDarkMode ? '#fff' : '#333',
+                                background: isDarkMode ? '#333' : '#fff',
+                                border: `1px solid ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                            },
                         },
-                    },
-                    borderBottomColor: {
-                        style: {
-                            color: isDarkMode ? '#fff' : '#333',
-                            background: isDarkMode ? '#333' : '#fff',
+                        borderBottomColor: {
+                            style: {
+                                color: isDarkMode ? '#fff' : '#333',
+                                background: isDarkMode ? '#333' : '#fff',
+                            },
                         },
-                    },
-                    pagination: {
-                        style: {
-                            backgroundColor: isDarkMode ? '#333' : '',
-                            color: isDarkMode ? '#fff' : '',
-                            border: `1px ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                        pagination: {
+                            style: {
+                                backgroundColor: isDarkMode ? '#333' : '',
+                                color: isDarkMode ? '#fff' : '',
+                                border: `1px ${isDarkMode ? '#fff' : '#F5F5F5'}`,
+                            },
                         },
-                    },
-                    pageButtonStyles: {
-                        base: {
-                            color: isDarkMode ? '#fff' : '#333',
+                        pageButtonStyles: {
+                            base: {
+                                color: isDarkMode ? '#fff' : '#333',
+                            },
                         },
-                    },
-                }}
-                conditionalRowStyles={conditionalRowStyles}
-            />
+                    }}
+                    conditionalRowStyles={conditionalRowStyles}
+                />
 
-            <div style={{ marginTop: '-1%' }}>
-                <button
-                    onClick={() => handleExportAllData()}
-                    className={`flex flex-row gap-2 block ${isDarkMode ? 'bg-stone-800 border border-white' : 'bg-gray-800 text-white'} hover:bg-green-800 text-center px-4 py-2 rounded text-sm`}>
-                    <div>Export All Data</div>
-                </button>
+                {
+                    editStudentModal && selectedStudent && (
+                        <EditStudentModal
+                            student={selectedStudent}
+                            toggleModal={handleModalClose}
+                            updateSelectedCourse={updateSelectedCourse}
+                            courses={courses}
+                            toggleRefreshStudents={toggleRefreshStudents}
+                            isDarkMode={isDarkMode}
+                        />
+                    )
+                }
+
             </div>
 
-            {editStudentModal && selectedStudent && (
-                <EditStudentModal
-                    student={selectedStudent}
-                    toggleModal={handleModalClose}
-                    updateSelectedCourse={updateSelectedCourse}
-                    courses={courses}
-                    toggleRefreshStudents={toggleRefreshStudents}
-                    isDarkMode={isDarkMode}
-                />
-            )}
+            <div className="flex items-center justify-end gap-2  my-4">
+                <button
+                    onClick={() => handleExportAllData()}
+                    className='w-full gap-2 bg-stone-800 text-white hover:bg-green-700 text-center px-4 py-2 rounded text-sm'>
+                    Export Student Report
+                </button>
+            </div>
         </div>
+
+
     );
-};
+}
 
 export default StudentsTable;
