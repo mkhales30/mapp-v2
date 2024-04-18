@@ -6,6 +6,9 @@ import { db } from '../firebase/firebase';
 import { isStudentEmailUnique, addEnrollment, isStudentEnrolled } from '../firebase/firestore';
 import { useEffect } from 'react';
 import { getAllStudents } from '../firebase/firestore';
+import { sendQRCodeEmail } from '../sendgrid/email'; // Import the function to send email
+
+
 
 function AddStudentModal({ course, toggleModal, updateStudents, isDarkMode }) {
   const [studentData, setStudentData] = useState({
@@ -56,7 +59,9 @@ function AddStudentModal({ course, toggleModal, updateStudents, isDarkMode }) {
 
       const studentId = await addStudent(studentData);
       await addEnrollment(studentId, course.id);
+      await sendQRCodeEmail(studentData.email, studentId);
     }
+    
 
     updateStudents();
     toggleModal();
