@@ -45,7 +45,12 @@ function StatusCell({ value, onChange }) {
     );
 }
 
-function SessionsAttendanceTable({ data, isDarkMode }) {
+function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent }) {
+
+    const handleRowClick = (row) => {
+        updateSelectedStudent(row)
+    };
+
 
     const handleChange = (row, newStatus) => {
         // Update the status of the row
@@ -97,6 +102,7 @@ function SessionsAttendanceTable({ data, isDarkMode }) {
             <DataTable
                 columns={columns}
                 data={data}
+                onRowClicked={handleRowClick}
                 pagination
                 customStyles={{
                     headRow: {

@@ -41,17 +41,17 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
                                 key={value}
                                 value={value}
                                 onClick={() => setActiveTab(value)}
-                                className={activeTab === value ? (isDarkMode ? "w-fit text-green-600 font-medium hover:cursor-pointer border-b-2 border-green-400" : "w-fit text-gray-800 font-medium hover:cursor-pointer border-b-2 border-green-400") : "w-fit hover:cursor-pointer"}>
-                                <div className='mb-2'>{label}</div>
+                                className={activeTab === value ? (isDarkMode ? "w-fit text-green-600 font-medium -mb-4 hover:cursor-pointer border-b-2 border-green-400" : "w-fit text-gray-800 -mb-4 font-medium hover:cursor-pointer border-b-2 border-green-400") : "w-fit hover:cursor-pointer"}>
+                                <div className=''>{label}</div>
                             </Tab>
                         ))}
                     </TabsHeader>
                 </div>
 
-                <div className='flex flex-row space-x-2'>
+                <div className='flex flex-row space-x-2 items-center'>
                     <button
                         disabled={!selectedCourse}
-                        className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800  hover:bg-green-800 text-white text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                        className={activeTab === 'Students' ? 'flex flex-row gap-2 items-center block bg-stone-800 h-fit hover:bg-green-800 text-white text-center px-4 py-2 text-sm rounded' : 'hidden'}
                         onClick={toggleAddStudentModal}>
                         <div> New Student</div>
                         <FontAwesomeIcon icon={faPlus} />
@@ -59,7 +59,7 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
 
                     <button
                         disabled={!selectedCourse}
-                        className={activeTab === 'Sessions' ? 'flex flex-row gap-2 items-center block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 rounded text-sm' : 'hidden'}
+                        className={activeTab === 'Sessions' ? 'flex flex-row gap-2 items-center block bg-stone-800 text-white hover:bg-green-800 text-center px-4 py-2 h-fit rounded text-sm' : 'hidden'}
                         onClick={toggleAddSessionModal}>
                         <div> New Session</div>
                         <FontAwesomeIcon icon={faPlus} />
@@ -78,7 +78,7 @@ export function CourseNavigationBar({ data, toggleAddStudentModal, toggleAddSess
 
                     <button
                         disabled={!selectedCourse} // Disable if no course is selected 
-                        className='flex flex-row gap-2 items-center block bg-red-600  hover:bg-red-700 t  text-white text-center px-4 py-2 rounded text-sm'
+                        className='flex flex-row gap-2 items-center block bg-red-600  hover:bg-red-700 t  text-white text-center px-4 py-2 h-fit rounded text-sm'
                         onClick={handleDeleteCourse} // We'll create this function next
                     >
                         <div> Delete Course</div>

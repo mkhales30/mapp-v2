@@ -48,11 +48,12 @@ function AddStudentModal({ course, toggleModal, updateStudents, isDarkMode }) {
       return;
     }
 
-    const isEmailUnique = await isStudentEmailUnique(studentData.email);
+const isEmailUnique = await isStudentEmailUnique(studentData.email);
     if (!isEmailUnique) {
       alert('A student with this email already exists.');
       return;
     }
+    
 
     const studentId = await addStudent(studentData);
     await addEnrollment(studentId, course.id);
