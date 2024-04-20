@@ -117,7 +117,7 @@ function SessionProfile({ session, isDarkMode, course, updateSelectedStudent }) 
             { !loading &&  <SessionsAttendanceTable data={attendanceData} isDarkMode={isDarkMode} updateSelectedStudent={updateSelectedStudent}/> }
 
             {scannerModal &&
-                <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal}/>
+                <QRScannerModal sessionId={session.id} courseId={course.id} toggleModal={toggleScannerModal} isDarkMode={isDarkMode}/>
             }
         </div>
     );

@@ -150,12 +150,12 @@ const isEmailUnique = await isStudentEmailUnique(studentData.email);
           ) : (
             <form className="flex flex-col gap-2" onSubmit={handleAddStudent}>
               <div className='flex flex-col gap-1'>
-                <label className="font-light text-sm" style={{ color: isDarkMode ? '#333' : '#000' }}>Enter Student Names or Emails</label>
+                <label className="font-light text-sm" style={{ color: isDarkMode ? '#000' : '#333' }}>Enter Student Names or Emails</label>
                 <Select
                   isMulti
                   name="students"
                   options={allStudents}
-                  className="basic-multi-select"
+                  className={`basic-multi-select ${isDarkMode ? 'text-black' : ''}`}
                   classNamePrefix="select"
                   getOptionLabel={(student) => `${student.firstName} ${student.lastName} (${student.email})`}
                   getOptionValue={(student) => student.id}

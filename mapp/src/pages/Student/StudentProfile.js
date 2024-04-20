@@ -76,9 +76,9 @@ function Student({ student,courseId, toggleRefreshStudents, isDarkMode }) {
       <div className='ml-12'>
         <div className='grid grid-cols-6 gap-2 mt-2 mr-6'>
           <div className='mb-4 col-span-3'>
-            <div className='text-gray-400 font-light text-sm'>
-              {student.email}
-            </div>
+          <div className={`font-light mt-4 ${isDarkMode ? 'text-gray-400' : 'text-black'}`}>
+            <span className="font-bold">{student.email}</span>
+          </div>
             <div className='text-gray-400 font-light text-sm'>
               {student.lastAttended ? 'Last attended:' : ''}
               <span className='font-light text-black underline'>{student.lastAttended}</span>
