@@ -41,7 +41,7 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse, isDarkMode}
                             <input
                                 name="courseName"
                                 type="text"
-                                className="border-gray-200 border rounded w-full p-2 focus:outline-0"
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={courseData.courseName}
                                 onChange={updateCourseData}
                             />
@@ -51,7 +51,7 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse, isDarkMode}
                             <input
                                 name="courseSection"
                                 type="text"
-                                className="border-gray-200 border rounded w-full p-2 focus:outline-0"
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={courseData.courseSection}
                                 onChange={updateCourseData}
                             />
