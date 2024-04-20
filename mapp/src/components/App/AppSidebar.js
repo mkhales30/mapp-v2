@@ -36,10 +36,14 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
 
            {/* User greeting*/}
             <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
-                <img className='rounded-full w-12 h-12' src={profilePictureURL}  alt=""  onClick={toggleProfilePictureUploadModal}/>
+                <img 
+                    className={`rounded-full w-14 h-14 border-2 ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
+                    src={profilePictureURL}  
+                    alt=""  
+                    onClick={toggleProfilePictureUploadModal}/>
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
-                    <div className='font-light'>{userData ? `${userData.firstName} ${userData.lastName}` : 'Loading...'}</div>
+                    <div className='font-light'>Dr. {userData ? `${userData.lastName}` : 'Loading...'}</div>
                     {/* <button onClick={props.toggleProfilePictureUploadModal}>Upload Profile Picture</button>*/}
                 </div>
                 

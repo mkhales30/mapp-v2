@@ -260,7 +260,7 @@ function App() {
                     {/* Edit Course Modal -> opens when the edit course button is clicked */}
                     {editCourseModal &&
                         <EditCourseModal updateCourses={fetchCourses} toggleModal={toggleEditCourseModal}
-                                         currentCourse={selectedCourse}/>
+                                         currentCourse={selectedCourse} isDarkMode={isDarkMode}/>
                     }
 
                     {/* Add Student Modal -> opens when the add student button is clicked */}
