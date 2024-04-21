@@ -97,7 +97,7 @@ export async function addSession(courseId, sessionData) {
                     firstName: studentData.firstName,
                     lastName: studentData.lastName,
                     status: 'Not Scanned',
-                    date: new Date (new Date().toDateString()),
+                    date: new Date().toLocaleDateString(),
                     in: '',
                     note: ''
                 });
@@ -229,7 +229,8 @@ export async function recordAttendance(courseId, studentId, sessionId) {
             });
         } else {
             // check if student enrolled in course
-            if (await isStudentEnrolled(studentId, courseId)) {
+            if (await isStudentEnrolledById(studentId, courseId)) {
+                console.log('Student is enrolled in course');
 
                 // Get the student document
                 const studentDoc = await getDoc(doc(db, `Students/${studentId}`));
@@ -241,6 +242,8 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                 const firstName = studentData.firstName;
                 const lastName = studentData.lastName;
 
+                console.log(studentDoc.id)
+
                 // create an attendance record for the student for the session
                 await addDoc(attendanceRef, {
                     studentId: doc(db, `Students/${studentId}`),
@@ -250,15 +253,16 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                     lastName: lastName,
                     courseId: doc(db, `Courses/${courseId}`),
                     status: 'Present',
-                    date: new Date (new Date().toLocaleTimeString()),
+                    date: new Date().toLocaleDateString(),
                     in: new Date().toLocaleTimeString(),
-                    note: ''
+                    note: ""
                 });
             } else {
 
                 // if yes add student to course
                 if (window.confirm('Student not enrolled in course. Would you like to enroll them?')) {
                     await addEnrollment(studentId, courseId);
+                    await updateEnrollmentStatus(courseId, studentId, 'Enrolled') ;
                     await recordAttendance(courseId, studentId, sessionId);
                     return;
                 }else{
@@ -475,6 +479,22 @@ export async function isStudentEnrolled(email, courseId) {
     console.error('Error checking student enrollment:', error);
     throw error;
   }
+}
+
+export async function isStudentEnrolledById(studentId, courseId) {
+    try {
+        const enrollmentsRef = collection(db, 'Enrollments');
+        const q = query(
+            enrollmentsRef,
+            where('studentId', '==', doc(db, 'Students', studentId)),
+            where('courseId', '==', doc(db, 'Courses', courseId))
+        );
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    } catch (error) {
+        console.error('Error checking student enrollment:', error);
+        throw error;
+    }
 }
 
 export async function getUserData(uid) {

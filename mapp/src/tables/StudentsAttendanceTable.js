@@ -35,9 +35,9 @@ function StudentsAttendanceTable({data, isDarkMode}) {
     const columns = [
         {
             name: 'Date',
-            selector: (row) => row.date,
+            selector: (row) => row.date.toString(),
             sortable: false,
-            format: (row) => row.date.toDate().toDateString(), //format firestor timestamp to date string
+            format: (row) => row.date,
         },
         {
             name: 'Status',
@@ -46,7 +46,7 @@ function StudentsAttendanceTable({data, isDarkMode}) {
         },
         {
             name: 'Scanned In',
-            selector: (row) => row.in,
+            selector: (row) => row.in.toString(),
             sortable: false,
         },
         {

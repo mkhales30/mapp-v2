@@ -45,7 +45,7 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
                     />
                 ) : (
                     <div
-                        className={`rounded-full w-16 h-16 border-2 flex items-center justify-center ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
+                        className={`object-cover rounded-full w-16 h-16 border-2 flex items-center justify-center ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
                         onClick={toggleProfilePictureUploadModal}
                     >
                         <FontAwesomeIcon icon={faUserEdit} className='text-gray-500' style={{ fontSize: '1.5em', marginLeft: '6px' }} />
@@ -72,7 +72,7 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
                 <div className='uppercase'>MY COURSES</div>
                 {/*Add Course Button*/}
                 <button className='hover:text-green-500 flex flex-row gap-2 text-gray-400 opacity-50 items-center' onClick={toggleModal}>
-                    <div className={'font-light text-sm uppercase'}>Add course</div>
+                    <div className={' hidden lg:block font-light text-sm uppercase'}>Add course</div>
                     <FontAwesomeIcon icon={faPlus} />
                 </button>
             </div>
