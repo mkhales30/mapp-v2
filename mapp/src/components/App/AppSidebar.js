@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faBookBookmark, faGear, faPlus, faUserGroup, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import SignOutButton from "./SignOutButton";
 import { auth } from '../../firebase/firebase';
 import { getUserData } from '../../firebase/firestore';
 
-function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode,profilePictureURL, toggleProfilePictureUploadModal }) {
+function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode, profilePictureURL, toggleProfilePictureUploadModal }) {
 
     const [userData, setUserData] = useState(null);
 
@@ -17,38 +17,48 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
 
     useEffect(() => {
         const fetchUserData = async () => {
-          if (auth.currentUser) {
-            try {
-              const data = await getUserData(auth.currentUser.uid);
-              setUserData(data);
-            } catch (error) {
-              console.error("Error fetching user data:", error);
+            if (auth.currentUser) {
+                try {
+                    const data = await getUserData(auth.currentUser.uid);
+                    setUserData(data);
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
             }
-          }
         };
-      
+
         fetchUserData();
-      }, []);
+    }, []);
 
     return (
 
         <div className={`overflow-x-scroll flex flex-col border-gray-200 border-r-2 px-8 py-12 md:content-center gap-y-8 items-start ${isDarkMode ? 'dark' : ''}`} style={appStyles}>
 
-           {/* User greeting*/}
+            {/* User greeting*/}
             <a className='flex flex-row  items-center text-gray-500 gap-x-4'>
-                <img 
-                    className={`rounded-full w-14 h-14 border-2 ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
-                    src={profilePictureURL}  
-                    alt=""  
-                    onClick={toggleProfilePictureUploadModal}/>
+                {profilePictureURL ? (
+                    <img
+                        className={`rounded-full w-16 h-16 border-1 ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
+                        src={profilePictureURL}
+                        alt=""
+                        onClick={toggleProfilePictureUploadModal}
+                    />
+                ) : (
+                    <div
+                        className={`rounded-full w-16 h-16 border-2 flex items-center justify-center ${isDarkMode ? 'border-gray-400' : 'border-gray-500'}`}
+                        onClick={toggleProfilePictureUploadModal}
+                    >
+                        <FontAwesomeIcon icon={faUserEdit} className='text-gray-500' style={{ fontSize: '1.5em', marginLeft: '6px' }} />
+                    </div>
+                )}
                 <div className='flex flex-col'>
                     <div className='text-sm'>Welcome back,</div>
                     <div className='font-light'>Dr. {userData ? `${userData.lastName}` : 'Loading...'}</div>
                     {/* <button onClick={props.toggleProfilePictureUploadModal}>Upload Profile Picture</button>*/}
                 </div>
-                
+
             </a>
-            
+
 
             {/*Students Section */}
             <a href='#' className='flex flex-row gap-4 items-center'>
