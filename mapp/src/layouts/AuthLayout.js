@@ -9,7 +9,7 @@ function AuthLayout({page, children}) {
             < div className={page !== 'about' ? 'col-span-2 mx-8' : 'col-span-3'}>
                 <div
                     className={page !== 'about' ? 'flex flex-row w-full justify-between items-center gap-4 py-4 mb-28' : 'flex flex-row w-full justify-between items-center gap-4 py-1'}>
-                    <div class="font-bold ml-4">
+                    <div class="font-bold ml-4 text-xl italic">
                         MAPP
                     </div>
                     <div className="flex items-center gap-2">
@@ -49,7 +49,7 @@ function AuthLayout({page, children}) {
                             <p className="text-lg font-light mb-8">
                                 Mentally and physically present
                             </p>
-                            <a className="bg-black/70 py-4 px-6 rounded" href="/signUp">
+                            <a className="bg-black/70 py-4 px-6 rounded" href="/signIn">
                                 Get Started
                             </a>
                         </div>
