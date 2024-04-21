@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
-import { customStyles } from "./customStyles";
+import { addNotes } from '../firebase/firestore';
 
 function StatusCell({ value, onChange }) {
     const [status, setStatus] = useState(value);
@@ -45,18 +45,50 @@ function StatusCell({ value, onChange }) {
     );
 }
 
-function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent }) {
+/* // Component for notes column UI
+function NotesCell({ value, onChange, isDarkMode, courseId, sessionId }) {
+    const [studentNotes, setStudentNotes] = useState(value);
+
+    useEffect(() => {
+        setStudentNotes(value);
+    }, [value]);
+
+    const handleChange = (event) => {
+        const newNotes = event.target.value;
+        setStudentNotes(newNotes);
+        onChange(newNotes);
+        if (newNotes !== undefined && newNotes !== '') { // Check if newNotes is not undefined and not an empty string
+            addNotes(courseId, sessionId, newNotes); // Pass courseId and sessionId
+        }
+    };
+
+    return (
+        <input
+            type="text"
+            value={studentNotes}
+            onChange={handleChange}
+            className={`w-full px-2 py-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500 mr-8 ${isDarkMode ? 'text-black' : 'text-black'}`}
+        />
+    );
+} */
+
+function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , courseId, sessionId */ }) {
 
     const handleRowClick = (row) => {
         updateSelectedStudent(row)
     };
-
 
     const handleChange = (row, newStatus) => {
         // Update the status of the row
         // Use a setState function or dispatch an action here depending on state management approach
         row.status = newStatus;
     };
+
+   /*  const handleNoteChange = (row, newNote) => {
+        // Update the note of the row
+        // Use a setState function or dispatch an action here depending on state management approach
+        row.note = newNote;
+    }; */
 
     // Conditional row styles to change cursor to pointer when hovering over rows
     const conditionalRowStyles = [
@@ -91,9 +123,18 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent }) {
             sortable: true,
         },
         {
-            name: 'Note',
+            name: 'Notes',
             selector: (row) => row.note,
             sortable: true,
+           /*  cell: row => (
+                <NotesCell
+                    value={row.note}
+                    onChange={(newNote) => handleNoteChange(row, newNote)}
+                    isDarkMode={isDarkMode}
+                    courseId={courseId}
+                    sessionId={sessionId}
+                />
+            ), */
         },
     ];
 

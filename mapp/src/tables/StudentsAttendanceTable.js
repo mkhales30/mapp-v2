@@ -1,7 +1,5 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
-import {customStyles} from "./customStyles";
-
 
 function StudentsAttendanceTable({data, isDarkMode}) {
 
@@ -52,7 +50,7 @@ function StudentsAttendanceTable({data, isDarkMode}) {
             sortable: false,
         },
         {
-            name: 'Note',
+            name: 'Notes',
             selector: (row) => row.note,
             sortable: false,
         },

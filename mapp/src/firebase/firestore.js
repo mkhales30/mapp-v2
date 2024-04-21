@@ -7,6 +7,7 @@ import {
   where,
   deleteDoc,
   getDoc,
+  setDoc,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -339,6 +340,21 @@ export async function getSessions(courseId) {
         throw error;
     }
 }
+
+/* // Function to add notes for a specific student in a specific session and course
+// Need to have it recognize a studentId
+export async function addNotes(courseId, sessionId, newNotes) {
+    try {
+        // Check if newNotes is defined and not an empty string
+        if (newNotes !== undefined && newNotes !== '') {
+            const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
+            await setDoc(sessionRef, { studentNotes: newNotes }, { merge: true }); // Set notes field with merge option
+        }
+    } catch (error) {
+        console.error("Error adding notes:", error);
+        throw error;
+    }
+} */
 
 export async function removeStudentFromCourse(studentId, courseId) {
     try {
