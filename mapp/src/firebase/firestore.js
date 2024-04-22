@@ -336,6 +336,16 @@ export async function getSessions(courseId) {
     }
 }
 
+export async function updateAttendanceInDatabase(row, newStatus) {
+    try {
+        const attendanceRef = doc(db, 'Attendance', row.id); // Assuming 'id' is the document ID in the 'Attendance' collection
+        await updateDoc(attendanceRef, { status: newStatus });
+        console.log('Attendance status updated in the database');
+    } catch (error) {
+        console.error('Error updating attendance status in the database:', error);
+    }
+}
+
 export async function removeStudentFromCourse(studentId, courseId) {
     try {
         await deleteEnrollment(studentId, courseId);

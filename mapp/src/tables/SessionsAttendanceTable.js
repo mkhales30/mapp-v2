@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
+import { updateAttendanceInDatabase } from '../firebase/firestore';
 import { customStyles } from "./customStyles";
 
-function StatusCell({ value, onChange }) {
+function StatusCell({ value, onChange, row }) {
     const [status, setStatus] = useState(value);
 
     useEffect(() => {
         setStatus(value);
     }, [value]);
 
-    const handleChange = () => {
+    const handleChange = async () => {
         const newStatus =
             status === 'Present' ? 'Absent' :
                 status === 'Absent' ? 'Late in' :
@@ -18,6 +19,8 @@ function StatusCell({ value, onChange }) {
                             'Present';
         setStatus(newStatus);
         onChange(newStatus);
+        // Call a function to update the database
+        await updateAttendanceInDatabase(row, newStatus);
     };
 
     const getStatusColor = () => {
