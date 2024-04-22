@@ -41,8 +41,7 @@ export function editCourse(courseName, courseSection, id) {
 }
 
 // Function to add a student to a course
-export async function addStudent(studentsData) {
-  const addStudentPromises = studentsData.map(async (studentData) => {
+export async function addStudent(studentData) {
     try {
       const studentsRef = collection(db, COLLECTIONS.STUDENTS);
       const docRef = await addDoc(studentsRef, studentData);
@@ -51,10 +50,7 @@ export async function addStudent(studentsData) {
       console.error("Error adding student:", error);
       throw error;
     }
-  });
-
-  return Promise.all(addStudentPromises);
-}
+  }
 
 // Function to edit a student's data
 export async function editStudent(studentId, newData) {
@@ -448,7 +444,11 @@ export async function getAllStudents() {
     try {
         const studentsRef = collection(db, 'Students');
         const querySnapshot = await getDocs(studentsRef);
-        const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+        const students = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            class: doc.data().class || 'N/A', // Include the class field, or 'N/A' if not available
+        }));
         return students;
     } catch (error) {
         console.error('Error fetching all students:', error);
