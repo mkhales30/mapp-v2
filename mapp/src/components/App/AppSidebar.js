@@ -5,7 +5,7 @@ import SignOutButton from "./SignOutButton";
 import { auth } from '../../firebase/firebase';
 import { getUserData } from '../../firebase/firestore';
 
-function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode, profilePictureURL, toggleProfilePictureUploadModal }) {
+function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSettings, isDarkMode, profilePictureURL, toggleProfilePictureUploadModal, setShowAllStudents, setSelectedCourse, setSelectedStudent, setSelectedSession, setShowSettingsProfile }) {
 
     const [userData, setUserData] = useState(null);
 
@@ -61,7 +61,14 @@ function AppSidebar({ courses, toggleModal, updateCourse, selectedCourse, showSe
 
 
             {/*Students Section */}
-            <a href='#' className='flex flex-row gap-4 items-center'>
+            <a href='#' className='flex flex-row gap-4 items-center' onClick={() => {
+                setShowAllStudents(true);
+                setSelectedCourse(null);
+                setSelectedStudent(null);
+                setSelectedSession(null);
+                setShowSettingsProfile(false);
+            }}>
+
                 <FontAwesomeIcon className='h-4 w-4' icon={faUserGroup} />
                 <div className='font-light'>Students</div>
             </a>

@@ -42,22 +42,21 @@ function AddStudentModal({ course, toggleModal, updateStudents, isDarkMode }) {
 
   const handleCreateStudent = async (e) => {
     e.preventDefault();
-
+  
     if (!studentData.firstName || !studentData.lastName || !studentData.email || !studentData.isEmailValid) {
       alert('Please fill all required fields with valid input.');
       return;
     }
-
-const isEmailUnique = await isStudentEmailUnique(studentData.email);
+  
+    const isEmailUnique = await isStudentEmailUnique(studentData.email);
     if (!isEmailUnique) {
       alert('A student with this email already exists.');
       return;
     }
-    
-
+  
     const studentId = await addStudent(studentData);
     await addEnrollment(studentId, course.id);
-
+  
     updateStudents();
     toggleModal();
   };
