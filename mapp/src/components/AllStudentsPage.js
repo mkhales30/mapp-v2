@@ -154,7 +154,7 @@ function AllStudentsPage({ isDarkMode }) {
               placeholder="Search students..."
               value={searchQuery}
               onChange={handleSearchQueryChange}
-              className="border rounded py-1 px-2"
+              className={`border rounded py-1 px-2 ${isDarkMode ? 'text-black' : 'text-black'}`}
             />
           </div>
           </div>
