@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import { editSession } from '../firebase/firestore';
 
 function EditSessionModal({ session, toggleModal, courses, isDarkMode }) {
@@ -36,7 +36,7 @@ function EditSessionModal({ session, toggleModal, courses, isDarkMode }) {
                 <div className={`relative flex flex-col gap-4 ${isDarkMode ? 'bg-gray-300' : 'bg-white'} min-w-[500px] max-h-[500px] p-8 rounded`}>
                     <p className="text-2xl text-center" style={{ color: isDarkMode ? '#333' : '#000' }}>Edit Session</p>
                     <button>
-                        <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal} icon={faTimes} />
+                        <FontAwesomeIcon className={`absolute top-2 right-2 w-3 h-3 ${isDarkMode ? 'text-gray-600' : 'text-gray-600'}`} onClick={toggleModal} icon={faX} />
                     </button>
                     <form className="flex flex-col gap-2" onSubmit={handleEditSession}>
                         <div className='flex flex-col gap-1'>

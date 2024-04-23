@@ -23,12 +23,13 @@ function QRCode({ studentDocumentId, student }) {
   }
 
   return (
-    <div>
-      <div ref={qrcodeRef}>
-        <QRCodeSVG value={text} size={250} />
+      <div>
+        <div ref={qrcodeRef}>
+          <QRCodeSVG value={text} size={250}/>
+        </div>
+        <button className="underline hover:text-green-500" onClick={downloadQRCodeImage}>Download</button>
+
       </div>
-      <button onClick={downloadQRCodeImage}>Download QR Code</button>
-    </div>
   );
 }
 

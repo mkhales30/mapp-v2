@@ -44,7 +44,8 @@ function AddSessionModal({updateSessions, toggleModal, course, isDarkMode}) {
                     </button>
                     <form className="flex flex-col gap-2 ">
                         <div className='flex flex-col gap-1'>
-                            <label className="font-light text-sm" style={{color: isDarkMode ? '#333' : '#000'}}>Session Name</label>
+                            <label className="font-light text-sm" style={{color: isDarkMode ? '#333' : '#000'}}>Session
+                                Name</label>
                             <input
                                 name="sessionName"
                                 type="text"
@@ -52,10 +53,12 @@ function AddSessionModal({updateSessions, toggleModal, course, isDarkMode}) {
                                 value={sessionData.sessionName}
                                 onChange={updateSessionData}
                             />
-                            <label className="font-light text-sm" style={{color: isDarkMode ? '#333' : '#000'}}>Session Start </label>
-                            <div className='flex flex-col gap-1'>
-                                <input
-                                    name="sessionStart"
+                            <label className="font-light text-sm" style={{color: isDarkMode ? '#333' : '#000'}}>
+                                Session Start <span className='text-gray-600 font-extralight text-xs italic'>(Optional)</span>
+                        </label>
+                        <div className='flex flex-col gap-1'>
+                            <input
+                                name="sessionStart"
                                     type="datetime-local"
                                     className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                     value={sessionData.sessionStart}
@@ -71,7 +74,7 @@ function AddSessionModal({updateSessions, toggleModal, course, isDarkMode}) {
                                     <input
                                         name="gracePeriod"
                                         type="datetime-local"
-                                        className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                        className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                         value={sessionData.gracePeriod}
                                         onChange={updateSessionData}
                                     />

@@ -24,8 +24,10 @@ import AddSessionModal from "./modals/AddSessionModal";
 import SettingsProfile from "./pages/Settings/SettingsProfile";
 import ProfilePictureUploadModal from "./modals/ProfilePictureUploadModal";
 import EditCourseModal from "./modals/EditCourseModal";
-
+import AllStudentsPage from "./components/AllStudentsPage";
 function App() {
+
+    const [showAllStudents, setShowAllStudents] = useState(false);
 
     // Students, Sessions and Courses collection will be stored in their respective variable
     const [courses, setCourses] = useState([]);
@@ -47,6 +49,8 @@ function App() {
     const [refreshStudents, setRefreshStudents] = useState(false);
     const [profilePictureUploadModal, setProfilePictureUploadModal] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
     const handleUpload = async (downloadURL) => {
         setProfilePictureURL(downloadURL);
@@ -115,6 +119,7 @@ function App() {
             fetchSessions(selectedCourse.id);
         }
         setShowSettingsProfile(false);
+        setShowAllStudents(false);
     }
 
     // These toggle modal functions will set the modal to open when their respective open buttons are clicked
@@ -226,9 +231,14 @@ function App() {
                     courses={courses}
                     toggleModal={toggleAddCourseModal}
                     updateCourse={updateSelectedCourse}
+                    setShowSettingsProfile={setShowSettingsProfile}
                     showSettings={setShowSettingsProfile}
                     toggleProfilePictureUploadModal={toggleProfilePictureUploadModal} // Pass the toggle function to the sidebar
                     profilePictureURL={profilePictureURL}
+                    setShowAllStudents={setShowAllStudents}
+                    setSelectedCourse={setSelectedCourse}
+                    setSelectedStudent={setSelectedStudent}
+                    setSelectedSession={setSelectedSession}
                 />
 
                 {/* Main Content Area */}
@@ -237,7 +247,7 @@ function App() {
                     {showSettingsProfile && <SettingsProfile isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} toggleDarkMode={toggleDarkMode} setSelectedCourse={setSelectedCourse} setSelectedStudent={setSelectedStudent} />}
 
                     {/* Main Content Area -> Shows when there isn't a selectedStudent or selectedSession or showSettingsProfile */}
-                    {!selectedStudent && !selectedSession && !showSettingsProfile && (
+                    {!selectedStudent && !selectedSession && !showSettingsProfile && !showAllStudents && selectedCourse &&(
                         <div>
                             <CourseBanner updateCourses={updateSelectedCourse} course={selectedCourse}
                                           header={selectedCourse && selectedCourse.courseName} toggleEditCourseModal={toggleEditCourseModal}
@@ -254,13 +264,21 @@ function App() {
                         </div>
                     )}
 
+                    {/* Shows AllStudentsPage if showAllStudents is true */}
+                    {showAllStudents && !showSettingsProfile && (
+  <div>
+    {/* <CourseBanner header="All Students" /> */}
+    <AllStudentsPage isDarkMode={isDarkMode} />
+  </div>
+)}
+
                     {/* Add Course Modal -> opens when the add course button is clicked */}
                     {addCourseModal && <AddCourseModal updateCourses={fetchCourses} toggleModal={toggleAddCourseModal} isDarkMode={isDarkMode} />}
 
                     {/* Edit Course Modal -> opens when the edit course button is clicked */}
                     {editCourseModal &&
                         <EditCourseModal updateCourses={fetchCourses} toggleModal={toggleEditCourseModal}
-                                         currentCourse={selectedCourse}/>
+                                         currentCourse={selectedCourse} isDarkMode={isDarkMode}/>
                     }
 
                     {/* Add Student Modal -> opens when the add student button is clicked */}

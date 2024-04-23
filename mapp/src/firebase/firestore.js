@@ -7,6 +7,7 @@ import {
   where,
   deleteDoc,
   getDoc,
+  setDoc,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -40,8 +41,7 @@ export function editCourse(courseName, courseSection, id) {
 }
 
 // Function to add a student to a course
-export async function addStudent(studentsData) {
-  const addStudentPromises = studentsData.map(async (studentData) => {
+export async function addStudent(studentData) {
     try {
       const studentsRef = collection(db, COLLECTIONS.STUDENTS);
       const docRef = await addDoc(studentsRef, studentData);
@@ -50,10 +50,7 @@ export async function addStudent(studentsData) {
       console.error("Error adding student:", error);
       throw error;
     }
-  });
-
-  return Promise.all(addStudentPromises);
-}
+  }
 
 // Function to edit a student's data
 export async function editStudent(studentId, newData) {
@@ -96,7 +93,7 @@ export async function addSession(courseId, sessionData) {
                     firstName: studentData.firstName,
                     lastName: studentData.lastName,
                     status: 'Not Scanned',
-                    date: new Date (new Date().toDateString()),
+                    date: new Date().toLocaleDateString(),
                     in: '',
                     note: ''
                 });
@@ -228,7 +225,8 @@ export async function recordAttendance(courseId, studentId, sessionId) {
             });
         } else {
             // check if student enrolled in course
-            if (await isStudentEnrolled(studentId, courseId)) {
+            if (await isStudentEnrolledById(studentId, courseId)) {
+                console.log('Student is enrolled in course');
 
                 // Get the student document
                 const studentDoc = await getDoc(doc(db, `Students/${studentId}`));
@@ -240,6 +238,8 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                 const firstName = studentData.firstName;
                 const lastName = studentData.lastName;
 
+                console.log(studentDoc.id)
+
                 // create an attendance record for the student for the session
                 await addDoc(attendanceRef, {
                     studentId: doc(db, `Students/${studentId}`),
@@ -249,15 +249,16 @@ export async function recordAttendance(courseId, studentId, sessionId) {
                     lastName: lastName,
                     courseId: doc(db, `Courses/${courseId}`),
                     status: 'Present',
-                    date: new Date (new Date().toLocaleTimeString()),
+                    date: new Date().toLocaleDateString(),
                     in: new Date().toLocaleTimeString(),
-                    note: ''
+                    note: ""
                 });
             } else {
 
                 // if yes add student to course
                 if (window.confirm('Student not enrolled in course. Would you like to enroll them?')) {
                     await addEnrollment(studentId, courseId);
+                    await updateEnrollmentStatus(courseId, studentId, 'Enrolled') ;
                     await recordAttendance(courseId, studentId, sessionId);
                     return;
                 }else{
@@ -335,6 +336,21 @@ export async function getSessions(courseId) {
         throw error;
     }
 }
+
+/* // Function to add notes for a specific student in a specific session and course
+// Need to have it recognize a studentId
+export async function addNotes(courseId, sessionId, newNotes) {
+    try {
+        // Check if newNotes is defined and not an empty string
+        if (newNotes !== undefined && newNotes !== '') {
+            const sessionRef = doc(db, COLLECTIONS.COURSES, courseId, COLLECTIONS.SESSIONS, sessionId);
+            await setDoc(sessionRef, { studentNotes: newNotes }, { merge: true }); // Set notes field with merge option
+        }
+    } catch (error) {
+        console.error("Error adding notes:", error);
+        throw error;
+    }
+} */
 
 export async function updateAttendanceInDatabase(row, newStatus) {
     try {
@@ -438,7 +454,11 @@ export async function getAllStudents() {
     try {
         const studentsRef = collection(db, 'Students');
         const querySnapshot = await getDocs(studentsRef);
-        const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+        const students = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            class: doc.data().class || 'N/A', // Include the class field, or 'N/A' if not available
+        }));
         return students;
     } catch (error) {
         console.error('Error fetching all students:', error);
@@ -469,6 +489,22 @@ export async function isStudentEnrolled(email, courseId) {
     console.error('Error checking student enrollment:', error);
     throw error;
   }
+}
+
+export async function isStudentEnrolledById(studentId, courseId) {
+    try {
+        const enrollmentsRef = collection(db, 'Enrollments');
+        const q = query(
+            enrollmentsRef,
+            where('studentId', '==', doc(db, 'Students', studentId)),
+            where('courseId', '==', doc(db, 'Courses', courseId))
+        );
+        const querySnapshot = await getDocs(q);
+        return !querySnapshot.empty;
+    } catch (error) {
+        console.error('Error checking student enrollment:', error);
+        throw error;
+    }
 }
 
 export async function getUserData(uid) {

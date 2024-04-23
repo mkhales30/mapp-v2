@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faX} from "@fortawesome/free-solid-svg-icons";
 import {editCourse} from '../firebase/firestore'
 
-function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
+function EditCourseModal({updateCourses, toggleModal, currentCourse, isDarkMode}) {
 
     // Add Course Form Handler
     const [courseData, setCourseData] = useState({
@@ -27,43 +27,37 @@ function EditCourseModal({updateCourses, toggleModal, currentCourse}) {
     };
 
     return (
-        <div className='h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30'>
-            <div
-                className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
+        <div className={`h-full w-full top-0 left-0 right-0 bottom-0 fixed z-30 ${isDarkMode ? 'dark' : ''}`}>
+            <div className="bg-black opacity-80 h-full w-full top-0 left-0 right-0 bottom-0 fixed"></div>
             <div className="absolute grid h-screen w-screen place-items-center">
-                <div
-                    className="relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded">
-                    <p className="text-2xl text-center">Edit Course</p>
+                <div className={`relative flex flex-col gap-4 bg-white min-w-[500px] max-h-[500px] p-8 rounded ${isDarkMode ? 'dark:bg-gray-300' : 'bg-white'}`}>
+                    <p className={`text-2xl text-center ${isDarkMode ? 'text-black' : 'text-black'}`}>Edit Course</p>
                     <button>
-                        <FontAwesomeIcon className={" absolute top-2 right-2 w-3 h-3"} onClick={toggleModal}
-                                         icon={faX}/>
+                        <FontAwesomeIcon className={`absolute top-2 right-2 w-3 h-3 ${isDarkMode ? 'text-black' : ''}`} onClick={toggleModal} icon={faX} />
                     </button>
                     <form className="flex flex-col gap-2 ">
-                        <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Course Name</label>
+                        <div className="flex flex-col gap-1">
+                            <label className="font-light text-gray-600 text-sm">Course Name</label>
                             <input
                                 name="courseName"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={courseData.courseName}
                                 onChange={updateCourseData}
                             />
                         </div>
-                        <div className='flex flex-col gap-1'>
-                            <label className='font-light text-gray-600 text-sm'>Course Section</label>
+                        <div className="flex flex-col gap-1">
+                            <label className="font-light text-gray-600 text-sm">Course Section</label>
                             <input
                                 name="courseSection"
                                 type="text"
-                                className='border-gray-200 border rounded w-full p-2 focus:outline-0'
+                                className={`border-gray-200 border rounded w-full p-2 focus:outline-0 ${isDarkMode ? 'text-black' : ''}`}
                                 value={courseData.courseSection}
                                 onChange={updateCourseData}
                             />
                         </div>
-
                     </form>
-                    <button className='bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg'
-                            type="submit"
-                            onClick={handleEditCourse}>
+                    <button className="bg-stone-800 text-white text-center px-4 py-2 w-full rounded text-lg" type="submit" onClick={handleEditCourse}>
                         Save
                     </button>
                 </div>
