@@ -3,7 +3,7 @@ An application that aids in quickly managing class attendance by identifying and
 
 **Repo Locations:** <br>
 Version 1: https://github.com/hollykaboaz/mapp-makers <br>
-Version 2: https://github.com/hollykaboaz/mapp-v2
+Version 2: https://github.com/mkhales30/mapp-v2
 
 **Process Tracking Tool:** <br>
 JIRA
