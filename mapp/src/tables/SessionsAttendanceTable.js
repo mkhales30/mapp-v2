@@ -12,6 +12,7 @@ function StatusCell({ value, onChange, row }) {
     }, [value]);
 
     const handleChange = async () => {
+        console.log(row); 
         const newStatus =
             status === 'Present' ? 'Absent' :
                 status === 'Absent' ? 'Late in' :
@@ -21,7 +22,7 @@ function StatusCell({ value, onChange, row }) {
         setStatus(newStatus);
         onChange(newStatus);
         // Call a function to update the database
-        await updateAttendanceInDatabase(row, newStatus);
+        await updateAttendanceInDatabase(row.id, newStatus); 
     };
 
     const getStatusColor = () => {
@@ -76,7 +77,7 @@ function NotesCell({ value, onChange, isDarkMode, courseId, sessionId }) {
     );
 } */
 
-function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , courseId, sessionId */ }) {
+function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent , courseId, sessionId  }) {
 
     const handleRowClick = (row) => {
         updateSelectedStudent(row)
@@ -124,6 +125,11 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , c
         {
             name: 'Scanned In',
             selector: (row) => row.in,
+            sortable: true,
+        },
+        {
+            name: 'ID',
+            selector: (row) => row.id,
             sortable: true,
         },
         {
