@@ -128,11 +128,6 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent , cou
             sortable: true,
         },
         {
-            name: 'ID',
-            selector: (row) => row.id,
-            sortable: true,
-        },
-        {
             name: 'Notes',
             selector: (row) => row.note,
             sortable: true,
