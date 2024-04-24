@@ -12,7 +12,7 @@ function StatusCell({ value, onChange, row }) {
     }, [value]);
 
     const handleChange = async () => {
-        console.log(row); 
+        console.log(row); // Log the 'row' object to see its structure
         const newStatus =
             status === 'Present' ? 'Absent' :
                 status === 'Absent' ? 'Late in' :
@@ -21,8 +21,6 @@ function StatusCell({ value, onChange, row }) {
                             'Present';
         setStatus(newStatus);
         onChange(newStatus);
-        // Call a function to update the database
-        await updateAttendanceInDatabase(row.id, newStatus); 
     };
 
     const getStatusColor = () => {
@@ -87,6 +85,8 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent , cou
         // Update the status of the row
         // Use a setState function or dispatch an action here depending on state management approach
         row.status = newStatus;
+        // Call a function to update the database
+        updateAttendanceInDatabase(row.id, newStatus); 
     };
 
    /*  const handleNoteChange = (row, newNote) => {

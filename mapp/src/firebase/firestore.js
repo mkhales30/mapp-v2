@@ -357,7 +357,7 @@ export async function updateAttendanceInDatabase(rowId, newStatus) {
     const attendanceRef = collection(db, 'Attendance');
     const q = query(
         attendanceRef,
-        where('sessionId', '==', rowId)
+        where('id', '==', rowId)
     );
     const querySnapshot = await getDocs(q);
 
