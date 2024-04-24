@@ -20,6 +20,7 @@ export const COLLECTIONS = {
   STUDENTS: "Students",
   SESSIONS: "Sessions",
   USERS: "Users",
+  ATTENDANCE: "Attendance",
 };
 
 // Function to add a course
@@ -351,6 +352,25 @@ export async function addNotes(courseId, sessionId, newNotes) {
         throw error;
     }
 } */
+
+export async function updateAttendanceInDatabase(rowId, newStatus) {
+    const attendanceRef = collection(db, 'Attendance');
+    const q = query(
+        attendanceRef,
+        where('id', '==', rowId)
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+        try {
+            await updateDoc(doc.ref, {
+                status: newStatus
+            });
+        } catch (error) {
+            console.error('Error updating document: ', error);
+        }
+    });
+}
 
 export async function removeStudentFromCourse(studentId, courseId) {
     try {

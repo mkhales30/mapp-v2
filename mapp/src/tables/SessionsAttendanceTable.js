@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { addNotes } from '../firebase/firestore';
+import { updateAttendanceInDatabase } from '../firebase/firestore';
+import { customStyles } from "./customStyles";
 
-function StatusCell({ value, onChange }) {
+function StatusCell({ value, onChange, row }) {
     const [status, setStatus] = useState(value);
 
     useEffect(() => {
         setStatus(value);
     }, [value]);
 
-    const handleChange = () => {
+    const handleChange = async () => {
+        console.log(row); // Log the 'row' object to see its structure
         const newStatus =
             status === 'Present' ? 'Absent' :
                 status === 'Absent' ? 'Late in' :
@@ -72,7 +75,7 @@ function NotesCell({ value, onChange, isDarkMode, courseId, sessionId }) {
     );
 } */
 
-function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , courseId, sessionId */ }) {
+function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent , courseId, sessionId  }) {
 
     const handleRowClick = (row) => {
         updateSelectedStudent(row)
@@ -82,6 +85,8 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , c
         // Update the status of the row
         // Use a setState function or dispatch an action here depending on state management approach
         row.status = newStatus;
+        // Call a function to update the database
+        updateAttendanceInDatabase(row.id, newStatus); 
     };
 
    /*  const handleNoteChange = (row, newNote) => {
@@ -120,6 +125,11 @@ function SessionsAttendanceTable({ data, isDarkMode, updateSelectedStudent/* , c
         {
             name: 'Scanned In',
             selector: (row) => row.in,
+            sortable: true,
+        },
+        {
+            name: 'ID',
+            selector: (row) => row.id,
             sortable: true,
         },
         {
